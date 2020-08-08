@@ -1,4 +1,4 @@
 # **Домашние работы курса "Администратор Linux"**
 
-* [Домашняя работа №1](manual_kernel_update)
+* [Домашняя работа №1](Deron-D/manual_kernel_update)
 
