@@ -1,2 +1,5 @@
 .vagrant
 *.vdi
+*.rpm
+*.key
+.tmux.conf
