@@ -56,7 +56,6 @@ Vagrant.configure("2") do |config|
         t.name = "Reboot after up and provision"
         t.run_remote = { :inline => "reboot" }
       end
-      
-      end
+    end  
   end
 end
