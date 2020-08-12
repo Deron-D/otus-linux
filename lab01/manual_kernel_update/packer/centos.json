@@ -18,7 +18,6 @@
 
       "iso_url": "http://mirror.corbina.net/pub/Linux/centos/7.8.2003/isos/x86_64/CentOS-7-x86_64-Minimal-2003.iso",
       "iso_checksum": "659691c28a0e672558b003d223f83938f254b39875ee7559d1a4a14c79173193",
-      "iso_checksum_type": "sha256",
 
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/vagrant.ks<enter><wait>"
