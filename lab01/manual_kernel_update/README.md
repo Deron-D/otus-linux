@@ -22,6 +22,13 @@ yum install vagrant_2.2.9_x86_64.rpm
 
 - VirtualBox v.6.1.12: <https://www.virtualbox.org/wiki/Linux_Downloads>
 
+- Packer v.1.6.1
+
+```Bash
+curl https://releases.hashicorp.com/packer/1.6.1/packer_1.6.1_linux_amd64.zip | \
+sudo gzip -d > /usr/local/bin/packer && \
+sudo chmod +x /usr/local/bin/packer
+```
 
 ## **2.Обновление ядра из репозитория**
 
