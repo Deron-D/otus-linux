@@ -3,5 +3,3 @@
 *.rpm
 *.key
 .tmux.conf
-*.box
-packer_cache/
