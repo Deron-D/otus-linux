@@ -32,4 +32,7 @@ sudo chmod +x /usr/local/bin/packer
 
 ## **2.Обновление ядра из репозитория**
 
-Подготовлен [Vagrantfile](Vagrantfile), обновляющий ядро 3.10.0-1127.el7.x86_64 ->  5.8.1-1.el7.elrepo.x86_64 из репозитория elrepo  
+Подготовлен [Vagrantfile](Vagrantfile), обновляющий ядро 3.10.0-1127.el7.x86_64 ->  5.8.1-1.el7.elrepo.x86_64 из репозитория elrepo
+
+
+## **3.Создание с помощью утилиты packer Vagrant box с собранным из исходников ядром и поддержкой VirtualBox Shared Folders**
