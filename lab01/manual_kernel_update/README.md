@@ -12,7 +12,7 @@
 
 Выполнено:
 
-# **1.Установлено ПО**
+# *1.Установлено ПО*
 
 - Vagrant v.2.2.9
 ```Bash
@@ -23,6 +23,6 @@ yum install vagrant_2.2.9_x86_64.rpm
 - VirtualBox v.6.1.12: <https://www.virtualbox.org/wiki/Linux_Downloads>
 
 
-# **2.Обновление ядра из репозитория**
+# *2.Обновление ядра из репозитория*
 
 Подготовлен [Vagrantfile](Vagrantfile) выполняющий обновление ядра 3.10.0-1127.el7.x86_64 ->  5.8.1-1.el7.elrepo.x86_64 из репозитория elrepo  
