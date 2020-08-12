@@ -18,7 +18,7 @@ MACHINES = {
 Vagrant.configure("2") do |config|
   MACHINES.each do |boxname, boxconfig|
     # Disable shared folders
-    config.vm.synced_folder "./sync_folder", "/vagrant", disabled: true
+    config.vm.synced_folder "./sync_folder", "/vagrant", disabled: false
     # Apply VM config
     config.vm.define boxname do |box|
       # Set VM base box and hostname
@@ -42,11 +42,6 @@ Vagrant.configure("2") do |config|
         v.memory = boxconfig[:memory]
         v.cpus = boxconfig[:cpus]
       end
-      # Reload vm after provision      
-      box.trigger.after [:up, :provision] do |t|
-        t.name = "Reboot after up and provision"
-        t.run = { :inline => "vagrant reload" }
-      end
       box.vm.provision "shell", inline: <<-SHELL
         mkdir -p ~root/.ssh
         cp ~vagrant/.ssh/auth* ~root/.ssh
@@ -56,6 +51,12 @@ Vagrant.configure("2") do |config|
         grub2-mkconfig -o /boot/grub2/grub.cfg
         grub2-set-default 0        
       SHELL
+      # Reload vm after provision      
+      box.trigger.after [:up, :provision] do |t|
+        t.name = "Reboot after up and provision"
+        t.run_remote = { :inline => "reboot" }
+      end
+      
       end
   end
 end

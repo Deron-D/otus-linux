@@ -8,7 +8,19 @@
 ДЗ со звездочкой: Ядро собрано из исходников
 ДЗ с **: В вашем образе нормально работают VirtualBox Shared Folders
 
+---
+
 Выполнено:
 
+# **Установлено ПО**
+
+- Vagrant v.2.2.9
+```Bash
+wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.rpm
+yum install vagrant_2.2.9_x86_64.rpm
+```
+
+- VirtualBox v.6.1.12: <https://www.virtualbox.org/wiki/Linux_Downloads>
 
 
+3.10.0-1127.el7.x86_64
