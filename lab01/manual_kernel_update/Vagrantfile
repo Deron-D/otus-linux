@@ -17,7 +17,7 @@ MACHINES = {
 
 Vagrant.configure("2") do |config|
   MACHINES.each do |boxname, boxconfig|
-    # Disable shared folders
+    # Enable synced folders
     config.vm.synced_folder "./sync_folder", "/vagrant", disabled: false
     # Apply VM config
     config.vm.define boxname do |box|
