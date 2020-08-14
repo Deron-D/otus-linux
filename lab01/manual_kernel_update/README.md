@@ -53,10 +53,12 @@ packer build centos-kernel-build.json
 "Kernel headers not found for target kernel 5.8.1." Соответственно вопрос, как возможно реализовать установку Kernel headers для ядра 5.8.1
 2. Полученный образ получился размером почти 2G. Вопрос: как его возможно еще уменьшить, помимо scripts/stage-2-clean.sh,
  и возможно ли уменьшить размер папки /usr/lib/modules/5.8.1 без потери работоспособности образа.
+```Bash
 [root@kernel-build modules]# du -sh /usr/lib/modules/*
 42M     /usr/lib/modules/3.10.0-1127.18.2.el7.x86_64
 42M     /usr/lib/modules/3.10.0-1127.el7.x86_64
 3,5G    /usr/lib/modules/5.8.1
+```
 
 ### Полезное
 
