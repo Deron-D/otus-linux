@@ -47,7 +47,7 @@ packer build centos-kernel-build.json
 
 
 
-Вопросы:
+### Вопросы:
 
 1. При установке VBoxGuestAdditions_6.1.12.iso для обеспечения поддержки VirtualBox Shared Folders информируется о 
 "Kernel headers not found for target kernel 5.8.1." Соответственно вопрос, как возможно реализовать установку Kernel headers для ядра 5.8.1
@@ -58,3 +58,8 @@ packer build centos-kernel-build.json
 42M     /usr/lib/modules/3.10.0-1127.el7.x86_64
 3,5G    /usr/lib/modules/5.8.1
 
+### Полезное
+
+- Structure of monolithic kernel, microkernel and hybrid kernel-based operating systems <https://ru.wikipedia.org/wiki/%D0%93%D0%B8%D0%B1%D1%80%D0%B8%D0%B4%D0%BD%D0%BE%D0%B5_%D1%8F%D0%B4%D1%80%D0%BE#/media/%D0%A4%D0%B0%D0%B9%D0%BB:OS-structure2.svg>
+- Evolution of the x86 context switch in Linux – MaiZure's Projects <https://www.maizure.org/projects/evolution_x86_context_switch_linux/#Linux24> 
+- Ядро Linux и его функции — /dev/mem <https://pustovoi.ru/2010/1033>
