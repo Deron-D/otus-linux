@@ -50,7 +50,7 @@ packer build centos-kernel-build.json
 Вопросы:
 
 1. При установке VBoxGuestAdditions_6.1.12.iso для обеспечения поддержки VirtualBox Shared Folders информируется о 
-"Kernel headers not found for target kernel 5.8.1." Соответственно вопрос, как реализовать установку Kernel headers для ядра 5.8.1
+"Kernel headers not found for target kernel 5.8.1." Соответственно вопрос, как возможно реализовать установку Kernel headers для ядра 5.8.1
 2. Полученный образ получился размером почти 2G. Вопрос: как его возможно еще уменьшить, помимо scripts/stage-2-clean.sh,
  и возможно ли уменьшить размер папки /usr/lib/modules/5.8.1 без потери работоспособности образа.
 [root@kernel-build modules]# du -sh /usr/lib/modules/*
