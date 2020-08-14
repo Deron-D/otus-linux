@@ -36,3 +36,25 @@ sudo chmod +x /usr/local/bin/packer
 
 
 ## **3.Создание с помощью утилиты packer Vagrant box с собранным из исходников ядром и поддержкой VirtualBox Shared Folders**
+
+- Packer build
+
+```Bash
+packer build centos-kernel-build.json
+```
+
+- Выгрузка полученного образа centos-7.8.2003-kernel-5.8.1-x86_64-Minimal.box в [Vagrant Cloud](https://app.vagrantup.com/Deron-D/boxes/centos-7-5)
+
+
+
+Вопросы:
+
+1. При установке VBoxGuestAdditions_6.1.12.iso для обеспечения поддержки VirtualBox Shared Folders информируется о 
+"Kernel headers not found for target kernel 5.8.1." Соответственно вопрос, как реализовать установку Kernel headers для ядра 5.8.1
+2. Полученный образ получился размером почти 2G. Вопрос: как его возможно еще уменьшить, помимо scripts/stage-2-clean.sh,
+ и возможно ли уменьшить размер папки /usr/lib/modules/5.8.1 без потери работоспособности образа.
+[root@kernel-build modules]# du -sh /usr/lib/modules/*
+42M     /usr/lib/modules/3.10.0-1127.18.2.el7.x86_64
+42M     /usr/lib/modules/3.10.0-1127.el7.x86_64
+3,5G    /usr/lib/modules/5.8.1
+

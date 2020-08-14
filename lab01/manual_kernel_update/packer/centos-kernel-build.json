@@ -1,0 +1,81 @@
+{
+  "variables": {
+    "artifact_description": "CentOS 7.8 with kernel 5.8.1",
+    "artifact_version": "7.8.2003",
+    "image_name": "centos-7.8"
+  },
+
+  "builders": [
+    {
+      "name": "{{user `image_name`}}",
+      "type": "virtualbox-iso",
+      "vm_name": "packer-centos-vm",
+
+      "boot_wait": "10s",
+      "disk_size": "40960",
+      "guest_os_type": "RedHat_64",
+      "http_directory": "http",
+
+      "iso_url": "http://mirror.corbina.net/pub/Linux/centos/7.8.2003/isos/x86_64/CentOS-7-x86_64-Minimal-2003.iso",
+      "iso_checksum": "659691c28a0e672558b003d223f83938f254b39875ee7559d1a4a14c79173193",
+
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/vagrant.ks<enter><wait>"
+      ],
+
+      "shutdown_command": "sudo -S /sbin/halt -h -p",
+      "shutdown_timeout" : "5m",
+
+      "ssh_wait_timeout": "20m",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_pty": true,
+
+      "output_directory": "builds",
+
+      "headless": true,
+
+      "vboxmanage": [
+        [  "modifyvm",  "{{.Name}}",  "--memory",  "12288" ],
+        [  "modifyvm",  "{{.Name}}",  "--cpus",  "8" ]
+      ],
+
+      "export_opts":
+      [
+        "--manifest",
+        "--vsys", "0",
+        "--description", "{{user `artifact_description`}}",
+        "--version", "{{user `artifact_version`}}"
+      ]
+
+    }
+  ],
+
+  "post-processors": [
+    {
+      "output": "centos-{{user `artifact_version`}}-kernel-5.8.1-x86_64-Minimal.box",
+      "compression_level": "9",
+      "type": "vagrant"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "start_retry_timeout": "1m",
+      "expect_disconnect": true,
+      "pause_before": "20s",
+      "override": {
+        "{{user `image_name`}}" : {
+          "scripts" :
+            [
+              "scripts/stage-1-1-kernel-build.sh",
+              "scripts/stage-1-2-vbox-sf-install.sh",              
+              "scripts/stage-2-clean.sh"
+            ]
+        }
+      }
+    }
+  ]
+}
