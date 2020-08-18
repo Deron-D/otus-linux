@@ -29,4 +29,5 @@
 ## **Полезное:**
 
 - История чата: [chat.txt](chat.txt)
+- Ссылки: [links.md](links.md)
 
