@@ -1,0 +1,433 @@
+20:00:49	 From mikhail pavliy : +
+20:00:50	 From Alexandra Belyaeva : +
+20:00:50	 From dbaskakov : +
+20:00:50	 From Егор : +
+20:00:52	 From Anna : +
+20:00:52	 From Альберт : +
+20:00:53	 From Konstantin Zubarev : +
+20:00:53	 From Александр Гаврик : +
+20:00:54	 From kirill : +
+20:03:13	 From Konstantin Zubarev : +
+20:03:13	 From Кirill : +
+20:03:13	 From Егор : +
+20:03:15	 From Сергей Новоселов : +
+20:03:17	 From Альберт : +
+20:04:43	 From Roman : Привет.
+Прошу прощения, не могли бы вы еще раз представиться
+20:05:12	 From Roman : Спасибо )
+20:09:11	 From dbaskakov : +
+20:09:14	 From Andrey Tyumin : +
+20:09:15	 From mikhail pavliy : +
+20:09:15	 From Сергей Новоселов : +
+20:09:16	 From Dmitriy Anisov : +
+20:09:16	 From Альберт : +
+20:09:16	 From Anna : +
+20:09:17	 From Roman : +
+20:09:18	 From Denis Dudic : +
+20:09:18	 From Егор : +
+20:09:20	 From argo : +
+20:10:12	 From OTUS Online : https://makelinux.github.io/kernel/map/
+20:13:10	 From OTUS Online : https://github.com/jthornber/linux-2.6/tree/thin-stable/Documentation/device-mapper
+20:13:47	 From OTUS Online : 42.: https://github.com/return42/sphkerneldoc/blob/master/linux_src_doc/drivers/md/index.rst
+20:14:43	 From dbaskakov : звук лагает
+20:14:47	 From Кirill : Звук пропадает
+20:14:48	 From Dmitriy Anisov : +
+20:14:50	 From Сергей Новоселов : +
+20:21:11	 From argo : даже если увеличить физический размер виртуального диска виртуальной машины и в дальнейшем его расширить без перезагрузки?
+20:21:34	 From argo : спасибо
+20:23:01	 From mikhail pavliy : А где файлик?
+20:23:14	 From mikhail pavliy : Или ссылка?
+20:23:19	 From OTUS Online : pvchange      lvchange     vgcfgbackup  
+pvck          lvconvert    vgcfgrestore 
+pvcreate      lvcreate     vgchange     
+pvdisplay     lvdisplay    vgck         
+pvmove        lvextend     vgconvert    
+pvremove      lvmconfig    vgcreate     
+pvresize      lvmdiskscan  vgdisplay    
+pvs           lvmdump      vgexport     
+pvscan        lvpoll       vgextend     
+              lvreduce     vgimport     
+              lvremove     vgimportclone
+              lvrename     vgmerge      
+              lvresize     vgmknodes    
+              lvs          vgreduce     
+              lvscan       vgremove     
+                           vgrename     
+                           vgs          
+                           vgscan       
+                           vgsplit      
+
+20:23:23	 From mikhail pavliy : vagrant
+20:23:33	 From Александр Гаврик : Ссылка на вагрант не видна тем, кто зашёл позднее )
+20:23:37	 From OTUS Online : https://gitlab.com/otus_linux/stands-03-lvm/-/blob/master/Vagrantfile 
+20:24:31	 From Альберт : да
+20:24:54	 From Альберт : pv физические группа
+20:25:12	 From OTUS Online : pvchange  
+pvck      
+pvcreate  
+pvdisplay 
+pvmove    
+pvremove  
+pvresize  
+pvs       
+pvscan    
+
+20:25:12	 From Сергей М : создали волум груп vg0
+20:25:33	 From OTUS Online : lvchange    
+lvconvert   
+lvcreate    
+lvdisplay   
+lvextend    
+lvmconfig   
+lvmdiskscan 
+lvmdump     
+lvpoll      
+lvreduce    
+lvremove    
+lvrename    
+lvresize    
+lvs         
+lvscan      
+
+20:25:50	 From OTUS Online : vgcfgbackup    
+vgcfgrestore  
+vgchange      
+vgck          
+vgconvert     
+vgcreate      
+vgdisplay     
+vgexport      
+vgextend      
+vgimport      
+vgimportclone 
+vgmerge       
+vgmknodes     
+vgreduce      
+vgremove      
+vgrename      
+vgs           
+vgscan        
+vgsplit       
+
+20:26:51	 From Serg : команды - одного вида
+20:28:00	 From Егор : +
+20:28:02	 From Сергей Новоселов : +
+20:28:02	 From Roman : -
+20:28:03	 From Serg : +
+20:28:09	 From Сергей М : +
+20:28:10	 From Альберт : -
+20:28:11	 From Andrey Tyumin : -
+20:28:12	 From Александр Чудаков : +
+20:28:15	 From mikhail pavliy : 5 минут и я готов
+20:28:17	 From dbaskakov : -
+20:28:27	 From Denis Dudic : +
+20:29:31	 From argo : при каком условии это может развалиться?
+20:29:43	 From Альберт : можно крупнее шрифт пожалуйста
+20:31:53	 From Альберт : имеется ввиду в терминале шрифт
+20:33:17	 From Альберт : спасибо
+20:33:44	 From OTUS Online : https://gitlab.com/otus_linux/stands-03-lvm/-/blob/master/Vagrantfile 
+20:35:27	 From Serg : в мастдае есть VSS ))
+20:36:12	 From OTUS Online : CoW
+20:36:35	 From Serg : lf
+20:36:37	 From argo : +
+20:36:39	 From Serg : нужны
+20:36:58	 From Альберт : да
+20:37:46	 From OTUS Online : [ZFS, BTRFS, XFS, EXT4 and LVM with KVM – a storage performance comparison](http://www.ilsistemista.net/index.php/virtualization/47-zfs-btrfs-xfs-ext4-and-lvm-with-kvm-a-storage-performance-comparison.html?limitstart=0)
+> **If you need maximum, stable performance**, even in the face of a lesser flexibility and ease to use, **go with classical LVM volumes.** My performance builds where based on this LVM scheme and I am very pleased of how they runs. However, do not forget to make a judicious use of snapshots, as their legacy implementation is quite slow.
+
+20:38:28	 From OTUS Online : [SPBDEV Blog - Производительность BTRFS по сравнению с LVM + EXT4 с учетом рабочих нагрузок базы данных](http://spbdev.biz/blog/proizvoditelnost-btrfs-po-sravneniyu-s-lvm-ext4-s-uchetom-rabochih-nagruzok-bazy-dannyh)
+
+20:38:39	 From Serg : #вопрос
+что будет, если при существующем /dev/sda2
+выполнить pvcreate /dev/sda2 ?
+20:38:41	 From OTUS Online : http://spbdev.biz/blog/proizvoditelnost-btrfs-po-sravneniyu-s-lvm-ext4-s-uchetom-rabochih-nagruzok-bazy-dannyh
+20:38:51	 From OTUS Online : http://www.ilsistemista.net/index.php/virtualization/47-zfs-btrfs-xfs-ext4-and-lvm-with-kvm-a-storage-performance-comparison.html?limitstart=0
+20:42:31	 From OTUS Online : http://man7.org/linux/man-pages/man7/lvmcache.7.html
+20:43:10	 From argo : шеф, все пропало
+20:43:18	 From Сергей Новоселов : ¯\_(ツ)_/¯
+20:43:21	 From dbaskakov : +
+20:43:22	 From argo : +
+20:43:22	 From Егор : +
+20:43:23	 From Александр Гаврик : Да
+20:43:23	 From temir8173 : +
+20:43:24	 From Альберт : +
+20:43:24	 From Кirill : +
+20:43:24	 From Konstantin Zubarev : +
+20:43:24	 From Alexandra Belyaeva : +
+20:43:25	 From Serg : +
+20:43:45	 From Альберт : 40 минут бесплатный режим)))))))))))))
+20:44:29	 From Альберт : хотя прошло как раз 40 минут)
+20:44:51	 From Егор : +
+20:44:51	 From Anna : +
+20:44:52	 From dbaskakov : +
+20:44:53	 From Konstantin Zubarev : +
+20:44:53	 From Альберт : +
+20:44:54	 From Сергей Новоселов : +
+20:44:54	 From mikhail.figura : +
+20:44:55	 From Сергей М : +
+20:44:55	 From Serg : +
+20:44:56	 From Andrey Tyumin : +
+20:44:57	 From OTUS Online : http://man7.org/linux/man-pages/man7/lvmcache.7.html
+20:47:20	 From Serg : unix
+20:49:14	 From argo : Прошу прощения, Вы когда сможете запись выложить? Вынужден Вас покинуть
+20:49:42	 From argo : спасибо. 
+20:54:28	 From Альберт : в чем разница между VFS и LVM? 
+20:54:47	 From Альберт : virtual file system
+20:57:35	 From Александр Гаврик : lvm - абстракция от оборудования
+vfs - абстракция от файловой системы
+20:58:02	 From Александр Гаврик : на занятии по nfs я вам расскажу))
+20:58:18	 From dbaskakov : и о цефе? )
+20:58:29	 From Альберт : спасибо)
+20:59:13	 From Roman : > и о цефе? )
+цеф наверное во второй курс вынесли
+21:00:53	 From Александр Гаврик : Да, во втором курсе. 2 занятия.
+21:04:24	 From Dmitriy Anisov : у меня выдаёт Couldn't find valid filesystem superblock.
+/dev/sda4 contains a ntfs file system 
+21:05:22	 From Александр Гаврик : Точнее даже так:
+device mapper  - абстракция от оборудования для создания виртуальных блочных устройств.
+lvm - подсистема, которая позволяет гибко управлять виртуальными блочными устройствами через dm
+virtual file system - абстракция от файловых систем для того, чтобы унифицировать доступ к разным файловым системам
+21:05:50	 From Dmitriy Anisov : Ах да на этом жд винда стоит, забыл уже) на сдб линуха, с линухи пытался сделать эту команду к этому диску
+21:06:45	 From Альберт : спасибо, Александр)
+21:08:32	 From OTUS Online : CoW
+21:12:52	 From Dmitriy Anisov : +
+21:12:52	 From Roman : +
+21:12:56	 From Егор : +
+21:12:57	 From Альберт : -
+21:12:58	 From Alexandra Belyaeva : -
+21:12:59	 From Сергей М : +
+21:13:00	 From Andrey Tyumin : +
+21:13:00	 From Сергей Новоселов : +
+21:13:01	 From mikhail pavliy : -
+21:13:02	 From Konstantin Zubarev : +
+21:13:42	 From mikhail pavliy : Звук лагает
+21:15:38	 From OTUS Online : man fuser man lso
+21:15:41	 From OTUS Online : man lsof
+21:16:00	 From Альберт : -
+21:16:00	 From Dmitriy Anisov : -
+21:16:01	 From Andrey Tyumin : -
+21:16:06	 From Denis Dudic : -
+21:16:06	 From Konstantin Zubarev : -
+21:16:11	 From Anna : -
+21:16:11	 From Сергей Новоселов : -
+21:16:17	 From Александр Чудаков : -
+21:16:48	 From Егор : чинил как то систему
+21:21:33	 From OTUS Online : du df dd
+21:21:57	 From OTUS Online : df vs du
+21:22:05	 From dbaskakov : du размерчики файликов посмотреть df общую инфу
+21:22:09	 From OTUS Online : df vs du - что быстрее?
+21:22:23	 From dbaskakov : df
+21:23:15	 From Альберт : где можно узнать какие файловые системы в каких случаях лучше использовать?
+21:25:46	 From OTUS Online : http://www.ilsistemista.net/index.php/virtualization/47-zfs-btrfs-xfs-ext4-and-lvm-with-kvm-a-storage-performance-comparison.html?limitstart=0
+21:25:52	 From OTUS Online : 2015 ^^
+21:26:05	 From Альберт : а в каких случаях тогда лучше использовать lvm?
+21:26:09	 From Александр Чудаков : #Вопрос. если удалить файл используемый процессом, как его найти кроме lsof 
+21:26:57	 From Dmitriy Anisov : Я так понимаю, если я хочу делать снепшоты свой системы, то её надо ставить на lvm
+21:26:57	 From Альберт : теперь понятно, спасибо)
+21:30:09	 From Сергей Новоселов : +
+21:30:10	 From Denis Dudic : +
+21:30:11	 From Александр Чудаков : +
+21:30:12	 From Егор : +
+21:30:13	 From mikhail pavliy : +
+21:30:13	 From Dmitriy Anisov : +
+21:30:14	 From Konstantin Zubarev : +
+21:30:14	 From Serg : +
+21:30:17	 From Александр Гаврик : найти файл можно в proc… там вообще много чего есть. команда find /proc/*/fd -ls | grep  '(deleted)'
+21:30:18	 From mikhail.figura : +
+21:31:15	 From Александр Чудаков : Спасибо!
+21:32:01	 From mikhail pavliy : Можно терминал чуть увеличить
+21:33:52	 From mikhail pavliy : +
+21:35:14	 From OTUS Online : cht.sh
+21:35:20	 From OTUS Online : curl cht.sh <bla>
+21:35:25	 From OTUS Online : tldr <bla>
+21:41:38	 From dbaskakov : звук пропал
+21:41:38	 From Denis Dudic : +
+21:41:38	 From argo : звук
+21:41:38	 From Alexandra Belyaeva : Звука нет
+21:41:38	 From Dmitriy Anisov : +
+21:41:38	 From Альберт : звука нет
+21:41:44	 From dbaskakov : +
+21:41:45	 From Alexandra Belyaeva : Теперь есть вроде
+21:41:46	 From argo : +
+21:41:47	 From Konstantin Zubarev : +
+21:41:48	 From Andrey Tyumin : +
+21:41:48	 From Denis Dudic : +
+21:41:49	 From Егор : +
+21:41:50	 From Альберт : появился
+21:41:51	 From Serg : +
+21:41:51	 From Dmitriy Anisov : норм
+21:42:06	 From Denis Dudic : :)
+21:42:26	 From dbaskakov : -
+21:42:30	 From Konstantin Zubarev : -
+21:42:30	 From Anna : -
+21:42:41	 From Альберт : не видно мышку
+21:42:57	 From Konstantin Zubarev : +
+21:42:58	 From Denis Dudic : +
+21:43:00	 From dbaskakov : экран видно
+21:43:02	 From Anna : +
+21:43:04	 From Альберт : слайд видно
+21:43:13	 From Serg : я как-то "нашёл" такую кнопку в серверной. потом такие кнопки повыковыривал отвёрткой нафиг ))
+21:43:24	 From mikhail pavliy : Надо в тимс
+21:44:30	 From dbaskakov : +
+21:44:32	 From dbaskakov : видно
+21:44:33	 From Denis Dudic : dblyj
+21:44:36	 From Denis Dudic : видно
+21:44:36	 From Alexandra Belyaeva : Сейчас видно
+21:44:38	 From Альберт : мышку видно
+21:54:59	 From Konstantin Zubarev : можно ли сказать что это RAID0
+21:56:06	 From Serg : нет, там же нет чёткого чередования 
+21:57:38	 From Александр Чудаков : Нормальная практика объединить 2 raid разных (1 и 5) в 1 LVM том?
+21:59:00	 From Александр Гаврик : raid и lvm .. этот теплое и квадратное сравнить )
+21:59:19	 From Егор : сдох диск
+21:59:25	 From Serg : сдох диск?)
+21:59:27	 From Konstantin Zubarev : потеряли инфо
+21:59:28	 From mikhail pavliy : Диску одному хана
+22:01:06	 From Сергей Новоселов : .
+22:01:06	 From Егор : .
+22:01:07	 From Serg : о, а  если сдохнет диск в vg, который мы добавили? всё потеряется?
+22:01:09	 From argo : .
+22:01:10	 From Denis Dudic : -
+22:01:10	 From Konstantin Zubarev : ,
+22:01:14	 From mikhail pavliy : .
+22:01:14	 From mikhail.figura : .
+22:02:33	 From Александр Гаврик : вот сравнить raid0 и lvm в striped mode - это уже ближе.
+22:03:37	 From Serg : а в чём будет отличие raid0 (или raid 1) созданного средствами lvm и mdadm ?
+22:03:45	 From Александр Гаврик : https://www.linuxtoday.com/blog/pick-your-pleasure-raid-0-mdadm-striping-or-lvm-striping.html от 09.05.2019
+22:07:46	 From Альберт : все нормально, лучше больше
+22:08:20	 From Альберт : о количестве материала)
+22:08:41	 From dbaskakov : Алексея
+22:10:42	 From Serg : ок, а если мы увеличим размер физического устройства /dev/sda (напр -  .vhd файл), как правильно c lvm заюзать  добавленное место?
+22:10:45	 From mikhail pavliy : Спасибо, было очень познавательно. Добью материла в записи, уже час ночи. Всем добра
+22:13:44	 From Dmitriy Anisov : а какой минимальный размер?
+22:15:27	 From Dmitriy Anisov : спасибо)
+22:16:11	 From Dmitriy Anisov : до
+22:16:15	 From dbaskakov : до
+22:20:02	 From Dmitriy Anisov : у нас же снэпшот 200 мб, а файл был 800, как он смог полностью восстановиться, не понял 
+22:24:09	 From Denis Dudic : получается можно сделтаь точку отсечки перед серьезными обновлениями и елси ,что-то пошло не так, то откатиться. а елси все хорошо, то удалить точку (снапшот)? 
+22:24:32	 From Dmitriy Anisov : получается все старые данные у нас зафиксированны, а новые данные пишутся сверху 
+22:25:01	 From Konstantin Zubarev : как новую инфо записать
+22:25:05	 From Serg : т.е. в снапшот пишется  дельта изменений относительно исходного тома?
+22:25:59	 From OTUS Online : asciinema
+22:26:13	 From OTUS Online : asciinema.org
+22:26:31	 From Dmitriy Anisov : во есть инфа, теперь ясно: Эта команда сделает снапшот /dev/mypc/rootsnapshot, который будет содержать состояние на момент создания снапшота. При этом есть ограничение в 2 гига на изменения в нашем корне, если превысим — снапшот перестанет быть валидным и его можно будет только удалить:
+22:27:21	 From Альберт : а если после того как сделали снапшот изменения файлов в томе превысили  размер самого снапшота? будет ли возможность вернуться в первоначальное состояние?
+22:27:23	 From Александр Гаврик : Это если вы задали это ограничение.
+22:28:09	 From Александр Гаврик : Ограничение задается так lvcreate -L2G -s -n rootsnapshot /dev/mypc/root
+22:28:25	 From Dmitriy Anisov : а понятно, теперь, спасибо)
+22:28:27	 From Serg : т.е. это будет - как если закончилось место на диске?
+22:28:38	 From Serg : о, спасибо
+22:28:47	 From Александр Гаврик : можно голосом?
+22:30:40	 From Альберт : какая примерная скорость восстановления при снапшоте lvm? 
+22:32:01	 From Serg : а если мы увеличим размер физического устройства /dev/sda (напр -  .vhd файл), как тогда правильно c lvm заюзать  добавленное место?
+22:34:24	 From Serg : буду на практиковаться )
+22:34:28	 From Serg : Спасибо!
+22:34:44	 From Альберт : уточнить хотел, можно  использовать любую версию centos 7 или обязательно centos 7 - 1842?
+22:34:47	 From Denis Dudic : как остановить снапшоп, что бы все изменения перешли на основное хранилище? 
+22:36:56	 From Александр Гаврик : Для этого ДЗ используйте вот этот стенд https://gitlab.com/otus_linux/stands-03-lvm
+22:37:02	 From Александр Гаврик : он приложен в материалах
+22:37:29	 From Альберт : ок, спасибо, теперь понятно
+22:38:05	 From Альберт : нужно продолжать
+22:38:12	 From Denis Dudic : +
+22:38:12	 From Сергей Новоселов : да, да
+22:38:14	 From Сергей М : +
+22:38:18	 From Dmitriy Anisov : +
+22:38:18	 From Serg : +
+22:38:28	 From Александр Гаврик : Я отключаюсь. Всех благодарю за участие :)
+22:38:30	 From Dmitriy Anisov : -
+22:38:31	 From Serg : ye;yj
+22:38:36	 From Serg : нужно)
+22:38:39	 From Сергей Новоселов : +
+22:43:59	 From Александр Чудаков : +
+22:44:00	 From Andrey Tyumin : +
+22:44:01	 From Konstantin Zubarev : +
+22:45:54	 From OTUS Online : lvm.lib.sh - пример подхода к упаковке команд в функции
+https://github.com/FOSS-Cloud/installer/blob/7af248b57c51cd0ebf4c0693f564624d100af079/lib/lvm.lib.sh
+22:46:54	 From argo : запись идет?
+22:47:19	 From OTUS Online : SSM: https://github.com/dinhxuanvu/ssm
+22:49:22	 From OTUS Online : https://github.com/g2p/blocks#readme
+22:50:48	 From Альберт : +
+22:50:57	 From OTUS Online : https://github.com/hazzus/device-mapper-proxy-km 
+22:51:32	 From OTUS Online : ^^ Simple kernel module to track some stats while performing I/O operations with virtual block devices  
+
+22:53:00	 From OTUS Online : ## Is there a simple way to move/copy a logical volume from one volume group to another?
+[linux - Is there a simple way to move/copy a logical volume from one volume group to another? (LVM2) - Super User](https://superuser.com/questions/217307/is-there-a-simple-way-to-move-copy-a-logical-volume-from-one-volume-group-to-ano)
+
+If you can arrange for the logical volume to be on a separate subset of physical volumes from the rest of the source volume group (`lvconvert sourcevg/sourcelv /dev/pv1 ...` may help), you can use `vgsplit` to split off the lv into a new vg and `vgmerge` to merge the new vg into the target vg.
+
+Although LVM has a mirroring feature, you can't (sanely) use it to make a copy between volume groups, because both legs of the mirror must live on the same vg and [the association can't be broken](http://www.redhat.com/archives/linux-lvm/2008-April/msg00087.html).
+
+You can copy an LVM volume to another the way you'd copy any volume to another: create a target lv of the appropriate size, then copy t
+22:54:24	 From Denis Dudic : +
+22:54:29	 From Альберт : +
+22:54:35	 From OTUS Online : ## List all physical volumes associated to a volume group 
+[linux - List all physical volumes associated to a volume group - Super User](https://superuser.com/questions/209072/list-all-physical-volumes-associated-to-a-volume-group)
+
+[linux - List all physical volumes associated to a volume group - Super User](https://superuser.com/questions/209072/list-all-physical-volumes-associated-to-a-volume-group)
+
+You can try this format:
+
+```
+# pvdisplay -C --separator '  |  ' -o pv_name,vg_name
+```
+
+
+
+22:56:41	 From OTUS Online : ## No more space in root filesystem, how could I increase the size?
+[linux - No more space in root filesystem, how could I increase the size? - Super User](https://superuser.com/questions/1072547/no-more-space-in-root-filesystem-how-could-i-increase-the-size)
+
+Good news! `pvscan` shows `PV /dev/sda10 VG fedora lvm2 [141.56 GiB / 77.56 GiB free]` — so you should be able to add up to 77.56GiB to any of your filesystems. I'd suggest adding it in smaller blocks (like 10GiB), so you have a reserve to put into `/home` if you decide you need growth there later.
+
+This is a relatively well-tested and generally safe operation, but all root-level volume and filesystem operations have some risk — make sure you have a functioning backup first. Then....
+
+You can extend your `root` logical volume to use the free space with `lvextend`, like this:
+
+```
+sudo lvextend --size +10G --resizefs /dev/fedora/root
+```
+
+(Or `-L` and `-r` instead of `--size` and `--resizefs`, if you prefer short options.)
+
+
+
+22:57:32	 From OTUS Online : ## How to deactivate a LVM2 physical volume to remove the drive?
+[linux - How to deactivate a LVM2 physical volume to remove the drive? - Stack Overflow](https://stackoverflow.com/questions/18042216/how-to-deactivate-a-lvm2-physical-volume-to-remove-the-drive)
+
+```
+lvchange -an <lvpath>
+vgchange -an <vgname>
+```
+
+If you also want to remove the device maps you can use
+
+```
+dmsetup ls
+dmsetup remove <name>
+```
+
+22:57:42	 From OTUS Online : https://stackoverflow.com/questions/18042216/how-to-deactivate-a-lvm2-physical-volume-to-remove-the-drive
+22:59:52	 From OTUS Online : https://stackoverflow.com/questions/26305376/resize2fs-bad-magic-number-in-super-block-while-trying-to-open
+23:00:29	 From OTUS Online : df -Th - типы файловых систем
+23:03:16	 From OTUS Online : https://stackoverflow.com/questions/24709741/cant-run-docker-container-due-device-mapper-error
+23:06:31	 From OTUS Online : https://superuser.com/questions/256061/lvm-and-cloning-hds
+23:09:37	 From OTUS Online : https://superuser.com/questions/634265/installing-windows-on-a-lvm-partition-next-to-already-installed-ubuntu
+23:11:17	 From Альберт : можно  узнать про рсинх?
+23:11:52	 From Альберт : звук пропал?
+23:12:21	 From OTUS Online : tldr rsync ; man rsync ; cht rsync
+23:12:22	 From Dmitriy Anisov : вроде вопросов нет сейчас
+23:13:30	 From Альберт : понятно, спасибо)
+23:19:11	 From Альберт : да, огромное спасибо)
+23:19:29	 From Andrey Tyumin : +
+23:19:32	 From Альберт : +
+23:19:37	 From Сергей Новоселов : звучит интересно
+23:19:55	 From OTUS Online : https://www.oreilly.com/library/view/linux-device-drivers/0596000081/ch03s02.html
+23:20:49	 From Альберт : мажорный и минорный номер устройства?
+23:24:27	 From argo : +
+23:24:38	 From Dmitriy Anisov : Спасибо!
+23:24:41	 From Альберт : спасибо большое за материал)
+23:24:42	 From argo : Спасибо за лекцию
+23:24:43	 From Сергей Новоселов : Спасибо)
+23:24:43	 From Andrey Tyumin : Спасибо.
+23:24:48	 From Кirill : Спасибо)
+23:24:57	 From Serg : Спасибо!)
+23:25:48	 From Альберт : в личном кабинете обычно есть ссылка на отзыв
+23:25:50	 From Denis Dudic : Спасибо! Взаимно. 
