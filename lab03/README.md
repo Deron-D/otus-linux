@@ -24,7 +24,7 @@
 
 ## **Выполнено:**
 
-[Протоколы работы по основному заданию и заданию с *](./script/)
+[Протоколы работы по основному заданию и заданию с */**](./script/)
 
 1. Уменьшили том под / до 8G
 ```bash
@@ -104,10 +104,19 @@ echo "`blkid | grep Home | awk '{print $2}'` /home xfs defaults 0 0" >> /etc/fst
 touch /home/file{1..20}
 lvcreate -L 100MB -s -n home_snap /dev/VolGroup00/LogVol_Home
 lsblk
+umount /home
+mount /dev/VolGroup00/home_snap /mnt
+ls /mnt
+umount /mnt
+mount /home
 rm -f /home/file{11..20}
 umount /home
+mount /dev/VolGroup00/home_snap /mnt
+ls /mnt
+umount /mnt
 lvconvert --merge /dev/VolGroup00/home_snap
 mount /home
+ls /home
 ```
 
 **'*'**. Ставим btrfs - с кешем, снэпшотами - разметили здесь каталог /opt
