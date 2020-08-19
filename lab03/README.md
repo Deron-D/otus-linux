@@ -5,13 +5,13 @@
 на имеющемся образе
 /dev/mapper/VolGroup00-LogVol00 38G 738M 37G 2% /
 
-уменьшить том под / до 8G
-выделить том под /home
-выделить том под /var
-/var - сделать в mirror
-/home - сделать том для снэпшотов
-прописать монтирование в fstab
-попробовать с разными опциями и разными файловыми системами ( на выбор)
+- уменьшить том под / до 8G
+- выделить том под /home
+- выделить том под /var
+- /var - сделать в mirror
+- /home - сделать том для снэпшотов
+- прописать монтирование в fstab
+- попробовать с разными опциями и разными файловыми системами ( на выбор)
 - сгенерить файлы в /home/
 - снять снэпшот
 - удалить часть файлов
@@ -28,6 +28,13 @@
 
 ## **Полезное:**
 
+- Sudo-rsync:
+```Bash
+vagrant plugin install vagrant-sudo-rsync
+vagrant sudo-rsync :/vagrant/* ./script/
+```
 - История чата: [chat.txt](chat.txt)
 - Ссылки: [links.md](links.md)
-
+```
+sed -i 's!rd.lvm.lv=VolGroup00/LogVol00!rd.lvm.lv=vg_root/lv_root!' /boot/grub2/grub.cfg
+```
