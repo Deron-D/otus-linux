@@ -17,7 +17,9 @@ vagrant up должен поднимать 2 виртуалки: сервер и
 
 ## **Выполнено:**
 
-для проверки достаточно использовать [Vagrantfile](Vagrantfile))
+для проверки необходимо  использовать [Vagrantfile](Vagrantfile), который использует:
+- [nfsc_script.sh](nfsc_script.sh) 
+- [nfss_script.sh](nfss_script.sh)
 
 
 ## **Полезное:**
