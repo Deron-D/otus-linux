@@ -5,10 +5,20 @@
 %define nginx_loggroup adm
 
 # distribution specific definitions
-%define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7) || (0%{?suse_version} >= 1315)
+%define use_systemd (0%{?rhel} >= 7 || 0%{?fedora} >= 19 || 0%{?suse_version} >= 1315 || 0%{?amzn} >= 2)
+
+%if %{use_systemd}
+BuildRequires: systemd
+Requires(post): systemd
+Requires(preun): systemd
+Requires(postun): systemd
+%endif
+
+%if 0%{?rhel}
+%define _group System Environment/Daemons
+%endif
 
 %if 0%{?rhel} == 6
-%define _group System Environment/Daemons
 Requires(pre): shadow-utils
 Requires: initscripts >= 8.36
 Requires(post): chkconfig
@@ -17,37 +27,41 @@ BuildRequires: openssl-devel >= 1.0.1
 %endif
 
 %if 0%{?rhel} == 7
-BuildRequires: redhat-lsb-core
-%define _group System Environment/Daemons
 %define epoch 1
 Epoch: %{epoch}
 Requires(pre): shadow-utils
-Requires: systemd
-BuildRequires: systemd
-%define os_minor %(lsb_release -rs | cut -d '.' -f 2)
-%if %{os_minor} >= 4
 Requires: openssl >= 1.0.2
 BuildRequires: openssl-devel >= 1.0.2
-%define dist .el7_4
-%else
-Requires: openssl >= 1.0.1
-BuildRequires: openssl-devel >= 1.0.1
 %define dist .el7
 %endif
+
+%if 0%{?rhel} == 8
+%define epoch 1
+Epoch: %{epoch}
+Requires(pre): shadow-utils
+BuildRequires: openssl-devel >= 1.1.1
+%define _debugsource_template %{nil}
 %endif
 
 %if 0%{?suse_version} >= 1315
 %define _group Productivity/Networking/Web/Servers
 %define nginx_loggroup trusted
 Requires(pre): shadow
-Requires: systemd
 BuildRequires: libopenssl-devel
-BuildRequires: systemd
+%define _debugsource_template %{nil}
+%endif
+
+%if 0%{?fedora}
+%define _debugsource_template %{nil}
+%global _hardened_build 1
+%define _group System Environment/Daemons
+BuildRequires: openssl-devel
+Requires(pre): shadow-utils
 %endif
 
 # end of distribution specific definitions
 
-%define main_version 1.14.1
+%define main_version 1.18.0
 %define main_release 1%{?dist}.ngx
 
 %define bdir %{_builddir}/%{name}-%{main_version}
@@ -186,6 +200,15 @@ cd $RPM_BUILD_ROOT%{_sysconfdir}/nginx && \
 %{__install} -m755 %{bdir}/objs/nginx-debug \
     $RPM_BUILD_ROOT%{_sbindir}/nginx-debug
 
+%check
+%{__rm} -rf $RPM_BUILD_ROOT/usr/src
+cd %{bdir}
+grep -v 'usr/src' debugfiles.list > debugfiles.list.new && mv debugfiles.list.new debugfiles.list
+cat /dev/null > debugsources.list
+%if 0%{?suse_version} >= 1500
+cat /dev/null > debugsourcefiles.list
+%endif
+
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
 
@@ -312,14 +335,83 @@ if [ $1 -ge 1 ]; then
 fi
 
 %changelog
+* Tue Apr 21 2020 Konstantin Pavlov <thresh@nginx.com>
+- 1.18.0
+
+* Tue Apr 14 2020 Konstantin Pavlov <thresh@nginx.com>
+- 1.17.10
+
+* Tue Mar 03 2020 Konstantin Pavlov <thresh@nginx.com>
+- 1.17.9
+
+* Tue Jan 21 2020 Konstantin Pavlov <thresh@nginx.com>
+- 1.17.8
+
+* Tue Dec 24 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.17.7
+
+* Tue Nov 19 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.17.6
+
+* Tue Oct 22 2019 Andrei Belov <defan@nginx.com>
+- 1.17.5
+
+* Tue Sep 24 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.17.4
+
+* Tue Aug 13 2019 Andrei Belov <defan@nginx.com>
+- 1.17.3
+
+* Tue Jul 23 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.17.2
+
+* Tue Jun 25 2019 Andrei Belov <defan@nginx.com>
+- 1.17.1
+
+* Tue May 21 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.17.0
+
+* Tue Apr 16 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.12
+
+* Tue Apr 09 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.11
+
+* Tue Mar 26 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.10
+
+* Tue Feb 26 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.9
+
+* Tue Dec 25 2018 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.8
+
+* Tue Nov 27 2018 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.7
+
 * Tue Nov 06 2018 Konstantin Pavlov <thresh@nginx.com>
-- 1.14.1
+- 1.15.6
 - Fixes CVE-2018-16843
 - Fixes CVE-2018-16844
 - Fixes CVE-2018-16845
 
-* Tue Apr 17 2018 Konstantin Pavlov <thresh@nginx.com>
-- 1.14.0
+* Tue Oct 02 2018 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.5
+
+* Tue Sep 25 2018 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.4
+
+* Tue Aug 28 2018 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.3
+
+* Tue Jul 24 2018 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.2
+
+* Tue Jul 03 2018 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.1
+
+* Tue Jun 05 2018 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.0
 
 * Mon Apr 09 2018 Konstantin Pavlov <thresh@nginx.com>
 - 1.13.12
