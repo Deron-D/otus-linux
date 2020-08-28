@@ -23,6 +23,7 @@
 ```bash
 vagrant up lab05
 vagrant ssh lab05
+sudo -s
 
 yum install -y \
 redhat-lsb-core \
@@ -157,6 +158,7 @@ nginx.x86_64                                1:1.18.0-1.el7.ngx         lab05repo
 ```
 vagrant up lab05docker
 vagrant ssh lab05docker
+sudo -s
 
 echo '[lab05repo]' > /etc/yum.repos.d/lab05.repo
 echo 'name=Lab05 NGINX Package Repository' >> /etc/yum.repos.d/lab05.repo
