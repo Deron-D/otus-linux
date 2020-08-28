@@ -225,3 +225,31 @@ latest: digest: sha256:7da33dfe3e23c32fd6ef6fa50fac00d258d3c5192b0a8a1eff3492b19
 
 ## **Полезное:**
 
+- rpm -qf {file} — показать какому пакету принадлежит {file}
+
+- RPM: верификация:
+```
+rpm -Vf tree.rpm
+rpm -Va
+rpm -Vp tree.rpm
+rpm -Vv mc
+```
+- Yum
+```
+yum search — поиск пакета
+yum update — обновление (до версии)
+yum downgrade — откат до до версии
+yum check-update — проверка обновлений
+yum info — информация о пакете
+yum provides — найти из какого пакета файл
+yum shell — CLI 
+```
+
+- Yum history:
+```
+yum history list
+yum history info {N}
+yum history undo {N}
+```
+
+
