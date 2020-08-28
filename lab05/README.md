@@ -21,6 +21,9 @@
 
 **- Установим необходимые пакеты**
 ```bash
+vagrant up lab05
+vagrant ssh lab05
+
 yum install -y \
 redhat-lsb-core \
 wget \
@@ -130,11 +133,11 @@ nginx -s reload
 ````
 **- Добавляем его в перечень локальных репозиториев:**
 ```
-echo '[lab05repo]' > /etc/yum.repos.d/otus.repo
-echo 'name=Lab05 NGINX Package Repository' >> /etc/yum.repos.d/otus.repo
-echo 'baseurl=http://localhost/repo' >> /etc/yum.repos.d/otus.repo
-echo 'gpgcheck=0' >> /etc/yum.repos.d/otus.repo
-echo 'enabled=1' >> /etc/yum.repos.d/otus.repo
+echo '[lab05repo]' > /etc/yum.repos.d/lab05.repo
+echo 'name=Lab05 NGINX Package Repository' >> /etc/yum.repos.d/lab05.repo
+echo 'baseurl=http://localhost/repo' >> /etc/yum.repos.d/lab05.repo
+echo 'gpgcheck=0' >> /etc/yum.repos.d/lab05.repo
+echo 'enabled=1' >> /etc/yum.repos.d/lab05.repo
 ```
 
 **- Проверяем:**
@@ -150,17 +153,21 @@ nginx.x86_64                                1:1.18.0-1.el7.ngx         lab05repo
 **- Создаем [Dockerfile](Dockerfile)**
 
 
-**- Скачиваем созданный nginx-1.18.0-1.el7.ngx.x86_64.rpm из репозитория виртуальной машины**
+**- Добавляем  в перечень локальных репозиториев репозиторий на машине lab05:**
 ```
-[root@s01-deron lab05]# wget http://192.168.11.101/repo/nginx-1.18.0-1.el7.ngx.x86_64.rpm
---2020-08-28 14:40:29--  http://192.168.11.101/repo/nginx-1.18.0-1.el7.ngx.x86_64.rpm
-Подключение к 192.168.11.101:80... соединение установлено.
-HTTP-запрос отправлен. Ожидание ответа... 200 OK
-Длина: 2019784 (1,9M) [application/x-redhat-package-manager]
-Сохранение в: «nginx-1.18.0-1.el7.ngx.x86_64.rpm»
+vagrant up lab05docker
+vagrant ssh lab05docker
 
-100%[====================================================================================================>] 2 019 784   --.-K/s   за 0,006s
+echo '[lab05repo]' > /etc/yum.repos.d/lab05.repo
+echo 'name=Lab05 NGINX Package Repository' >> /etc/yum.repos.d/lab05.repo
+echo 'baseurl=http://192.168.11.101/repo' >> /etc/yum.repos.d/lab05.repo
+echo 'gpgcheck=0' >> /etc/yum.repos.d/lab05.repo
+echo 'enabled=1' >> /etc/yum.repos.d/lab05.repo
+```
 
+**- Скачиваем созданный nginx-1.18.0-1.el7.ngx.x86_64.rpm из репозитория на виртуальной машине lab05**
+```
+yumdownloader nginx
 ```
 
 
@@ -172,14 +179,14 @@ docker build -t deron73/my-nginx-ssl-image:1.1 .
 
 **- Запускаем контейнер и проверяем**
 ```
-[root@s01-deron lab05]# docker run -d -p 80:80 deron73/my-nginx-ssl-image:1.1
-[root@s01-deron lab05]# docker ps
+docker run -d -p 80:80 deron73/my-nginx-ssl-image:1.1
+docker ps
 CONTAINER ID        IMAGE                            COMMAND                  CREATED              STATUS              PORTS                NAMES
 c6c0aa6e5be2        deron73/my-nginx-ssl-image:1.1   "nginx -g 'daemon ..."   About a minute ago   Up About a minute   0.0.0.0:80->80/tcp   stupefied_fermi
-[root@s01-deron lab05]# ss -tnulp | grep 80
+ss -tnulp | grep 80
 tcp    LISTEN     0      128    [::]:80                 [::]:*                   users:(("docker-proxy-cu",pid=14656,fd=4))
 
-[root@s01-deron lab05]# curl localhost
+curl localhost
 <!DOCTYPE html>
 <html>
 <head>
@@ -209,18 +216,17 @@ Commercial support is available at
 
 **-  Выкладываем собранный [образ](https://hub.docker.com/repository/docker/deron73/my-nginx-ssl-image) в Docker Hub**
 ```
-[root@s01-deron lab05]# docker login
+docker login
 Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
 Username: deron73
 Password:
 Login Succeeded
-[root@s01-deron lab05]# docker push deron73/my-nginx-ssl-image:1.1
+docker push deron73/my-nginx-ssl-image:1.1
 The push refers to a repository [docker.io/deron73/my-nginx-ssl-image]
 336f4ae91b86: Pushed
 94d1f5bc2021: Pushed
 613be09ab3c0: Mounted from library/centos
 latest: digest: sha256:7da33dfe3e23c32fd6ef6fa50fac00d258d3c5192b0a8a1eff3492b195cb013b size: 952
-[root@s01-deron lab05]#
 ```
 
 ## **Полезное:**

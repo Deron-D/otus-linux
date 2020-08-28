@@ -7,8 +7,10 @@ MACHINES = {
         :box_name => "centos/7",
         
         :ip_addr => '192.168.11.101',
-
-		
+  },
+  :lab05docker => {
+        :box_name => "centos/7",
+        :ip_addr => '192.168.11.102',
   }
 }
 
@@ -35,7 +37,13 @@ Vagrant.configure("2") do |config|
                      end
                   end
           end
- 	  box.vm.provision "shell", path: "lab05.sh"
+          case boxname.to_s
+            when "lab05"
+              box.vm.provision "shell", path: "lab05.sh"
+            when "lab05docker"
+              box.vm.provision "shell", path: "lab05docker.sh"
+
+          end
       end
   end
 end

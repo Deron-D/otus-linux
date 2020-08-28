@@ -58,11 +58,11 @@ nginx -s reload
 echo "==============================="
 echo "Add local own repository to YUM"
 echo "==============================="
-echo '[lab05repo]' > /etc/yum.repos.d/otus.repo
-echo 'name=Lab05 NGINX Package Repository' >> /etc/yum.repos.d/otus.repo
-echo 'baseurl=http://localhost/repo' >> /etc/yum.repos.d/otus.repo
-echo 'gpgcheck=0' >> /etc/yum.repos.d/otus.repo
-echo 'enabled=1' >> /etc/yum.repos.d/otus.repo
+echo '[lab05repo]' > /etc/yum.repos.d/lab05.repo
+echo 'name=Lab05 NGINX Package Repository' >> /etc/yum.repos.d/lab05.repo
+echo 'baseurl=http://localhost/repo' >> /etc/yum.repos.d/lab05.repo
+echo 'gpgcheck=0' >> /etc/yum.repos.d/lab05.repo
+echo 'enabled=1' >> /etc/yum.repos.d/lab05.repo
 
 
 
