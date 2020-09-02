@@ -1,0 +1,7 @@
+GRUB_TIMEOUT=3
+GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL_OUTPUT="console"
+GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=Lab06RootVolumeGroup/root rd.lvm.lv=Lab06RootVolumeGroup/swap rhgb quiet"
+GRUB_DISABLE_RECOVERY="true"

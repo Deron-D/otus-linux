@@ -1,0 +1,11 @@
+
+#
+# /etc/fstab
+# Created by anaconda on Fri Aug 28 15:35:46 2020
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk'
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
+#
+/dev/mapper/Lab06RootVolumeGroup-root /                       xfs     defaults        0 0
+UUID=3e3bce32-902e-42c4-ae10-c915b72e8853 /boot                   xfs     defaults        0 0
+/dev/mapper/Lab06RootVolumeGroup-swap swap                    swap    defaults        0 0

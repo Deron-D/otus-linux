@@ -61,5 +61,23 @@ touch /.autorelabel
 ![Screen 3.2](./screens/3.2.png)
 ![Screen 3.3](./screens/3.3.png)
 
+### 2. Установливаем систему с LVM, после чего переименовываем VG
+
+Смотрим текущее состояние системы и переименовываем Volume Group:
+![Screen 22.1](./screens/22.1.png)
+
+Правим [/etc/fstab](conf/fstab), [/etc/default/grub](conf/grub), [/boot/grub2/grub.cfg](conf/grub.cfg)
+
+Пересоздаем initrd image, чтобы он знал новое название Volume Group
+```bash
+mkinitrd -f -v /boot/initramfs-$(uname -r).img $(uname -r)
+```
+![Screen 22.2](./screens/22.2.png)
+
+Перегружаемся и проверяем:
+
+![Screen 22.3](./screens/22.3.png)
+
+
 ## **Полезное:**
 
