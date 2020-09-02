@@ -31,9 +31,6 @@ PV необходимо инициализировать с параметром
     mount | grep root
 ```
 
-## **Полезное:**
-
-
 #### Способ 2. Через initrd, rd.break.
 
 rd.break - даем инструкцию initrd запустить emergency mode и sh перед pivot_root()
@@ -54,4 +51,9 @@ touch /.autorelabel
 ![Screen 2.3](./screens/2.3.png)
 
 Создание .autorelabel сообщает SELinux о необходимости запуска в initrd процесса restorecon(восстановления контекста) при последующей перезагрузке.
+
+
+
+
+## **Полезное:**
 
