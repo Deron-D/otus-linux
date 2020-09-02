@@ -52,8 +52,14 @@ touch /.autorelabel
 
 Создание .autorelabel сообщает SELinux о необходимости запуска в initrd процесса restorecon(восстановления контекста) при последующей перезагрузке.
 
+#### Способ 3. rw init=/sysroot/bin/sh
 
+![Screen 3.1](./screens/3.1.png)
 
+Наблюдаем в журнале /run/initramfs/rdsosreport.txt, что initrd не удалось запустить init=/sysroot/sysroot/bin/sh и система справедливо решила провалиться в Emergency Mode
+
+![Screen 3.2](./screens/3.2.png)
+![Screen 3.3](./screens/3.3.png)
 
 ## **Полезное:**
 
