@@ -38,10 +38,14 @@ MACHINES = {
             :dfile => './sata6.vdi',
             :size => 100,
             :port => 6
+                }
+
         }
-    }
+
+
   },
 }
+
 
 Vagrant.configure("2") do |config|
     # Enable synced folder

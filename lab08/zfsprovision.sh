@@ -3,7 +3,7 @@
 mkdir -p ~root/.ssh
 cp ~vagrant/.ssh/auth* ~root/.ssh
 yum install -y yum-utils
-yum -y install https://download.zfsonlinux.org/epel/zfs-release.el7_4.noarch.rpm
+yum -y install http://download.zfsonlinux.org/epel/zfs-release.el7_4.noarch.rpm
 gpg --quiet --with-fingerprint /etc/pki/rpm-gpg/RPM-GPG-KEY-zfsonlinux
 yum-config-manager --enable zfs-kmod
 yum-config-manager --disable zfs
