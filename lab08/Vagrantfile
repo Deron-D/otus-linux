@@ -10,32 +10,32 @@ MACHINES = {
         :ip_addr => '192.168.11.101',
     :disks => {
         :sata1 => {
-            :dfile => './sata1.vdi',
+            :dfile => './disks/sata1.vdi',
             :size => 100,
             :port => 1
         },
         :sata2 => {
-            :dfile => './sata2.vdi',
+            :dfile => './disks/sata2.vdi',
             :size => 100, # Megabytes
             :port => 2
         },
         :sata3 => {
-            :dfile => './sata3.vdi',
+            :dfile => './disks/sata3.vdi',
             :size => 100, # Megabytes
             :port => 3
         },
         :sata4 => {
-            :dfile => './sata4.vdi',
+            :dfile => './disks/sata4.vdi',
             :size => 100,
             :port => 4
         },
         :sata5 => {
-            :dfile => './sata5.vdi',
+            :dfile => './disks/sata5.vdi',
             :size => 100,
             :port => 5
         },
         :sata6 => {
-            :dfile => './sata6.vdi',
+            :dfile => './disks/sata6.vdi',
             :size => 100,
             :port => 6
                 }
@@ -49,7 +49,7 @@ MACHINES = {
 
 Vagrant.configure("2") do |config|
     # Enable synced folder
-    config.vm.synced_folder "./script", "/vagrant", type: "rsync", disabled: true
+    # config.vm.synced_folder "./script", "/home/vagrant", type: "rsync", disabled: false
     config.vm.box_version = "1804.02"
     MACHINES.each do |boxname, boxconfig|
   
