@@ -64,9 +64,82 @@ zfs send otus/storage@task2 > otus_task2.file
 1. Поднимаем стенд, используя [Vagrantfile](Vagrantfile):
 ```
 vagrant up
+[root@s01-deron lab08]# vagrant ssh
+[vagrant@zfstest ~]$ sudo -s
+[root@zfstest vagrant]# lsblk
+NAME                    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda                       8:0    0   40G  0 disk
+├─sda1                    8:1    0    1M  0 part
+├─sda2                    8:2    0    1G  0 part /boot
+└─sda3                    8:3    0   39G  0 part
+  ├─VolGroup00-LogVol00 253:0    0 37.5G  0 lvm  /
+    └─VolGroup00-LogVol01 253:1    0  1.5G  0 lvm  [SWAP]
+    sdb                       8:16   0  100M  0 disk
+    sdc                       8:32   0  100M  0 disk
+    sdd                       8:48   0  100M  0 disk
+    sde                       8:64   0  100M  0 disk
+    sdf                       8:80   0  100M  0 disk
+    sdg                       8:96   0  100M  0 disk
 ```
 
+- Создаем пул и ФС:
+```
+[root@zfstest vagrant]# zpool create mypool sdb sdc sdd sde sdf sdg
+[root@zfstest vagrant]# zpool list
+NAME     SIZE  ALLOC   FREE  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
+mypool   480M   106K   480M         -     0%     0%  1.00x  ONLINE  -
+[root@zfstest vagrant]# zpool status
+  pool: mypool
+ state: ONLINE
+  scan: none requested
+config:
 
+        NAME        STATE     READ WRITE CKSUM
+        mypool      ONLINE       0     0     0
+          sdb       ONLINE       0     0     0
+          sdc       ONLINE       0     0     0
+          sdd       ONLINE       0     0     0
+          sde       ONLINE       0     0     0
+          sdf       ONLINE       0     0     0
+          sdg       ONLINE       0     0     0
+
+errors: No known data errors
+[root@zfstest vagrant]# for var in gzip gzip-9 lz4 zle lzjb; do zfs create mypool/$var;zfs set compression=$var mypool/$var; done
+[root@zfstest vagrant]# for var in gzip gzip-9 lz4 zle lzjb; do zfs get -H compression mypool/$var; done
+mypool/gzip     compression     gzip    local
+mypool/gzip-9   compression     gzip-9  local
+mypool/lz4      compression     lz4     local
+mypool/zle      compression     zle     local
+mypool/lzjb     compression     lzjb    local
+
+[root@zfstest vagrant]# for var in gzip gzip-9 lz4 zle lzjb; do curl -o /mypool/$var/War_and_Peace.txt http://www.gutenberg.org/cache/epub/2600/pg2600.txt;done
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 1181k  100 1181k    0     0   790k      0  0:00:01  0:00:01 --:--:--  791k
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 1181k  100 1181k    0     0   805k      0  0:00:01  0:00:01 --:--:--  805k
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 1181k  100 1181k    0     0   666k      0  0:00:01  0:00:01 --:--:--  666k
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 1181k  100 1181k    0     0   738k      0  0:00:01  0:00:01 --:--:--  738k
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 1181k  100 1181k    0     0   450k      0  0:00:02  0:00:02 --:--:--  450k
+
+[root@zfstest vagrant]# zfs list -p -s used
+NAME              USED      AVAIL    REFER  MOUNTPOINT
+mypool/gzip    1237504  362777600  1237504  /mypool/gzip
+mypool/lz4     1238016  362777600  1238016  /mypool/lz4
+mypool/zle     1238016  362777600  1238016  /mypool/zle
+mypool/gzip-9  1238528  362777600  1238528  /mypool/gzip-9
+mypool/lzjb    1245184  362777600  1245184  /mypool/lzjb
+mypool         6321152  362777600    30208  /mypool
+```
+
+Резюме: алгоритм с наилучшим сжатием - **gzip**
 
 ## **Полезное:**
 
