@@ -9,3 +9,4 @@ yum-config-manager --enable zfs-kmod
 yum-config-manager --disable zfs
 yum repolist | grep zfs && echo ZFS repo enabled
 yum install -y zfs
+/sbin/modprobe zfs

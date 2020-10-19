@@ -61,6 +61,11 @@ zfs send otus/storage@task2 > otus_task2.file
 
 ## **Выполнено:**
 
+1. Поднимаем стенд, используя [Vagrantfile](Vagrantfile):
+```
+vagrant up
+```
+
 
 
 ## **Полезное:**
