@@ -61,7 +61,9 @@ zfs send otus/storage@task2 > otus_task2.file
 
 ## **Выполнено:**
 
-1. Поднимаем стенд, используя [Vagrantfile](Vagrantfile):
+1. Определяем алгоритм с наилучшим сжатием  
+
+- Поднимаем стенд, используя [Vagrantfile](Vagrantfile):
 ```
 vagrant up
 [root@s01-deron lab08]# vagrant ssh
@@ -140,6 +142,52 @@ mypool         6321152  362777600    30208  /mypool
 ```
 
 Резюме: алгоритм с наилучшим сжатием - **gzip**
+
+
+2. Определем настройки pool’a
+
+- Скачиваем и распаковываем архив:
+```
+cd /vagrant
+./download_gdrive 1KRBNW33QWqbvbVHa3hLJivOAt60yukkg zfs_task1.tar.gz
+tar xvzf zfs_task1.tar.gz
+zpool import -d ./zpoolexport/
+zpool import -d ./zpoolexport/ otus
+zpool list
+[root@zfstest vagrant]# zpool status
+  pool: otus
+ state: ONLINE
+  scan: none requested
+config:
+
+        NAME                            STATE     READ WRITE CKSUM
+        otus                            ONLINE       0     0     0
+          mirror-0                      ONLINE       0     0     0
+            /vagrant/zpoolexport/filea  ONLINE       0     0     0
+            /vagrant/zpoolexport/fileb  ONLINE       0     0     0
+[root@zfstest vagrant]# zfs get recordsize,compression,checksum otus
+NAME  PROPERTY     VALUE      SOURCE
+otus  recordsize   128K       local
+otus  compression  zle        local
+otus  checksum     sha256     local
+```
+
+3. Найти сообщение от преподавателей:
+
+```
+cd /vagrant
+./download_gdrive 1gH8gCL9y7Nd5Ti3IRmplZPF1XjzxeRAG otus_task2.file
+zfs receive otus/storage@task2 < otus_task2.file
+[root@zfstest vagrant]# zfs list -t snapshot
+NAME                 USED  AVAIL     REFER  MOUNTPOINT
+otus/storage@task2    21K      -     2.83M  -
+[root@zfstest vagrant]# find /otus -name "secret_message" -exec cat '{}' \;
+https://github.com/sindresorhus/awesome
+
+```
+
+Сообщение - **https://github.com/sindresorhus/awesome**
+
 
 ## **Полезное:**
 

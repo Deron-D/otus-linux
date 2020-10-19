@@ -5,8 +5,8 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 
 MACHINES = {
   :zfstest => {
-        :box_name => "centos/7",
-        :box_version => "1804.02",
+        :box_name => "centos/8",
+        :box_version => "1905.1",
         :ip_addr => '192.168.11.101',
     :disks => {
         :sata1 => {
@@ -50,7 +50,7 @@ MACHINES = {
 Vagrant.configure("2") do |config|
     # Enable synced folder
     # config.vm.synced_folder "./script", "/home/vagrant", type: "rsync", disabled: false
-    config.vm.box_version = "1804.02"
+    config.vm.box_version = "1905.1"
     MACHINES.each do |boxname, boxconfig|
   
         config.vm.define boxname do |box|
