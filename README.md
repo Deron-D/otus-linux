@@ -5,4 +5,8 @@
 * [Домашняя работа №3: Файловые системы и LVM](https://github.com/Deron-D/otus-linux/tree/master/lab03)
 * [Домашняя работа №4: NFS, FUSE](https://github.com/Deron-D/otus-linux/tree/master/lab04)
 * [Домашняя работа №5: Управление пакетами. Дистрибьюция софта](https://github.com/Deron-D/otus-linux/tree/master/lab05)
+* [Домашняя работа №6: Загрузка системы](https://github.com/Deron-D/otus-linux/tree/master/lab06)
+* [Домашняя работа №7: Bash](https://github.com/Deron-D/otus-linux/tree/master/lab07)
+* [Домашняя работа №8: ZFS](https://github.com/Deron-D/otus-linux/tree/master/lab08)
+
 
