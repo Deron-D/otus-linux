@@ -1,17 +1,19 @@
 #!/bin/sh
 # Define variables:
-# log file
+# Log file
 LOGFILE=./access-4560-644067.log
 # Lockfile
 LOCKFILE=/tmp/httpd_log_analyze.pid
 # Report file
-REPORTFILE=./reportfile.txt
+REPORTFILE=/tmp/httpd_log_analyze_report.txt
 # Number of TOP active IPs
 X=10
 # Number of TOP requested locations
 Y=10
+# File for save processed lines
+PROCESSEDLINES=/tmp/httpd_log_analyze.tmp
 # Email address for the report
-EMAIL=root@localhost
+EMAIL=vagrant@localhost.localdomain
 
 #Main function
 analyze_log_file() {
@@ -20,7 +22,7 @@ analyze_log_file() {
         SKIPLINES=${SKIPLINES:-0}
         if [ -f last_run.tmp ];
         then 
-    	    SKIPLINES=$(cat last_run.tmp)
+    	    SKIPLINES=$(cat $PROCESSEDLINES)
     	    SKIPLINES=$(($SKIPLINES+1))
         fi
 	echo "=============================================" > $OUTPUTFILE
@@ -39,11 +41,9 @@ analyze_log_file() {
         echo "A list of all return codes indicating their number since the last launch" >> $OUTPUTFILE
         tail -n +$SKIPLINES $1 | awk '{print $7}' FPAT='[^ ]*|"[^"]*"'| sort | uniq -c | sort -rn | awk '{print $1, $2}' >> $OUTPUTFILE
 	echo "---------------------------------------------" >> $OUTPUTFILE
-	wc -l $INPUTFILE | awk '{print $1}' > last_run.tmp
+	wc -l $INPUTFILE | awk '{print $1}' > $PROCESSEDLINES
 
 }
-
-
 
 if ( set -C; echo "$$" > "$LOCKFILE" ) 2> /dev/nul; 
 then
