@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
             mkdir -p ~root/.ssh
             cp ~vagrant/.ssh/auth* ~root/.ssh
             yum install epel-release -y
-            yum install -y bash-completion bash-completion-extras vim-enhanced mc setools-console mailx
+            yum install -y bash-completion bash-completion-extras vim-enhanced setools-console
           SHELL
 
       end

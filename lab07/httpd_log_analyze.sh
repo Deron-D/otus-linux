@@ -16,40 +16,44 @@ EMAIL=root@localhost
 #Main function
 analyze_log_file() {
 	INPUTFILE=$1; OUTPUTFILE=$2
-	BEGINTIME=`head -n 1 $1 |awk '{print $4}'| cut -c2-`; ENDTIME=`tail -n 1 $1 |awk '{print $4}' | cut -c2-`
+	BEGINTIME=`head -n 1 $1 |awk '{print $4}'| sed 's/\[//'`; ENDTIME=`tail -n 1 $1 |awk '{print $4}' | sed 's/\[//'`
+        SKIPLINES=${SKIPLINES:-0}
+        if [ -f last_run.tmp ];
+        then 
+    	    SKIPLINES=$(cat last_run.tmp)
+    	    SKIPLINES=$(($SKIPLINES+1))
+        fi
 	echo "=============================================" > $OUTPUTFILE
 	echo "HTTPD usage report                           " >> $OUTPUTFILE
 	echo "Analyze period is from $BEGINTIME to $ENDTIME" >> $OUTPUTFILE
 	echo "=============================================" >> $OUTPUTFILE
-	echo "$X IP addresses (with the largest number of requests)" >> $OUTPUTFILE 
-        cat $1 |awk '{print $1}' |sort |uniq -c |sort -rn| tail -$X >> $OUTPUTFILE
+	echo "$X top IP addresses" >> $OUTPUTFILE 
+        tail -n +$SKIPLINES $1 | awk '{print $1}' | sort | uniq -c | sort -rn | awk '{print $1, $2}' | head -$X >> $OUTPUTFILE
         echo "---------------------------------------------" >> $OUTPUTFILE
-        echo "$Y requested addresses (with the largest number of requests)" >> $OUTPUTFILE
-        cat $1 |awk '{print $7}' |sort |uniq -c |sort -rn| tail -$Y >> $2
+        echo "$Y top requested addresses" >> $OUTPUTFILE
+        tail -n +$SKIPLINES $1 | awk '{print $6}' FPAT='[^ ]*|"[^"]*"' | awk '{if($2 != ""){print $2}}'| sort | uniq -c | sort -rn |  awk '{print $1, $2}' | head -$Y   >> $2
         echo "---------------------------------------------" >> $OUTPUTFILE
         echo "All errors since the last launch" >> $OUTPUTFILE
-        cat $1 |awk '{print $9}' |grep -E "[4-5]{1}[0-9][0-9]" |sort |uniq -c |sort -rn >> $OUTPUTFILE
+        tail -n +$SKIPLINES $1 |awk '{print $9}' |grep -E "[4-5]{1}[0-9][[:digit:]]" |sort |uniq -c |sort -rn | awk '{print $1, $2}' >> $OUTPUTFILE
         echo "---------------------------------------------" >> $OUTPUTFILE
         echo "A list of all return codes indicating their number since the last launch" >> $OUTPUTFILE
-        cat $1 |awk '{print $9}' |sort |uniq -c |sort -rn >> $OUTPUTFILE
+        tail -n +$SKIPLINES $1 | awk '{print $7}' FPAT='[^ ]*|"[^"]*"'| sort | uniq -c | sort -rn | awk '{print $1, $2}' >> $OUTPUTFILE
 	echo "---------------------------------------------" >> $OUTPUTFILE
+	wc -l $INPUTFILE | awk '{print $1}' > last_run.tmp
 
 }
 
 
-if ( set -C; echo "$$" > "$LOCKFILE" ) 2> /dev/null; 
+
+if ( set -C; echo "$$" > "$LOCKFILE" ) 2> /dev/nul; 
 then
-    trap 'rm -f "$LOCKFILE"; exit $?' INT TERM EXIT
-    #while true
-    #do
-    #    # What to do
-    #    ls -ld ${LOCKFILE}
-    #    sleep 1
-    #done
-   #Do It
+   # set trap
+   trap 'rm -f "$LOCKFILE"; exit $?' SIGHUP INT TERM EXIT
    analyze_log_file $LOGFILE $REPORTFILE
+   cat $REPORTFILE | mail -s "HTTPD usage report from $BEGINTIME to $ENDTIME" $EMAIL
    rm -f "$LOCKFILE"
-   trap - INT TERM EXIT 
+   # unset trap
+   trap - SIGHUP INT TERM EXIT 
 else
    echo "Failed to acquire lockfile: $LOCKFILE."
    echo "Held by $(cat $LOCKFILE)" 
