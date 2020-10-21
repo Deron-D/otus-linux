@@ -31,7 +31,9 @@ Vagrant.configure("2") do |config|
             cp ~vagrant/.ssh/auth* ~root/.ssh
             yum install epel-release -y
             yum install -y bash-completion bash-completion-extras vim-enhanced setools-console mailx
-            cp /vagrant/httpd_log_analyze.sh /etc/cron.hourly
+            curl -L https://raw.githubusercontent.com/Deron-D/otus-linux/master/lab07/access-4560-644067.log -o /vagrant/access-4560-644067.log
+            curl -L https://raw.githubusercontent.com/Deron-D/otus-linux/master/lab07/httpd_log_analyze.sh -o /etc/cron.hourly/httpd_log_analyze.sh
+            chmod +x /etc/cron.hourly/httpd_log_analyze.sh
           SHELL
 
       end

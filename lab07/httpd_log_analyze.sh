@@ -1,7 +1,7 @@
 #!/bin/sh
 # Define variables:
-# Log file
-LOGFILE=./access-4560-644067.log
+# First found log file
+LOGFILE=$(find / -type f -name "access-4560-644067.log" | sed '2,$d')
 # Lockfile
 LOCKFILE=/tmp/httpd_log_analyze.pid
 # Report file
@@ -18,7 +18,7 @@ EMAIL=vagrant@localhost.localdomain
 #Main function
 analyze_log_file() {
 	INPUTFILE=$1; OUTPUTFILE=$2
-	BEGINTIME=`head -n 1 $1 |awk '{print $4}'| sed 's/\[//'`; ENDTIME=`tail -n 1 $1 |awk '{print $4}' | sed 's/\[//'`
+	BEGINTIME=`head -n 1 $1 | awk '{print $4}'| sed 's/\[//'`; ENDTIME=`tail -n 1 $1 | awk '{print $4}' | sed 's/\[//'`
         SKIPLINES=${SKIPLINES:-0}
         if [ -f last_run.tmp ];
         then 
