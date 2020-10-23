@@ -12,6 +12,7 @@ echo "Please wait. Generating a huge file...."
 dd if=/dev/urandom of=$WORKDIR/testfile_src bs=1M count=1024 2> /dev/null
 }
 
+#main function
 ionice_run(){
     if [[ $1 = 3 ]]; 
     then
@@ -29,13 +30,15 @@ IOscheduler=$(cat /sys/block/sda/queue/scheduler | awk -F"[" '{print $2}' | awk 
 #set cfq scheduler value
 echo cfq > /sys/block/sda/queue/scheduler
 
-#run time measuring for ionice process
+#run time measuring for ionice processes
 time ionice_run $CLASS1 $IONICE1 &
 time ionice_run $CLASS2 $IONICE2 &
 wait $(jobs -p)
 
 #restore saved scheduler value
 echo $IOscheduler > /sys/block/sda/queue/scheduler
+
+#clean 
 rm -f $WORKDIR/testfile_src
 rm -f $WORKDIR/test_file_dst_$IONICE1
 rm -f $WORKDIR/test_file_dst_$IONICE2
