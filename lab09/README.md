@@ -27,12 +27,8 @@
 vagrant up
 vagrant ssh
 [vagrant@lab09 ~]$ sudo su -l
-[root@lab09 ~]# w
- 15:56:07 up 0 min,  1 user,  load average: 0.08, 0.03, 0.01
- USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
- vagrant  pts/0    10.0.2.2         15:55    7.00s  0.07s  0.14s sshd: vagrant [priv]
- [root@lab09 ~]# cd /vagrant/
- [root@lab09 vagrant]# bash ./ionice_test.sh
+[root@lab09 ~]# cd /vagrant/
+[root@lab09 vagrant]# bash ./ionice_test.sh
  Please wait. Generating a huge file....
  1024+0 records in
  1024+0 records out
