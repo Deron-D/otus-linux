@@ -23,6 +23,8 @@
 
 ## **Выполнено:**
 
+- Реализация 2 конкурирующих процесса по IO с разными ionice (ionice_test.sh)[ionice_test.sh] 
+
 ```
 vagrant up
 vagrant ssh
@@ -45,6 +47,23 @@ vagrant ssh
  user    0m0.003s
  sys     0m0.525s
 ```
+
+```
+vagrant ssh
+Last login: Sat Oct 24 12:25:45 2020 from 10.0.2.2
+[vagrant@lab09 ~]$ sudo -s
+[root@lab09 vagrant]# cd /vagrant
+[root@lab09 vagrant]# sh ./cpunice_test.sh
+
+real	0m15.243s
+user	0m0.001s
+sys	0m13.339s
+
+real	0m28.624s
+user	0m0.001s
+sys	0m13.905s
+```
+
 
 ## **Полезное:**
 

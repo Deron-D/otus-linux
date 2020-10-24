@@ -3,40 +3,18 @@
 VERYNICE=19
 NOTNICE=-20
 WORKDIR=/home
+FILE1=testfile1
+FILE2=testfile2
 
-#create file for test
-create_file(){
-echo "Please wait. Generating a huge file...."
-dd if=/dev/urandom of=$WORKDIR/testfile_src bs=1M count=1024 2> /dev/null
+run_niced_dd(){
+nice -n $1 dd if=/dev/urandom of=$WORKDIR/$2 bs=1M count=1024 2> /dev/null
 }
 
-#main function
-ionice_run(){
-    if [[ $1 = 3 ]]; 
-    then
-	ionice -c $1 dd if=$WORKDIR/testfile_src of=$WORKDIR/test_file_dst_$2 bs=1M iflag=direct;
-    else
-	ionice -c $1 -n $2  dd if=$WORKDIR/testfile_src of=$WORKDIR/test_file_dst_$2 bs=1M iflag=direct;
-    fi  
-}
-
-create_file
-
-#save current scheduler value
-IOscheduler=$(cat /sys/block/sda/queue/scheduler | awk -F"[" '{print $2}' | awk -F"]" '{print $1}')
-
-#set cfq scheduler value
-echo cfq > /sys/block/sda/queue/scheduler
-
-#run time measuring for ionice processes
-time ionice_run $CLASS1 $IONICE1 &
-time ionice_run $CLASS2 $IONICE2 &
+#run time measuring for niced processes
+time run_niced_dd $NOTNICE  $FILE1 &
+time run_niced_dd $VERYNICE $FILE2 &
 wait $(jobs -p)
 
-#restore saved scheduler value
-echo $IOscheduler > /sys/block/sda/queue/scheduler
-
 #clean 
-rm -f $WORKDIR/testfile_src
-rm -f $WORKDIR/test_file_dst_$IONICE1
-rm -f $WORKDIR/test_file_dst_$IONICE2
+rm -f $WORKDIR/$FILE1
+rm -f $WORKDIR/$FILE2
