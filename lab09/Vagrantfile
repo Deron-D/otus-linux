@@ -29,6 +29,8 @@ Vagrant.configure("2") do |config|
           box.vm.provision "shell", inline: <<-SHELL
             mkdir -p ~root/.ssh
             cp ~vagrant/.ssh/auth* ~root/.ssh
+            curl -L https://raw.githubusercontent.com/Deron-D/otus-linux/master/lab09/cpunice_test.sh -o /vagrant/cpunice_test.sh
+            curl -L https://raw.githubusercontent.com/Deron-D/otus-linux/master/lab09/ionice_test.sh -o /vagrant/ionice_test.sh
           SHELL
 
       end
