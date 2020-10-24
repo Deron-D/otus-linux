@@ -48,6 +48,8 @@ vagrant ssh
  sys     0m0.525s
 ```
 
+- Реализация 2 конкурирующих процессов по CPU с разными nice: [cpu_nice.sh](cpu_nice.sh)
+
 ```
 vagrant ssh
 Last login: Sat Oct 24 12:25:45 2020 from 10.0.2.2
