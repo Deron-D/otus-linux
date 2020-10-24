@@ -8,5 +8,4 @@
 * [Домашняя работа №6: Загрузка системы](https://github.com/Deron-D/otus-linux/tree/master/lab06)
 * [Домашняя работа №7: Bash](https://github.com/Deron-D/otus-linux/tree/master/lab07)
 * [Домашняя работа №8: ZFS](https://github.com/Deron-D/otus-linux/tree/master/lab08)
-
-
+* [Домашняя работа №9: Управление процессами](https://github.com/Deron-D/otus-linux/tree/master/lab09)
