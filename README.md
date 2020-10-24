@@ -1,4 +1,4 @@
-# **Домашние работы курса "Администратор Linux"**
+# **Домашние работы курса "Administrator Linux. Professional"**
 
 * [Домашняя работа №1: Обновить ядро в базовой системе](https://github.com/Deron-D/otus-linux/tree/master/lab01/manual_kernel_update)
 * [Домашняя работа №2: Работа с mdadm](https://github.com/Deron-D/otus-linux/tree/master/lab02)
