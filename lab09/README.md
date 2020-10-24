@@ -48,7 +48,7 @@ vagrant ssh
  sys     0m0.525s
 ```
 
-- Реализация 2 конкурирующих процессов по CPU с разными nice: [cpu_nice.sh](cpu_nice.sh)
+- Реализация 2 конкурирующих процессов по CPU с разными nice: [cpunice_test.sh](cpunice_test.sh)
 
 ```
 vagrant ssh
