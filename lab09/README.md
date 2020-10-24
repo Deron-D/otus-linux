@@ -23,7 +23,7 @@
 
 ## **Выполнено:**
 
-- Реализация 2 конкурирующих процессов по IO с разными ionice [ionice_test.sh](ionice_test.sh) 
+- Реализация 2 конкурирующих процессов по IO с разными ionice: [ionice_test.sh](ionice_test.sh) 
 
 ```
 vagrant up
