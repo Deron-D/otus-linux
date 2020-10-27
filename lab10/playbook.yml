@@ -1,0 +1,27 @@
+---
+- name:  Configure host lab10
+  hosts: lab10
+  become: yes
+  vars:
+    epel: epel-release
+    packages: 
+      - spawn-fcgi
+      - php
+      - php-cli
+      - mod_fcgid
+      - httpd
+    
+  tasks:
+    - name: Install EPEL Repo package
+      yum:
+        name: "{{ epel }}"
+        state: present
+      tags:
+        - epel-installation
+
+    - name: Install requied packages
+      yum:
+        name: "{{ packages }}"
+        state: present
+      tags:
+        - install-packages
