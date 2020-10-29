@@ -10,6 +10,8 @@
       - php-cli
       - mod_fcgid
       - httpd
+    unit_files_dst_path: /etc/systemd/system
+
     
   tasks:
     - name: Install EPEL Repo package
@@ -25,3 +27,32 @@
         state: present
       tags:
         - install-packages
+
+    - name: Configure watchlog services
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "{{ item.mode }}"
+      with_items:
+        - { src: 'files/watchlog.conf', dest: '/etc/sysconfig', mode: '0644' }
+        - { src: 'files/watchlog.log', dest: '/var/log', mode: '0644' }
+        - { src: 'files/watchlog.sh', dest: '/opt', mode: '0744' }
+        - { src: 'files/watchlog.timer', dest: '{{ unit_files_dst_path }}', mode: '0644' }
+        - { src: 'files/watchlog.service', dest: '{{ unit_files_dst_path }}', mode: '0644' }
+
+#    - name: Just force systemd to reread configs (2.4 and above)
+#     systemd:
+#        daemon_reload: yes
+
+    - name: Start watchlog.services
+      systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+        daemon_reload: yes
+      with_items:
+        - watchlog.timer
+        - watchlog.service
+
