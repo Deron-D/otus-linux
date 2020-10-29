@@ -3,8 +3,8 @@
 Description=Run watchlog script every 30 second
 
 [Timer]
-# Run every 15 second
-OnUnitActiveSec=15
+# Run every 30 second
+OnUnitActiveSec=30
 Unit=watchlog.service
 [Install]
 WantedBy=multi-user.target
