@@ -4,4 +4,5 @@
 *.key
 .tmux.conf
 *.box
+*.swp
 packer_cache/
