@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/root'
-let g:netrw_dirhist_2='/root/otus'
-let g:netrw_dirhist_3='/root/otus/otus-linux'
-let g:netrw_dirhist_4='/root/otus/otus-linux/lab10'
-let g:netrw_dirhist_5='/root'
-let g:netrw_dirhist_6='/root/otus/otus-linux/lab10'
