@@ -27,7 +27,7 @@
       tags:
         - install-packages
 
-    - name: Configure watchlog services
+    - name: Copy files for configure services
       copy:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
@@ -40,6 +40,32 @@
         - { src: 'files/watchlog.sh', dest: '/opt', mode: '0744' }
         - { src: 'files/watchlog.timer', dest: '{{ unit_files_dst_path }}', mode: '0644' }
         - { src: 'files/watchlog.service', dest: '{{ unit_files_dst_path }}', mode: '0644' }
+        - { src: 'files/httpd@.service', dest: '{{ unit_files_dst_path }}', mode: '0644' }
+
+    - name: Copy config files for httpd
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "{{ item.mode }}"
+        http_port: "{{ item.http_port }}"
+        pid_file: "{{ item.pid_file }}"  
+      with_items:
+        - { src: 'templates/httpd.conf.j2', dest: '/etc/httpd/conf/first.conf', mode: '0644', http_port: '80', pid_file: '/var/run/httpd-first.pid' }
+        - { src: 'templates/httpd.conf.j2', dest: '/etc/httpd/conf/second.conf', mode: '0644', http_port: '8080', pid_file: '/var/run/httpd-second.pid' }
+
+    - name: Copy instance files for httpd
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "{{ item.mode }}"
+        httpd_instance: "{{ item.instance }}"  
+      with_items:
+        - { src: 'templates/httpd-.j2', dest: '/etc/sysconfig/httpd-first', mode: '0644', instance: 'first' }
+        - { src: 'templates/httpd-.j2', dest: '/etc/sysconfig/httpd-second', mode: '0644', instance: 'second' }
 
     - name: Start watchlog.services
       systemd:
