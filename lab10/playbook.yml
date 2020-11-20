@@ -10,10 +10,13 @@
       - php-cli
       - mod_fcgid
       - httpd
+      - wget
+      - dejavu-sans-fonts
+      - fontconfig
     unit_files_dst_path: /etc/systemd/system/
     httpd_conf_path:  /etc/httpd/conf/
     sysconfig_path: /etc/sysconfig/
-    
+
   tasks:
     - name: Install EPEL Repo package
       yum:
@@ -43,12 +46,32 @@
         - { src: 'files/watchlog.timer', dest: '{{ unit_files_dst_path }}', mode: '0644' }
         - { src: 'files/watchlog.service', dest: '{{ unit_files_dst_path }}', mode: '0644' }
         - { src: 'files/httpd@.service', dest: '{{ unit_files_dst_path }}', mode: '0644' }
+        - { src: 'files/jira.service', dest: '{{ unit_files_dst_path }}', mode: '0664' }
         - { src: 'files/first.conf', dest: '{{ httpd_conf_path }}', mode: '0644' }
         - { src: 'files/second.conf', dest: '{{ httpd_conf_path }}', mode: '0644' }
         - { src: 'files/httpd-first', dest: '{{ sysconfig_path }}', mode: '0644' }
         - { src: 'files/httpd-second', dest: '{{ sysconfig_path }}', mode: '0644' }
+        - { src: 'files/response.varfile', dest: '/tmp/', mode: '0644' }
 
-    - name: Start units
+    - name: Download jira service desk installation file
+      get_url:
+        url: https://product-downloads.atlassian.com/software/jira/downloads/atlassian-servicedesk-4.13.1-x64.bin
+        dest: /tmp/atlassian-servicedesk-4.13.1-x64.bin
+        mode: 0744
+        validate_certs: no
+
+    - name: Check jira previous installation
+      stat:
+        path: /opt/atlassian/jira/bin/start-jira.sh
+      register: jira_installation_exist
+
+    - name: Install jira service desk
+      shell: ./atlassian-servicedesk-4.13.1-x64.bin -q -varfile response.varfile
+      args:
+        chdir: /tmp
+      when: jira_installation_exist.stat.exists == False
+          
+    - name: Start services      
       systemd:
         name: "{{ item }}"
         state: started
@@ -59,3 +82,4 @@
         - watchlog.service
         - httpd@first
         - httpd@second
+        - jira.service

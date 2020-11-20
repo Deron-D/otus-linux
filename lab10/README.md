@@ -23,3 +23,6 @@
 1.
 
 ## **Полезное:**
+
+wget https://www.atlassian.com/software/jira/downloads/binary/atlassian-servicedesk-4.13.1-x64.bin
+https://product-downloads.atlassian.com/software/jira/downloads/atlassian-servicedesk-4.13.1-x64.bin
