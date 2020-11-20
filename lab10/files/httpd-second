@@ -1,2 +1,2 @@
 OPTIONS=-f conf/second.conf
-
+LANG=C

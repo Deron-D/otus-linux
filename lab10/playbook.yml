@@ -48,7 +48,7 @@
         - { src: 'files/httpd-first', dest: '{{ sysconfig_path }}', mode: '0644' }
         - { src: 'files/httpd-second', dest: '{{ sysconfig_path }}', mode: '0644' }
 
-    - name: Start watchlog.services
+    - name: Start units
       systemd:
         name: "{{ item }}"
         state: started
@@ -57,3 +57,5 @@
       with_items:
         - watchlog.timer
         - watchlog.service
+        - httpd@first
+        - httpd@second

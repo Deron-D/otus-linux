@@ -1,2 +1,2 @@
 OPTIONS=-f conf/first.conf
-
+LANG=C
