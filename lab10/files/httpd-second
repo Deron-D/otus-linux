@@ -1,0 +1,2 @@
+OPTIONS=-f conf/second.conf
+
