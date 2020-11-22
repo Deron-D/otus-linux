@@ -8,6 +8,11 @@ User=jira
 PIDFile=/opt/atlassian/jira/work/catalina.pid
 ExecStart=/opt/atlassian/jira/bin/start-jira.sh
 ExecStop=/opt/atlassian/jira/bin/stop-jira.sh
+Restart=on-failure
+LimitAS=5G:6G
+LimitNOFILE=8192
+LimitNICE=18:19
+LimitDATA=100M:200M
 
 [Install] 
 WantedBy=multi-user.target 
