@@ -134,6 +134,81 @@ tcp    LISTEN     0      128    [::]:80                 [::]:*                  
 
 ```
 
+3. Создание unit-файл(ы) для сервиса Jira:
+
+Проверяем работу сервиса:
+```
+[root@lab10 vagrant]# systemctl status jira
+● jira.service - Atlassian Jira
+   Loaded: loaded (/etc/systemd/system/jira.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2020-11-22 21:17:01 UTC; 9h ago
+  Process: 5918 ExecStart=/opt/atlassian/jira/bin/start-jira.sh (code=exited, status=0/SUCCESS)
+ Main PID: 5951 (java)
+   CGroup: /system.slice/jira.service
+           └─5951 /opt/atlassian/jira/jre//bin/java -Djava.util.logging.config.file=/opt/atlassian/jira/conf/logging.properties -Djava.u...
+
+Nov 22 21:17:01 lab10 start-jira.sh[5918]: MMMMMM    `UOJ
+Nov 22 21:17:01 lab10 start-jira.sh[5918]: MMMMMM
+Nov 22 21:17:01 lab10 start-jira.sh[5918]: +MMMMM
+Nov 22 21:17:01 lab10 start-jira.sh[5918]: MMMMM
+Nov 22 21:17:01 lab10 start-jira.sh[5918]: `UOJ
+Nov 22 21:17:01 lab10 start-jira.sh[5918]: Atlassian Jira
+Nov 22 21:17:01 lab10 start-jira.sh[5918]: Version : 8.13.1
+Nov 22 21:17:01 lab10 start-jira.sh[5918]: If you encounter issues starting or stopping Jira, please see the Troubleshooting guid...llation
+Nov 22 21:17:01 lab10 start-jira.sh[5918]: Server startup logs are located in /opt/atlassian/jira/logs/catalina.out
+Nov 22 21:17:01 lab10 systemd[1]: Started Atlassian Jira.
+Hint: Some lines were ellipsized, use -l to show in full.
+
+```
+
+Проверяем работу опции Restart=on-failure ( т.к. нам необходимо, чтобы сервис перезапускался при падении):
+```
+[root@lab10 vagrant]# kill -9 5951
+
+[root@lab10 vagrant]# systemctl status jira
+● jira.service - Atlassian Jira
+   Loaded: loaded (/etc/systemd/system/jira.service; enabled; vendor preset: disabled)
+   Active: active (running) since Mon 2020-11-23 07:25:44 UTC; 6s ago
+  Process: 2384 ExecStop=/opt/atlassian/jira/bin/stop-jira.sh (code=exited, status=0/SUCCESS)
+  Process: 2510 ExecStart=/opt/atlassian/jira/bin/start-jira.sh (code=exited, status=0/SUCCESS)
+ Main PID: 2543 (java)
+   CGroup: /system.slice/jira.service
+           └─2543 /opt/atlassian/jira/jre//bin/java -Djava.util.logging.config.file=/opt/atlassian/jira/conf/logging.properties -Djava.u...
+
+Nov 23 07:25:44 lab10 start-jira.sh[2510]: MMMMMM    `UOJ
+Nov 23 07:25:44 lab10 start-jira.sh[2510]: MMMMMM
+Nov 23 07:25:44 lab10 start-jira.sh[2510]: +MMMMM
+Nov 23 07:25:44 lab10 start-jira.sh[2510]: MMMMM
+Nov 23 07:25:44 lab10 start-jira.sh[2510]: `UOJ
+Nov 23 07:25:44 lab10 start-jira.sh[2510]: Atlassian Jira
+Nov 23 07:25:44 lab10 start-jira.sh[2510]: Version : 8.13.1
+Nov 23 07:25:44 lab10 start-jira.sh[2510]: If you encounter issues starting or stopping Jira, please see the Troubleshooting guid...llation
+Nov 23 07:25:44 lab10 start-jira.sh[2510]: Server startup logs are located in /opt/atlassian/jira/logs/catalina.out
+Nov 23 07:25:44 lab10 systemd[1]: Started Atlassian Jira.
+Hint: Some lines were ellipsized, use -l to show in full.
+```
+
+Проверяем установку Limit* для сервиса:
+```
+[root@lab10 vagrant]# cat /proc/2543/limits
+Limit                     Soft Limit           Hard Limit           Units
+Max cpu time              unlimited            unlimited            seconds
+Max file size             unlimited            unlimited            bytes
+Max data size             104857600            209715200            bytes
+Max stack size            8388608              unlimited            bytes
+Max core file size        0                    unlimited            bytes
+Max resident set          unlimited            unlimited            bytes
+Max processes             657                  657                  processes
+Max open files            8192                 8192                 files
+Max locked memory         65536                65536                bytes
+Max address space         5368709120           6442450944           bytes
+Max file locks            unlimited            unlimited            locks
+Max pending signals       657                  657                  signals
+Max msgqueue size         819200               819200               bytes
+Max nice priority         18                   19
+Max realtime priority     0                    0
+Max realtime timeout      unlimited            unlimited            us
+```
 
 ## **Полезное:**
 
