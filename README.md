@@ -9,3 +9,5 @@
 * [Домашняя работа №7: Bash](https://github.com/Deron-D/otus-linux/tree/master/lab07)
 * [Домашняя работа №8: ZFS](https://github.com/Deron-D/otus-linux/tree/master/lab08)
 * [Домашняя работа №9: Управление процессами](https://github.com/Deron-D/otus-linux/tree/master/lab09)
+* [Домашнее задание №10: Инициализация системы. Systemd](https://github.com/Deron-D/otus-linux/tree/master/lab10)
+* [Домашнее задание №11: Автоматизация администрирования. Ansible-1](https://github.com/Deron-D/otus-linux/tree/master/lab11)
