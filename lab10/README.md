@@ -23,6 +23,7 @@
 Поднимаем стенд:
 ```
 vagrant up
+vagrant ssh
 sudo -s
 ```
 
