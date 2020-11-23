@@ -29,7 +29,6 @@ sudo -s
 
 Проверяем работу установленного и сконфигурированного nginx:
 ```
-[vagrant@lab11 ~]$ sudo -s
 [root@lab11 vagrant]# ss -tulnp | grep nginx
 tcp    LISTEN     0      128       *:8080                  *:*                   users:(("nginx",pid=3945,fd=6),("nginx",pid=3868,fd=6))
 
