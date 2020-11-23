@@ -1,0 +1,7 @@
+---
+# defaults file for nginx_role
+nginx_port: 8080
+epel: epel-release
+html: /usr/share/nginx/html/index.html
+nginx_conf_mode: '0640'
+index_html_mode: '0644'   
