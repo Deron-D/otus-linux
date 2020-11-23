@@ -13,6 +13,7 @@
       - wget
       - dejavu-sans-fonts
       - fontconfig
+      - lynx
     unit_files_dst_path: /etc/systemd/system/
     httpd_conf_path:  /etc/httpd/conf/
     sysconfig_path: /etc/sysconfig/
@@ -70,6 +71,14 @@
       args:
         chdir: /tmp
       when: jira_installation_exist.stat.exists == False
+    
+    - name: Recursively change ownership of a directory there jira installed
+      file:
+        path: /opt/atlassian/jira/
+        state: directory
+        recurse: yes
+        owner: jira
+        group: jira
           
     - name: Start services      
       systemd:

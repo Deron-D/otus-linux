@@ -12,7 +12,7 @@ Restart=on-failure
 LimitAS=5G:6G
 LimitNOFILE=8192
 LimitNICE=18:19
-LimitDATA=100M:200M
+LimitDATA=10G:20G
 
 [Install] 
 WantedBy=multi-user.target 

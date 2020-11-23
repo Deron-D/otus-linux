@@ -160,6 +160,32 @@ Nov 22 21:17:01 lab10 start-jira.sh[5918]: Server startup logs are located in /o
 Nov 22 21:17:01 lab10 systemd[1]: Started Atlassian Jira.
 Hint: Some lines were ellipsized, use -l to show in full.
 
+
+[root@lab10 vagrant]# lynx http://localhost:8080
+
+Jira
+
+Jira setup (BUTTON) Language Language
+
+   [setup-mode-instant.png]
+
+Set it up for me
+
+   This is the quick setup for demonstration and evaluation environments. We'll do most of the Jira configuration for you, but you
+   need to be online with a working internet connection so we can help you generate a Jira trial license at MyAtlassian. You can
+   change the configuration later if you need to.
+   [setup-mode-advanced.png]
+
+I'll set it up myself
+
+   Set up and configure your Jira instance manually. This is recommended for production environments, or if you don't have a working
+   internet connection.
+
+   Please make sure cookies are enabled before continuing.
+   Next
+
+
+
 ```
 
 Проверяем работу опции Restart=on-failure ( т.к. нам необходимо, чтобы сервис перезапускался при падении):
