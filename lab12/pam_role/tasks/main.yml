@@ -1,2 +1,9 @@
 ---
-# tasks file for pam_role
+- name: Install requied packages
+  yum:
+    name: "{{ packages }}"
+    state: present
+
+- debug:
+    var: user1_password
+
