@@ -4,6 +4,26 @@
     name: "{{ packages }}"
     state: present
 
-- debug:
-    var: user1_password
+- name: Install requied packages from epel-release
+  yum:
+    name: "{{ epel_packages }}"
+    state: present
+
+- name: Add admin group
+  group:
+    name: admin
+    state: present
+
+- name: Add the users 
+  user:
+    name: "{{ item.name }}"
+    shell: /bin/bash
+    password: "{{ 'item.password' | password_hash('sha512') }}"
+    groups:  "{{ item.groups }}"
+    append: yes
+    state: present
+  with_items:
+    - { name: user1, groups: "" , password: "{{ user1_password }}" }
+    - { name: user2, groups: "", password: "{{ user2_password }}" }
+    - { name: admin, groups: "admin", password: "{{ admin_password }}" }
 

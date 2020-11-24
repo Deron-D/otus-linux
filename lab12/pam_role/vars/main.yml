@@ -8,6 +8,9 @@ packages:
   - epel-release
   - libselinux-python
 
+epel_packages:
+  - pam_script
+
 user1_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           31373238656133323939353339313362383362613964316666333863393731643235343330346435
