@@ -14,16 +14,35 @@
     name: admin
     state: present
 
+- debug:
+    var: "{{ item }}"
+  with_items:
+    - user1_password
+    - user2_password
+    - admin_password
+
 - name: Add the users 
   user:
     name: "{{ item.name }}"
     shell: /bin/bash
-    password: "{{ 'item.password' | password_hash('sha512') }}"
+    password: "{{ item.password | password_hash('sha512') }}"
     groups:  "{{ item.groups }}"
     append: yes
-    state: present
   with_items:
-    - { name: user1, groups: "" , password: "{{ user1_password }}" }
-    - { name: user2, groups: "", password: "{{ user2_password }}" }
+    - { name: user1, groups: "", password: "{{ user1_password }}" }
+    - { name: user2, groups: "admin", password: "{{ user2_password }}" }
     - { name: admin, groups: "admin", password: "{{ admin_password }}" }
 
+- name: Enable ssh password authentication 
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    regexp: 'PasswordAuthentication no'
+    line: 'PasswordAuthentication yes'
+    backrefs: yes
+  notify: restart_sshd
+
+- name: Insert line into /etc/pam.d/sshd
+  lineinfile:
+       path: /etc/pam.d/sshd
+       line: 'account    required     pam_script.so /usr/local/bin/test_login.sh'
+       insertafter: 'account    required     pam_nologin.so'
