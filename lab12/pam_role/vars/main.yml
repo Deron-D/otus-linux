@@ -1,9 +1,11 @@
----
+
 # vars file for pam_role
 
-saturday: 4
-sunday: 5
+saturday: 6
+sunday: 7
 
+docker_user: user1  
+  
 packages:
   - epel-release
   - yum-utils
@@ -12,6 +14,11 @@ packages:
 
 epel_packages:
   - pam_script
+
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
 
 admin_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256

@@ -1,0 +1,6 @@
+polkit.addRule(function(action, subject) {
+    if (action.id.match("org.freedesktop.systemd1.manage-units") &&
+    subject.user === "{{ docker_user }}") {
+    return polkit.Result.YES;
+    }
+});

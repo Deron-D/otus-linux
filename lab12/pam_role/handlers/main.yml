@@ -4,3 +4,8 @@
   systemd:
     name: sshd
     state: restarted
+
+- name: restart_polkit
+  systemd:
+    name: polkit
+    state: restarted
