@@ -1,5 +1,7 @@
 #!/bin/bash
 
+if [ $PAM_USER == "vagrant" ]; then exit 0; fi
+
 day=$(date +%u)
 
 if [ $day -ge {{ saturday }} -a $day -le {{ sunday }} ]; then

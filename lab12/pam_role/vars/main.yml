@@ -6,7 +6,9 @@ sunday: 5
 
 packages:
   - epel-release
-  - libselinux-python
+  - yum-utils
+  - device-mapper-persistent-data
+  - lvm2
 
 epel_packages:
   - pam_script
