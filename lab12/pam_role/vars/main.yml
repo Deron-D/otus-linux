@@ -1,8 +1,8 @@
 ---
 # vars file for pam_role
 
-first_day_off: 6
-second_day_off: 7
+saturday: 4
+sunday: 5
 
 packages:
   - epel-release

@@ -1,15 +1,19 @@
 #!/bin/bash
 
-check=$(grep $PAM_USER /etc/group | grep admin | awk -F ':' '{ print $1 }')
+day=$(date +%u)
 
-if [ "$check" == "admin" ]
-then 
-  exit 0
+if [ $day -ge {{ saturday }} -a $day -le {{ sunday }} ]; then
+  weekend=1
+else
+  weekend=0
 fi
 
-if [ $(date +%u) -gt 5 ]
-then 
-  exit 1
-else 
-  exit 0
+if getent group admin | grep &>/dev/null $PAM_USER; then
+    exit 0
+else
+  if [ $weekend -eq 1 ]; then
+      exit 1
+  else
+      exit 0
+  fi
 fi

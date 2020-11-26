@@ -44,5 +44,13 @@
 - name: Insert line into /etc/pam.d/sshd
   lineinfile:
        path: /etc/pam.d/sshd
-       line: 'account    required     pam_script.so /usr/local/bin/test_login.sh'
+       line: 'account    required     pam_exec.so /usr/local/bin/test_login.sh'
        insertafter: 'account    required     pam_nologin.so'
+
+- name: Copy login script
+  template:
+    src: test_login.sh.j2
+    dest: /usr/local/bin/test_login.sh
+    owner: root
+    group: root
+    mode: 0544
