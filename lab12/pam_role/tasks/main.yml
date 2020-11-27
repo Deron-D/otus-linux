@@ -19,7 +19,6 @@
   with_items:
     - user1_password
     - user2_password
-    - admin_password
 
 - name: Add the users 
   user:
@@ -31,7 +30,6 @@
   with_items:
     - { name: user1, groups: "", password: "{{ user1_password }}" }
     - { name: user2, groups: "admin", password: "{{ user2_password }}" }
-    - { name: admin, groups: "admin", password: "{{ admin_password }}" }
 
 - name: Enable ssh password authentication 
   lineinfile: 
