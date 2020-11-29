@@ -36,3 +36,25 @@ https://github.com/mbfx/otus-linux-adm/tree/master/selinux_dns_problems
 
 ## **Полезное:**
 
+semanage port -l | grep http
+
+http_cache_port_t              tcp      8080, 8118, 8123, 10001-10010
+http_cache_port_t              udp      3130
+http_port_t                    tcp      80, 81, 443, 488, 8008, 8009, 8443, 9000
+pegasus_http_port_t            tcp      5988
+pegasus_https_port_t           tcp      5989
+
+
+seinfo --portcon=80
+	portcon tcp 80 system_u:object_r:http_port_t:s0
+	portcon tcp 1-511 system_u:object_r:reserved_port_t:s0
+	portcon udp 1-511 system_u:object_r:reserved_port_t:s0
+	portcon sctp 1-511 system_u:object_r:reserved_port_t:s0
+
+
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
+
+sealert -a /var/log/audit/audit.log
+ausearch -c 'isc-worker0000' --raw | audit2allow -M my-iscworker0000
+semodule -i my-iscworker0000.pp
