@@ -512,3 +512,5 @@ https://www.nginx.com/blog/using-nginx-plus-with-selinux/
 
 https://wismutlabs.com/blog/fiddling-with-selinux-policies/
 
+https://www.digitalocean.com/community/tutorials/an-introduction-to-selinux-on-centos-7-part-3-users
+
