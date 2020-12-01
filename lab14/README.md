@@ -17,7 +17,7 @@
 ---
 
 ## **Выполнено:**
-'''
+```
 [root@s01-deron lab14]# docker build -t deron73/my-nginx-image:0.1 --no-cache .
 Sending build context to Docker daemon  7.68 kB
 Step 1/7 : FROM alpine:3.12.1
@@ -61,10 +61,9 @@ Step 7/7 : CMD nginx -g daemon off;
  ---> b519d4ac8f3d
 Removing intermediate container ff7ed5409cd9
 Successfully built b519d4ac8f3d
+```
 
-'''
-
-'''
+```
 [root@s01-deron lab14]# docker images
 REPOSITORY                             TAG                 IMAGE ID            CREATED             SIZE
 deron73/my-nginx-image                 0.1                 b519d4ac8f3d        2 minutes ago       6.98 MB
@@ -72,7 +71,9 @@ docker.io/alpine                       3.12.1              d6e46aa2470d        5
 deron73/my-nginx-ssl-image             1.1                 9717e97d899a        3 months ago        304 MB
 deron73/my-nginx-ssl-image             latest              495f98453337        3 months ago        300 MB
 docker.io/centos                       centos7             7e6257c9f8d8        3 months ago        203 MB
+```
 
+```
 [root@s01-deron lab14]# docker run -d -p 80:80 deron73/my-nginx-image:0.1
 55a140f3736215267fc7d2578a4b7c6762e6ad71d2e77b330381623b0670f54c
 
@@ -89,7 +90,8 @@ CONTAINER ID        IMAGE                        COMMAND                  CREATE
 <h1>Welcome to Homework #14 </h1>
 </body>
 </html>
-'''
+```
+
 
 ## **Полезное:**
 
