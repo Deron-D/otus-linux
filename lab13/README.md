@@ -168,6 +168,77 @@ pegasus_http_port_t            tcp      5988
 
 ```
 
+### **Способ 3. Формирование и установка модуля SELinux**
+```
+[root@lab13 vagrant]# semanage port -d -t http_port_t -p tcp 5080
+
+[root@lab13 vagrant]# semanage  port -l | grep http_port_t
+http_port_t                    tcp      80, 81, 443, 488, 8008, 8009, 8443, 9000
+pegasus_http_port_t            tcp      5988
+
+[root@lab13 vagrant]# systemctl restart nginx
+Job for nginx.service failed because the control process exited with error code. See "systemctl status nginx.service" and "journalctl -xe" for details.
+
+[root@lab13 vagrant]# sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      31
+
+[root@lab13 vagrant]# setenforce 0
+
+[root@lab13 vagrant]# echo > /var/log/audit/audit.log
+
+[root@lab13 vagrant]# systemctl restart nginx
+
+[root@lab13 vagrant]# grep nginx /var/log/audit/audit.log | audit2allow -M nginx_add
+******************** IMPORTANT ***********************
+To make this policy package active, execute:
+
+semodule -i nginx_add.pp
+
+[root@lab13 vagrant]# cat nginx_add.te
+
+module nginx_add 1.0;
+
+require {
+        type httpd_t;
+        type unreserved_port_t;
+        class tcp_socket name_bind;
+}
+
+#============= httpd_t ==============
+
+#!!!! This avc can be allowed using the boolean 'nis_enabled'
+allow httpd_t unreserved_port_t:tcp_socket name_bind;
+
+[root@lab13 vagrant]# semodule -i nginx_add.pp
+
+[root@lab13 vagrant]# semodule -l | grep nginx
+nginx_add       1.0
+
+[root@lab13 vagrant]# setenforce 1
+
+[root@lab13 vagrant]# systemctl restart nginx
+
+[root@lab13 vagrant]# systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Tue 2020-12-01 12:54:33 UTC; 6s ago
+  Process: 25266 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 25264 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+  Process: 25263 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 25268 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─25268 nginx: master process /usr/sbin/nginx
+           └─25269 nginx: worker process
+
+```
 
 ## **Полезное:**
 
