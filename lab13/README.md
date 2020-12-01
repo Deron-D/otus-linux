@@ -48,6 +48,7 @@ sudo -s
    Active: inactive (dead)
 
 Dec 01 05:52:58 lab13 systemd[1]: Unit nginx.service cannot be reloaded because it is inactive.
+
 [root@lab13 vagrant]# systemctl start nginx
 Job for nginx.service failed because the control process exited with error code. See "systemctl status nginx.service" and "journalctl -xe" for details.
 [root@lab13 vagrant]# sestatus
@@ -118,6 +119,8 @@ nis_enabled --> off
 [root@lab13 vagrant]# getsebool nis_enabled
 nis_enabled --> on
 
+[root@lab13 vagrant]# systemctl restart nginx
+
 [root@lab13 vagrant]# systemctl status nginx
 ● nginx.service - The nginx HTTP and reverse proxy server
    Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
@@ -131,6 +134,40 @@ nis_enabled --> on
            └─25119 nginx: worker process
 
 ```
+
+### **Способ 2. Добавление нестандартного порта в имеющийся тип:**
+```
+[root@lab13 vagrant]# setsebool -P nis_enabled 0
+
+[root@lab13 vagrant]# systemctl restart nginx
+Job for nginx.service failed because the control process exited with error code. See "systemctl status nginx.service" and "journalctl -xe" for details.
+
+[root@lab13 vagrant]# semanage  port -l | grep http_port_t
+http_port_t                    tcp      80, 81, 443, 488, 8008, 8009, 8443, 9000
+pegasus_http_port_t            tcp      5988
+
+[root@lab13 vagrant]# semanage port -a -t http_port_t -p tcp 5080
+
+[root@lab13 vagrant]# semanage  port -l | grep http_port_t
+http_port_t                    tcp      5080, 80, 81, 443, 488, 8008, 8009, 8443, 9000
+pegasus_http_port_t            tcp      5988
+
+[root@lab13 vagrant]# systemctl restart nginx
+
+[root@lab13 vagrant]# systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Tue 2020-12-01 12:41:18 UTC; 4s ago
+  Process: 25162 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 25160 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+  Process: 25159 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 25164 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─25164 nginx: master process /usr/sbin/nginx
+           └─25165 nginx: worker process
+
+```
+
 
 ## **Полезное:**
 
