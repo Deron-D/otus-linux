@@ -41,7 +41,96 @@ sudo -s
 ```
 
 ### **Способ 1. Переключатель параметризованной политики setbool:**
+```
+[root@lab13 vagrant]# systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: inactive (dead)
 
+Dec 01 05:52:58 lab13 systemd[1]: Unit nginx.service cannot be reloaded because it is inactive.
+[root@lab13 vagrant]# systemctl start nginx
+Job for nginx.service failed because the control process exited with error code. See "systemctl status nginx.service" and "journalctl -xe" for details.
+[root@lab13 vagrant]# sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      31
+[root@lab13 vagrant]# setenforce 0
+[root@lab13 vagrant]# sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   permissive
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      31
+[root@lab13 vagrant]# echo > /var/log/audit/audit.log
+[root@lab13 vagrant]# systemctl start nginx
+[root@lab13 vagrant]# audit2why <  /var/log/audit/audit.log
+type=AVC msg=audit(1606820029.040:1343): avc:  denied  { name_bind } for  pid=24811 comm="nginx" src=5080 
+scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=1
+
+        Was caused by:
+        The boolean nis_enabled was set incorrectly.
+        Description:
+        Allow nis to enabled
+
+        Allow access by executing:
+        # setsebool -P nis_enabled 1
+
+[root@lab13 vagrant]# semanage boolean -l | grep nis_enabled
+nis_enabled                    (off  ,  off)  Allow nis to enabled
+
+[root@lab13 vagrant]# sesearch -s httpd_t -t unreserved_port_t -AC
+Found 9 semantic av rules:
+   allow httpd_t port_type : tcp_socket { recv_msg send_msg } ;
+   allow httpd_t port_type : udp_socket { recv_msg send_msg } ;
+DT allow nsswitch_domain port_type : tcp_socket { recv_msg send_msg } ; [ nis_enabled ]
+DT allow nsswitch_domain unreserved_port_t : tcp_socket name_connect ; [ nis_enabled ]
+DT allow nsswitch_domain unreserved_port_t : tcp_socket name_bind ; [ nis_enabled ]
+DT allow httpd_t port_type : tcp_socket name_connect ; [ httpd_can_network_connect ]
+DT allow nsswitch_domain port_type : udp_socket recv_msg ; [ nis_enabled ]
+DT allow nsswitch_domain port_type : udp_socket send_msg ; [ nis_enabled ]
+DT allow nsswitch_domain unreserved_port_t : udp_socket name_bind ; [ nis_enabled ]
+
+[root@lab13 vagrant]# setenforce 1
+[root@lab13 vagrant]# sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      31
+
+[root@lab13 vagrant]# getsebool nis_enabled
+nis_enabled --> off
+[root@lab13 vagrant]# setsebool -P nis_enabled 1
+[root@lab13 vagrant]# getsebool nis_enabled
+nis_enabled --> on
+
+[root@lab13 vagrant]# systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Tue 2020-12-01 12:33:34 UTC; 2s ago
+  Process: 25116 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 25114 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+  Process: 25112 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 25118 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─25118 nginx: master process /usr/sbin/nginx
+           └─25119 nginx: worker process
+
+```
 
 ## **Полезное:**
 

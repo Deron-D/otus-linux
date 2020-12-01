@@ -3,4 +3,5 @@
   
 packages:
   - policycoreutils-python
+  - setools-console
     #- yum-utils
