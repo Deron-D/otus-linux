@@ -323,24 +323,43 @@ type=AVC msg=audit(1606829016.399:1867): avc:  denied  { write } for  pid=4870 c
 
 На ns01:
 ```
-[root@ns01 vagrant]# ls -Z /etc/named/dynamic
+[root@ns01 vagrant]# semanage fcontext -l | grep named_cache_t
+/var/named/data(/.*)?                              all files          system_u:object_r:named_cache_t:s0
+/var/lib/softhsm(/.*)?                             all files          system_u:object_r:named_cache_t:s0
+/var/lib/unbound(/.*)?                             all files          system_u:object_r:named_cache_t:s0
+/var/named/slaves(/.*)?                            all files          system_u:object_r:named_cache_t:s0
+/var/named/dynamic(/.*)?                           all files          system_u:object_r:named_cache_t:s0
+/var/named/chroot/var/tmp(/.*)?                    all files          system_u:object_r:named_cache_t:s0
+/var/named/chroot/var/named/data(/.*)?             all files          system_u:object_r:named_cache_t:s0
+/var/named/chroot/var/named/slaves(/.*)?           all files          system_u:object_r:named_cache_t:s0
+/var/named/chroot/var/named/dynamic(/.*)?          all files          system_u:object_r:named_cache_t:s0
+
+[root@ns01 vagrant]# ls -Z /etc/named/dynamic/
 -rw-rw----. named named system_u:object_r:etc_t:s0       named.ddns.lab
--rw-r--r--. named named system_u:object_r:etc_t:s0       named.ddns.lab.view1
--rw-r--r--. named named system_u:object_r:etc_t:s0       named.ddns.lab.view1.jnl
+-rw-rw----. named named system_u:object_r:etc_t:s0       named.ddns.lab.view1
 
-[root@ns01 vagrant]#  chcon -v -R --type=named_cache_t /etc/named/dynamic/
-changing security context of '/etc/named/dynamic/named.ddns.lab'
-changing security context of '/etc/named/dynamic/named.ddns.lab.view1'
-changing security context of '/etc/named/dynamic/named.ddns.lab.view1.jnl'
-changing security context of '/etc/named/dynamic/'
+[root@ns01 vagrant]# semanage fcontext -a -t named_cache_t "/etc/named/dynamic(/.*)?"
 
-[root@ns01 vagrant]# ls -Z /etc/named/dynamic
+[root@ns01 vagrant]# semanage fcontext -l | grep named_cache_t
+/var/named/data(/.*)?                              all files          system_u:object_r:named_cache_t:s0
+/var/lib/softhsm(/.*)?                             all files          system_u:object_r:named_cache_t:s0
+/var/lib/unbound(/.*)?                             all files          system_u:object_r:named_cache_t:s0
+/var/named/slaves(/.*)?                            all files          system_u:object_r:named_cache_t:s0
+/var/named/dynamic(/.*)?                           all files          system_u:object_r:named_cache_t:s0
+/var/named/chroot/var/tmp(/.*)?                    all files          system_u:object_r:named_cache_t:s0
+/var/named/chroot/var/named/data(/.*)?             all files          system_u:object_r:named_cache_t:s0
+/var/named/chroot/var/named/slaves(/.*)?           all files          system_u:object_r:named_cache_t:s0
+/var/named/chroot/var/named/dynamic(/.*)?          all files          system_u:object_r:named_cache_t:s0
+/etc/named/dynamic(/.*)?                           all files          system_u:object_r:named_cache_t:s0
+
+[root@ns01 vagrant]# restorecon -Rv /etc/named/dynamic
+restorecon reset /etc/named/dynamic context unconfined_u:object_r:etc_t:s0->unconfined_u:object_r:named_cache_t:s0
+restorecon reset /etc/named/dynamic/named.ddns.lab context system_u:object_r:etc_t:s0->system_u:object_r:named_cache_t:s0
+restorecon reset /etc/named/dynamic/named.ddns.lab.view1 context system_u:object_r:etc_t:s0->system_u:object_r:named_cache_t:s0
+
+[root@ns01 vagrant]# ls -Z /etc/named/dynamic/
 -rw-rw----. named named system_u:object_r:named_cache_t:s0 named.ddns.lab
--rw-r--r--. named named system_u:object_r:named_cache_t:s0 named.ddns.lab.view1
--rw-r--r--. named named system_u:object_r:named_cache_t:s0 named.ddns.lab.view1.jnl
-
-[root@ns01 vagrant]# semanage fcontext -a -t named_cache_t /etc/named/dynamic/
-
+-rw-rw----. named named system_u:object_r:named_cache_t:s0 named.ddns.lab.view1
 
 [root@ns01 vagrant]# setenforce 1
 
@@ -353,27 +372,26 @@ Enforcing
 [vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key
 > server 192.168.50.10
 > zone ddns.lab
-> update add ft.ddns.lab. 60 A 192.168.50.55
+> update add ftp.ddns.lab. 60 A 192.168.50.55
 > send
 > quit
 
+[vagrant@client ~]$  dig @192.168.50.10 ftp.ddns.lab
 
-[vagrant@client ~]$ dig @192.168.50.10 ft.ddns.lab
-
-; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.2 <<>> @192.168.50.10 ft.ddns.lab
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.2 <<>> @192.168.50.10 ftp.ddns.lab
 ; (1 server found)
 ;; global options: +cmd
 ;; Got answer:
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 29104
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 13378
 ;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 2
 
 ;; OPT PSEUDOSECTION:
 ; EDNS: version: 0, flags:; udp: 4096
 ;; QUESTION SECTION:
-;ft.ddns.lab.                   IN      A
+;ftp.ddns.lab.                  IN      A
 
 ;; ANSWER SECTION:
-ft.ddns.lab.            60      IN      A       192.168.50.55
+ftp.ddns.lab.           60      IN      A       192.168.50.55
 
 ;; AUTHORITY SECTION:
 ddns.lab.               3600    IN      NS      ns01.dns.lab.
@@ -383,8 +401,8 @@ ns01.dns.lab.           3600    IN      A       192.168.50.10
 
 ;; Query time: 0 msec
 ;; SERVER: 192.168.50.10#53(192.168.50.10)
-;; WHEN: Tue Dec 01 14:01:16 UTC 2020
-;; MSG SIZE  rcvd: 95
+;; WHEN: Tue Dec 01 15:42:50 UTC 2020
+;; MSG SIZE  rcvd: 96
 
 ```
 
