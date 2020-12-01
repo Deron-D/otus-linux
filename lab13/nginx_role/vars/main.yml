@@ -2,5 +2,5 @@
 # vars file for nginx_role
   
 packages:
-  - policycoreutils-devel
-
+  - policycoreutils-python
+    #- yum-utils

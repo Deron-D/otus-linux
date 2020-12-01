@@ -34,3 +34,5 @@ update failed: SERVFAIL
 - Исправленный стенд или демонстрация работоспособной системы скриншотами и описанием.
 
 
+/etc/named/dynamic/
+named_zone_t

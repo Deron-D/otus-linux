@@ -2,7 +2,7 @@
 # tasks file for nginx_role
 - name: NGINX | Install EPEL Repo package
   yum:
-    name: "{{  epel }}"
+    name: "{{ epel }}"
     state: present
   tags:
     - epel-package
@@ -13,8 +13,8 @@
     state: present
   tags:
     - nginx-package
-  notify:
-    - restart_nginx
+      #  notify:
+      #    - restart_nginx
 
 - name: Install requied packages
   yum:
@@ -38,8 +38,8 @@
     owner: root
     group: root
     mode: "{{ nginx_conf_mode }}"
-  notify:
-    - reload nginx
+      #  notify:
+      #    - reload nginx
   tags:
     - nginx-configuration
 

@@ -33,6 +33,15 @@ https://github.com/mbfx/otus-linux-adm/tree/master/selinux_dns_problems
 
 ## **Выполнено:**
 
+Поднимаем стенд для настройки и запуска nginx на нестандартном порту:
+```bash
+vagrant up
+vagrant ssh
+sudo -s
+```
+
+*Способ 1. Переключатель параметризованной политики setbool:*
+
 
 ## **Полезное:**
 
@@ -58,3 +67,8 @@ export LC_ALL='en_US.UTF-8'
 sealert -a /var/log/audit/audit.log
 ausearch -c 'isc-worker0000' --raw | audit2allow -M my-iscworker0000
 semodule -i my-iscworker0000.pp
+
+
+https://www.nginx.com/blog/using-nginx-plus-with-selinux/
+https://wismutlabs.com/blog/fiddling-with-selinux-policies/
+
