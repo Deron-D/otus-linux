@@ -33,6 +33,8 @@ https://github.com/mbfx/otus-linux-adm/tree/master/selinux_dns_problems
 
 ## **Выполнено:**
 
+## **1. Запустить nginx на нестандартном порту 3-мя разными способами:**
+
 Поднимаем стенд для настройки и запуска nginx на нестандартном порту:
 ```bash
 vagrant up
@@ -240,17 +242,237 @@ nginx_add       1.0
 
 ```
 
+## **2. Обеспечить работоспособность приложения(named) при включенном selinux.**
+
+Поднимаем стенд для настройки и запуска nginx на нестандартном порту:
+```bash
+cd selinux_dns_problems/
+vagrant up
+```
+
+Заходим на ns01 и проводим подготовительную настройку для анализа проблемы:
+```
+[root@s01-deron selinux_dns_problems]# vagrant ssh ns01
+Last login: Tue Dec  1 13:13:29 2020 from 10.0.2.2
+[vagrant@ns01 ~]$ sudo -s
+[root@ns01 vagrant]# sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      31
+
+[root@ns01 vagrant]# setenforce 0
+
+[root@ns01 vagrant]# getenforce
+Permissive
+
+[root@ns01 vagrant]# echo > /var/log/audit/audit.log
+```
+
+Заходим на client и пытаемся внести изменения в зону ddns.lab:
+```
+vagrant ssh client
+[vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key
+> server 192.168.50.10
+> zone ddns.lab
+> update add www.ddns.lab. 60 A 192.168.50.15
+> send
+```
+
+Анализируем проблему на ns01:
+```
+[root@ns01 vagrant]# audit2why < /var/log/audit/audit.log
+type=AVC msg=audit(1606829016.399:1867): avc:  denied  { create } for  pid=4870 comm="isc-worker0000" name="named.ddns.lab.view1.jnl" scontext=system_u:system_r:named_t:s0 tcontext=system_u:object_r:etc_t:s0 tclass=file permissive=1
+
+        Was caused by:
+                Missing type enforcement (TE) allow rule.
+
+                You can use audit2allow to generate a loadable module to allow this access.
+
+type=AVC msg=audit(1606829016.399:1867): avc:  denied  { write } for  pid=4870 comm="isc-worker0000" path="/etc/named/dynamic/named.ddns.lab.view1.jnl" dev="sda1" ino=464981 scontext=system_u:system_r:named_t:s0 tcontext=system_u:object_r:etc_t:s0 tclass=file permissive=1
+
+        Was caused by:
+                Missing type enforcement (TE) allow rule.
+
+                You can use audit2allow to generate a loadable module to allow this access.
+
+[root@ns01 vagrant]# sesearch -s named_t  -A | grep 'allow named_t' | grep etc_t
+   allow named_t etc_t : dir { ioctl read write getattr lock add_name remove_name search open } ;
+   allow named_t etc_t : lnk_file { read getattr } ;
+
+[root@ns01 vagrant]# cat /etc/selinux/targeted/contexts/files/file_contexts | grep named_
+...
+/var/named(/.*)?        system_u:object_r:named_zone_t:s0
+/var/named/dynamic(/.*)?        system_u:object_r:named_cache_t:s0
+...
+
+
+[root@ns01 vagrant]# sesearch -s named_t  -A -c file| grep 'allow named_t' | grep named_zone_t
+   allow named_t named_zone_t : file { ioctl read getattr lock open } ;
+   allow named_t named_zone_t : file { ioctl read write create getattr setattr lock append unlink link rename open } ;
+[root@ns01 vagrant]# sesearch -s named_t  -A -c file| grep 'allow named_t' | grep named_cache_t
+   allow named_t named_cache_t : file { ioctl read write create getattr setattr lock append unlink link rename open } ;
+```
+
+# Решение проблемы (способ 1, предпочтительный, т.к. не нужно компилировать и подгружать модуль):
+
+На ns01:
+```
+[root@ns01 vagrant]# ls -Z /etc/named/dynamic
+-rw-rw----. named named system_u:object_r:etc_t:s0       named.ddns.lab
+-rw-r--r--. named named system_u:object_r:etc_t:s0       named.ddns.lab.view1
+-rw-r--r--. named named system_u:object_r:etc_t:s0       named.ddns.lab.view1.jnl
+
+[root@ns01 vagrant]#  chcon -v -R --type=named_cache_t /etc/named/dynamic/
+changing security context of '/etc/named/dynamic/named.ddns.lab'
+changing security context of '/etc/named/dynamic/named.ddns.lab.view1'
+changing security context of '/etc/named/dynamic/named.ddns.lab.view1.jnl'
+changing security context of '/etc/named/dynamic/'
+
+[root@ns01 vagrant]# ls -Z /etc/named/dynamic
+-rw-rw----. named named system_u:object_r:named_cache_t:s0 named.ddns.lab
+-rw-r--r--. named named system_u:object_r:named_cache_t:s0 named.ddns.lab.view1
+-rw-r--r--. named named system_u:object_r:named_cache_t:s0 named.ddns.lab.view1.jnl
+
+[root@ns01 vagrant]# semanage fcontext -a -t named_cache_t /etc/named/dynamic/
+
+
+[root@ns01 vagrant]# setenforce 1
+
+[root@ns01 vagrant]# getenforce
+Enforcing
+```
+
+Проверяем на client:
+```
+[vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key
+> server 192.168.50.10
+> zone ddns.lab
+> update add ft.ddns.lab. 60 A 192.168.50.55
+> send
+> quit
+
+
+[vagrant@client ~]$ dig @192.168.50.10 ft.ddns.lab
+
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.2 <<>> @192.168.50.10 ft.ddns.lab
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 29104
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;ft.ddns.lab.                   IN      A
+
+;; ANSWER SECTION:
+ft.ddns.lab.            60      IN      A       192.168.50.55
+
+;; AUTHORITY SECTION:
+ddns.lab.               3600    IN      NS      ns01.dns.lab.
+
+;; ADDITIONAL SECTION:
+ns01.dns.lab.           3600    IN      A       192.168.50.10
+
+;; Query time: 0 msec
+;; SERVER: 192.168.50.10#53(192.168.50.10)
+;; WHEN: Tue Dec 01 14:01:16 UTC 2020
+;; MSG SIZE  rcvd: 95
+
+```
+
+
+# Решение проблемы (способ 2, формирование модуля):
+
+На ns01:
+```
+[root@ns01 vagrant]# chcon -v -R --type=etc_t /etc/named/dynamic/
+changing security context of '/etc/named/dynamic/named.ddns.lab'
+changing security context of '/etc/named/dynamic/named.ddns.lab.view1'
+changing security context of '/etc/named/dynamic/named.ddns.lab.view1.jnl'
+changing security context of '/etc/named/dynamic/'
+
+[root@ns01 vagrant]# ls -Z /etc/named/dynamic/
+-rw-rw----. named named system_u:object_r:etc_t:s0       named.ddns.lab
+-rw-r--r--. named named system_u:object_r:etc_t:s0       named.ddns.lab.view1
+-rw-r--r--. named named system_u:object_r:etc_t:s0       named.ddns.lab.view1.jnl
+
+[root@ns01 vagrant]# audit2allow -M named_add --debug < /var/log/audit/audit.log
+
+module named_add 1.0;
+
+require {
+        type etc_t;
+        type named_t;
+        class file { create rename unlink write };
+}
+
+#============= named_t ==============
+
+#!!!! WARNING: 'etc_t' is a base type.
+allow named_t etc_t:file { create rename unlink write };
+[root@ns01 vagrant]# audit2allow -M named_add --debug < /var/log/audit/audit.log
+******************** IMPORTANT ***********************
+To make this policy package active, execute:
+
+semodule -i named_add.pp
+
+[root@ns01 vagrant]# semodule -i named_add.pp
+
+[root@ns01 vagrant]# semodule -l | grep  named_add
+named_add       1.0
+
+```
+
+Проверяем на client:
+```
+[vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key
+> server 192.168.50.10
+> zone ddns.lab
+> update add nfs.ddns.lab. 60 A 192.168.50.66
+> send
+> quit
+
+[vagrant@client ~]$ dig @192.168.50.10 nfs.ddns.lab
+
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.2 <<>> @192.168.50.10 nfs.ddns.lab
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 5885
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;nfs.ddns.lab.                  IN      A
+
+;; ANSWER SECTION:
+nfs.ddns.lab.           60      IN      A       192.168.50.66
+
+;; AUTHORITY SECTION:
+ddns.lab.               3600    IN      NS      ns01.dns.lab.
+
+;; ADDITIONAL SECTION:
+ns01.dns.lab.           3600    IN      A       192.168.50.10
+
+;; Query time: 3 msec
+;; SERVER: 192.168.50.10#53(192.168.50.10)
+;; WHEN: Tue Dec 01 14:22:00 UTC 2020
+;; MSG SIZE  rcvd: 96
+```
+
+
+
 ## **Полезное:**
-
-semanage port -l | grep http
-
-http_cache_port_t              tcp      8080, 8118, 8123, 10001-10010
-http_cache_port_t              udp      3130
-http_port_t                    tcp      80, 81, 443, 488, 8008, 8009, 8443, 9000
-pegasus_http_port_t            tcp      5988
-pegasus_https_port_t           tcp      5989
-
-
+```
 seinfo --portcon=80
 	portcon tcp 80 system_u:object_r:http_port_t:s0
 	portcon tcp 1-511 system_u:object_r:reserved_port_t:s0
@@ -264,8 +486,11 @@ export LC_ALL='en_US.UTF-8'
 sealert -a /var/log/audit/audit.log
 ausearch -c 'isc-worker0000' --raw | audit2allow -M my-iscworker0000
 semodule -i my-iscworker0000.pp
+```
 
+https://wiki.gentoo.org/wiki/SELinux/Tutorials/Using_SELinux_booleans
 
 https://www.nginx.com/blog/using-nginx-plus-with-selinux/
+
 https://wismutlabs.com/blog/fiddling-with-selinux-policies/
 
