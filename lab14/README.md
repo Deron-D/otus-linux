@@ -1,0 +1,95 @@
+# **Домашнее задание №14: Docker**
+
+## **Задание:**
+Создайте свой кастомный образ nginx на базе alpine. После запуска nginx должен
+отдавать кастомную страницу (достаточно изменить дефолтную страницу nginx)
+Определите разницу между контейнером и образом
+Вывод опишите в домашнем задании.
+Ответьте на вопрос: Можно ли в контейнере собрать ядро?
+Собранный образ необходимо запушить в docker hub и дать ссылку на ваш
+репозиторий.
+
+Задание со * (звездочкой)
+Создайте кастомные образы nginx и php, объедините их в docker-compose.
+После запуска nginx должен показывать php info.
+Все собранные образы должны быть в docker hub
+
+---
+
+## **Выполнено:**
+'''
+[root@s01-deron lab14]# docker build -t deron73/my-nginx-image:0.1 --no-cache .
+Sending build context to Docker daemon  7.68 kB
+Step 1/7 : FROM alpine:3.12.1
+Trying to pull repository docker.io/library/alpine ...
+3.12.1: Pulling from docker.io/library/alpine
+188c0c94c7c5: Pull complete
+Digest: sha256:c0e9560cda118f9ec63ddefb4a173a2b2a0347082d7dff7dc14272e7841a5b5a
+Status: Downloaded newer image for docker.io/alpine:3.12.1
+ ---> d6e46aa2470d
+Step 2/7 : MAINTAINER deron73@mail.ru
+ ---> Running in fcc87adc4a52
+ ---> d255f084632c
+Removing intermediate container fcc87adc4a52
+Step 3/7 : RUN set -x     && apk add --update nginx     && rm -rf /var/cache/apk/*     && ln -sf /dev/stdout /var/log/nginx/access.log     && ln -sf /dev/stderr /var/log/nginx/error.log
+ ---> Running in 6c5f4fe79416
+
++ apk add --update nginx
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/community/x86_64/APKINDEX.tar.gz
+(1/2) Installing pcre (8.44-r0)
+(2/2) Installing nginx (1.18.0-r1)
+Executing nginx-1.18.0-r1.pre-install
+Executing busybox-1.31.1-r19.trigger
+OK: 7 MiB in 16 packages
++ rm -rf /var/cache/apk/APKINDEX.2c4ac24e.tar.gz /var/cache/apk/APKINDEX.40a3604f.tar.gz
++ ln -sf /dev/stdout /var/log/nginx/access.log
++ ln -sf /dev/stderr /var/log/nginx/error.log
+ ---> fd7d5e035516
+Removing intermediate container 6c5f4fe79416
+Step 4/7 : COPY default.conf /etc/nginx/conf.d/default.conf
+ ---> 90874cc76c8c
+Removing intermediate container bda834d9b3e3
+Step 5/7 : COPY nginx.conf /etc/nginx/nginx.conf
+ ---> 5941ff56cbc6
+Removing intermediate container 6b3234b1011e
+Step 6/7 : COPY index.html /usr/share/nginx/html/index.html
+ ---> 6f4c34c5889d
+Removing intermediate container 3f6401a219c5
+Step 7/7 : CMD nginx -g daemon off;
+ ---> Running in ff7ed5409cd9
+ ---> b519d4ac8f3d
+Removing intermediate container ff7ed5409cd9
+Successfully built b519d4ac8f3d
+
+'''
+
+'''
+[root@s01-deron lab14]# docker images
+REPOSITORY                             TAG                 IMAGE ID            CREATED             SIZE
+deron73/my-nginx-image                 0.1                 b519d4ac8f3d        2 minutes ago       6.98 MB
+docker.io/alpine                       3.12.1              d6e46aa2470d        5 weeks ago         5.57 MB
+deron73/my-nginx-ssl-image             1.1                 9717e97d899a        3 months ago        304 MB
+deron73/my-nginx-ssl-image             latest              495f98453337        3 months ago        300 MB
+docker.io/centos                       centos7             7e6257c9f8d8        3 months ago        203 MB
+
+[root@s01-deron lab14]# docker run -d -p 80:80 deron73/my-nginx-image:0.1
+55a140f3736215267fc7d2578a4b7c6762e6ad71d2e77b330381623b0670f54c
+
+[root@s01-deron lab14]# docker ps
+CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS              PORTS                NAMES
+55a140f37362        deron73/my-nginx-image:0.1   "nginx -g 'daemon ..."   7 seconds ago       Up 6 seconds        0.0.0.0:80->80/tcp   ecstatic_payne
+
+[root@s01-deron lab14]# curl localhost
+<html>
+<head>
+<title>Welcome to Homework #14</title>
+</head>
+<body>
+<h1>Welcome to Homework #14 </h1>
+</body>
+</html>
+'''
+
+## **Полезное:**
+
