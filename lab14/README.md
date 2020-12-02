@@ -129,7 +129,7 @@ ace0eda3e3be: Mounted from library/alpine
 Концепция заимствована из морских контейнеров, которые определяют стандарт для доставки товаров по всему миру. 
 Docker определяет стандарт для отправки программного обеспечения.
 
-* Взято из [Docker Glossary](https://docs.docker.com/glossary/)
+(*) Взято из [Docker Glossary](https://docs.docker.com/glossary/)
 
 Хотелось бы еще добавить, что из одного образа можно запустить множество контейнеров.
 
@@ -137,7 +137,19 @@ Docker определяет стандарт для отправки прогр�
 
 - Собрать возможно - [https://github.com/moul/docker-kernel-builde](https://github.com/moul/docker-kernel-builder). 
 
+### **Задание (*)**
 
+```
+[root@s01-deron lab14]# docker ps
+CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS              PORTS                NAMES
+55a140f37362        deron73/my-nginx-image:0.1   "nginx -g 'daemon ..."   24 hours ago        Up 24 hours         0.0.0.0:80->80/tcp   ecstatic_payne
+
+[root@s01-deron lab14]# docker stop 55a140f37362
+55a140f37362
+
+[root@s01-deron lab14]# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+```
 
 ## **Полезное:**
 
