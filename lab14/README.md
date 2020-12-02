@@ -17,6 +17,13 @@
 ---
 
 ## **Выполнено:**
+
+
+### **1. Создан свой кастомный образ nginx на базе alpine.**
+
+- Для создания образа подготовлен следующий [Dockerfile](Dockerfile).
+
+- Создаем образ:
 ```
 [root@s01-deron lab14]# docker build -t deron73/my-nginx-image:0.1 --no-cache .
 Sending build context to Docker daemon  7.68 kB
@@ -63,16 +70,13 @@ Removing intermediate container ff7ed5409cd9
 Successfully built b519d4ac8f3d
 ```
 
+- Проверяем факт создания:
 ```
-[root@s01-deron lab14]# docker images
+[root@s01-deron lab14]# docker images | grep my-nginx-image
 REPOSITORY                             TAG                 IMAGE ID            CREATED             SIZE
 deron73/my-nginx-image                 0.1                 b519d4ac8f3d        2 minutes ago       6.98 MB
-docker.io/alpine                       3.12.1              d6e46aa2470d        5 weeks ago         5.57 MB
-deron73/my-nginx-ssl-image             1.1                 9717e97d899a        3 months ago        304 MB
-deron73/my-nginx-ssl-image             latest              495f98453337        3 months ago        300 MB
-docker.io/centos                       centos7             7e6257c9f8d8        3 months ago        203 MB
 ```
-
+- Запускаем контейнер и проверяем работу:
 ```
 [root@s01-deron lab14]# docker run -d -p 80:80 deron73/my-nginx-image:0.1
 55a140f3736215267fc7d2578a4b7c6762e6ad71d2e77b330381623b0670f54c
@@ -91,6 +95,44 @@ CONTAINER ID        IMAGE                        COMMAND                  CREATE
 </body>
 </html>
 ```
+
+- Выкладываем в [Docker Hub](https://hub.docker.com/repository/docker/deron73/my-nginx-image)
+```
+[root@s01-deron lab14]# docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username (deron73):
+Password:
+Login Succeeded
+[root@s01-deron lab14]# docker push deron73/my-nginx-image:0.1
+The push refers to a repository [docker.io/deron73/my-nginx-image]
+69b2ccae4d9d: Pushed
+a05ee65ce306: Pushed
+286500af2476: Pushed
+c78dad6aa0a4: Pushed
+ace0eda3e3be: Mounted from library/alpine
+0.1: digest: sha256:f6132ba7d5c8ddfa45c51760a10895e2634917f292667360a13f50bcffd8ef14 size: 1359
+```
+
+### **2. Выводы про разницу между контейнером и образом:**
+Образ докера являются основой контейнеров. Образ - это упорядоченная коллекция изменений корневой файловой системы и соответствующих параметров 
+выполнения для использования в среде выполнения контейнера. 
+Образ обычно содержит объединение многоуровневых файловых систем, расположенных друг на друге. Образ не имеет состояния и никогда не изменяется.
+**Контейнер - это исполняемый(остановленный) экземпляр образа docker.** 
+Контейнер Docker состоит из
+- Docker образа 
+- Среды выполнения
+- Стандартного набора инструкций
+Концепция заимствована из морских контейнеров, которые определяют стандарт для доставки товаров по всему миру. 
+Docker определяет стандарт для отправки программного обеспечения.
+
+Взято из [Docker Glossary](https://docs.docker.com/glossary/)
+
+Хотелось бы еще добавить, что из одного образа можно запустить множество контейнеров.
+
+### **3. Ответьте на вопрос: Можно ли в контейнере собрать ядро?**
+
+- Собрать возможно - [https://github.com/moul/docker-kernel-builde](https://github.com/moul/docker-kernel-builder). 
+
 
 
 ## **Полезное:**
