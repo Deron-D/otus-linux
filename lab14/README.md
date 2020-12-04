@@ -144,9 +144,16 @@ Docker определяет стандарт для отправки прогр�
 - Запускаем и проверяем
 
 ```
+cd nginx-php-fpm
 [root@s01-deron nginx-php-fpm]# setenforce 0
+```
+или лучше
 
+```
+[root@s01-deron nginx-php-fpm]# chcon -v --type=usr_t default.conf
+```
 
+```
 [root@s01-deron nginx-php-fpm]# docker-compose up -d
 Starting phpfpm ... done
 Starting nginx ... done
