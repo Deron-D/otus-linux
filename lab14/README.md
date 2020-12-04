@@ -151,7 +151,7 @@ Docker определяет стандарт для отправки прогр�
 Starting phpfpm ... done
 Starting nginx ... done
 ```
-![Скриншот](./nginx-php-fpm/screen.jpg)
+![Скриншот](./nginx-php-fpm/php_info.jpg)
 
 ## **Полезное:**
 
