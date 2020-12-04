@@ -137,6 +137,32 @@ Docker определяет стандарт для отправки прогр�
 
 - Собрать возможно - [https://github.com/moul/docker-kernel-builde](https://github.com/moul/docker-kernel-builder). 
 
+### **4. Задание со * (звездочкой)**
+
+- Создан [Dockerfile](./nginx-php-fpm/php-fpm/Dockerfile) для создания образа с php-fpm
+- Создан [docker-compose.yml](./nginx-php-fpm/docker-compose.yml)
+- Запускаем и проверяем
+
+```
+[root@s01-deron nginx-php-fpm]# setenforce 0
+
+
+[root@s01-deron nginx-php-fpm]# docker-compose up -d
+Starting phpfpm ... done
+Starting nginx ... done
+```
+![Скриншот](./nginx-php-fpm/screen.jpg)
 
 ## **Полезное:**
 
+```
+docker ps -a
+docker inspect [OPTIONS] NAME|ID [NAME|ID...]
+docker exec -it NAME|ID /bin/sh
+docker logs NAME|ID
+docker rm $(docker ps -aq)
+docker run NAME --restart always#стартовать контейнер после перезагрузки хоста
+docker run NAME --rm #удаление контейнера после остановки
+docker network create BRIDGE_NAME
+docker network ls
+```
