@@ -158,6 +158,7 @@ cd nginx-php-fpm
 Starting phpfpm ... done
 Starting nginx ... done
 ```
+
 ![Скриншот](./nginx-php-fpm/php_info.jpg)
 
 ## **Полезное:**
