@@ -151,6 +151,7 @@ cd nginx-php-fpm
 
 ```
 [root@s01-deron nginx-php-fpm]# chcon -v --type=usr_t default.conf
+[root@s01-deron nginx-php-fpm]# chcon -vR --type=usr_t www/
 ```
 
 ```
