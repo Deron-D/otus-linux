@@ -11,3 +11,6 @@
 * [Домашняя работа №9: Управление процессами](https://github.com/Deron-D/otus-linux/tree/master/lab09)
 * [Домашнее задание №10: Инициализация системы. Systemd](https://github.com/Deron-D/otus-linux/tree/master/lab10)
 * [Домашнее задание №11: Автоматизация администрирования. Ansible-1](https://github.com/Deron-D/otus-linux/tree/master/lab11)
+* [Домашнее задание №12: PAM](https://github.com/Deron-D/otus-linux/tree/master/lab12)
+* [Домашнее задание №13: Практика с SELinux](https://github.com/Deron-D/otus-linux/tree/master/lab13)
+* [Домашнее задание №14: Docker](https://github.com/Deron-D/otus-linux/tree/master/lab14)
