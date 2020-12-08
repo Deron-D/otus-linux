@@ -1,10 +1,16 @@
 ---
 - name: Configure Prometheus + Node Exporter + Grafana
   hosts: all
-  gather_facts: true
-  become: true
+  become: yes
   roles:
-#    - base_config
+    - base_config
     - cloudalchemy.prometheus
-#    - cloudalchemy.node-exporter
-#    - cloudalchemy.grafana
+    - cloudalchemy.node-exporter
+    - cloudalchemy.grafana
+  vars:
+    prometheus_targets:
+      node:
+      - targets:
+        - localhost:9100
+        labels:
+          env: lab15

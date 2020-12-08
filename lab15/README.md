@@ -42,3 +42,22 @@ curl 'localhost:9090/metrics'
 
 ## **Полезное:**
 
+task path: /root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/tasks/configure.yml:52
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/files/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/tasks/files/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/tasks/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/files/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/files/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/prometheus/targets"
+[WARNING]: Unable to find 'prometheus/targets' in expected paths (use -vvvvv to see paths)
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/files/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/tasks/files/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/tasks/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/files/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/files/prometheus/targets"
+looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/prometheus/targets"
+
