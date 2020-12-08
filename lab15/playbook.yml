@@ -1,0 +1,10 @@
+---
+- name: Configure Prometheus + Node Exporter + Grafana
+  hosts: all
+  gather_facts: true
+  become: true
+  roles:
+#    - base_config
+    - cloudalchemy.prometheus
+#    - cloudalchemy.node-exporter
+#    - cloudalchemy.grafana

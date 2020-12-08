@@ -1,0 +1,6 @@
+---
+# vars file for roles/base_config
+packages:
+  - epel-release
+  - libselinux-python
+
