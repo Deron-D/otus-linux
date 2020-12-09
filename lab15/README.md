@@ -1,4 +1,4 @@
-# **Домашнее задание №15: Настройка мониторинга **
+# **Домашнее задание №15: Настройка мониторинга**
 
 ## **Задание:**
 Настройка мониторинга
@@ -52,8 +52,10 @@ curl 'localhost:9100/metrics'
 curl 'localhost:9090/metrics'
 ```
 
-6. Заходим в grafana. Настраиваем Data source и [Dashboard](https://grafana.com/grafana/dashboards/12486):
+6. Заходим в grafana. Настраиваем Data source и [Dashboard](https://grafana.com/grafana/dashboards/12486).
 
+
+Результат:
 ![Grafana](./grafana.jpg)
 
 ## **Полезное:**
