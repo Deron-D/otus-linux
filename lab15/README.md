@@ -22,42 +22,45 @@
 ## **Выполнено:**
 
 
+1. Устанавливаем официальные роли с ansible-galaxy:
 ```
 ansible-galaxy install --roles-path ./roles/ cloudalchemy.prometheus
 ansible-galaxy install --roles-path ./roles/ cloudalchemy.node-exporter
 ansible-galaxy install --roles-path ./roles/ cloudalchemy.grafana
+```
 
+2. Ставим Query language for JSON.
+```
 yum install python2-pip-8.1.2-14.el7.noarch
 pip install --upgrade pip
 pip install jmespath
+```
 
+3. Разрешаем порты на хостовой машине (порты в виртуалку пробросятся при её запуске)
+```
 firewall-cmd --permanent --add-port=3000/tcp --add-port=9090/tcp
 firewall-cmd --reload
+```
 
+4. Заносим ноду в [targets.yml](./roles/cloudalchemy.prometheus/files/prometheus/targets/targets.yml)
 
+5. Поднимаем стенд. Проверяем работу prometheus и node-exporter
+```
 vagrant up
-
+vagrant ssh
+curl 'localhost:9100/metrics'
 curl 'localhost:9090/metrics'
 ```
 
+6. Заходим в grafana. Настраиваем Data source и [Dashboard](https://grafana.com/grafana/dashboards/12486):
+
+![Grafana](./grafana.jpg)
+
 ## **Полезное:**
 
-task path: /root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/tasks/configure.yml:52
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/files/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/tasks/files/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/tasks/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/files/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/files/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/prometheus/targets"
-[WARNING]: Unable to find 'prometheus/targets' in expected paths (use -vvvvv to see paths)
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/files/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/tasks/files/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/roles/cloudalchemy.prometheus/tasks/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/files/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/files/prometheus/targets"
-looking for "prometheus/targets" at "/root/otus/otus-linux/lab15/prometheus/targets"
+Настройка Prometheus + Grafana
+ - https://eax.me/prometheus-and-grafana/
+ - https://grafana.com/docs/grafana/latest/installation/rpm/
 
+ 
+ 
