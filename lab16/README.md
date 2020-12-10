@@ -30,6 +30,7 @@
 
 ## **Полезное:**
 
+```
 # journalctl --field=_TRANSPORT - все доступные транспорты
 # journalctl _TRANSPORT=syslog - то, что пришло через syslog
 # journalctl _TRANSPORT=syslog -o verbose - структурированные данные
@@ -47,3 +48,4 @@
 # journalctl _UID=0 - все с UID 0
 # journalctl --list-boots - показать время ребутов сервера (если нет директории то будет показан только последний)
 # journalctl -b -2 - показать логи второго бута
+```
