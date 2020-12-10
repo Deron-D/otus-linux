@@ -14,3 +14,4 @@
 * [Домашняя работа №12: PAM](https://github.com/Deron-D/otus-linux/tree/master/lab12)
 * [Домашняя работа №13: Практика с SELinux](https://github.com/Deron-D/otus-linux/tree/master/lab13)
 * [Домашняя работа №14: Docker](https://github.com/Deron-D/otus-linux/tree/master/lab14)
+* [Домашняя работа №15: Настройка мониторинга](https://github.com/Deron-D/otus-linux/tree/master/lab15)
