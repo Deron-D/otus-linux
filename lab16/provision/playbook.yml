@@ -1,4 +1,16 @@
 ---
+- hosts: all # part running on all hosts
+  become: true
+  tasks:
+  - name: install packages # переведём синтаксис yum из deprecated
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - epel-release
+
+
 - hosts: web # server web provision
   become: true
   roles:

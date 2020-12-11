@@ -1,2 +1,19 @@
 ---
 # handlers file for ./provision/roles/web-role
+- name: restart_nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
+    
+- name: reload_nginx
+  systemd:
+    name: nginx
+    state: reloaded
+
+- name: restart_auditd
+#  shell: service auditd restart
+  systemd:
+    name: auditd
+    state: restarted
+    enabled: yes

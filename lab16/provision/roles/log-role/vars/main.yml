@@ -1,5 +1,4 @@
 ---
 # vars file for ./provision/roles/log-role
 packages:
-  - epel-release
-
+  - systemd-journal-gateway

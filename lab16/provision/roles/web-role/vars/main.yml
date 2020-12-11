@@ -1,5 +1,8 @@
 ---
 # vars file for ./provision/roles/web-role
 packages:
-  - epel-release
+  - systemd-journal-gateway
+  - nginx
+  - audispd-plugins
 
+nginx_conf_mode: '0644'
