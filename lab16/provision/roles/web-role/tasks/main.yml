@@ -1,0 +1,7 @@
+---
+# tasks file for ./provision/roles/web-role
+- name: Install requied packages
+  yum:
+    name: "{{ packages }}"
+    state: present
+          

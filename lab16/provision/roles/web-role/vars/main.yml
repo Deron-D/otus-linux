@@ -1,0 +1,5 @@
+---
+# vars file for ./provision/roles/web-role
+packages:
+  - epel-release
+

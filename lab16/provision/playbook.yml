@@ -1,0 +1,13 @@
+---
+- hosts: web # server web provision
+  become: true
+  roles:
+    - web-role
+    
+- hosts: log # server role provision
+  become: true
+  roles:
+    - log-role
+    
+
+
