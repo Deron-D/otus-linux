@@ -18,3 +18,10 @@
   args:
     executable: /bin/bash
     warn: no
+
+- name: restart_systemd-journal-upload
+  systemd:
+    name: systemd-journal-upload
+    state: restarted
+
+

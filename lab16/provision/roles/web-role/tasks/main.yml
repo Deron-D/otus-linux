@@ -30,3 +30,8 @@
   notify:
       - restart_auditd
 
+- name: Configure host for journal-upload
+  copy:
+    src: files/journal-upload.conf
+    dest: /etc/systemd/journal-upload.conf
+  notify: restart_systemd-journal-upload

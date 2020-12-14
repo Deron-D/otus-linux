@@ -4,4 +4,17 @@
   yum:
     name: "{{ packages }}"
     state: present
-          
+
+- name: Create directory for systemd-journal-remote
+  file:
+    path: /var/log/journal/remote
+    state: directory
+    owner: systemd-journal-remote
+    group: systemd-journal-remote
+  notify: restart_systemd-journal-remote
+
+- name: Configure systemd-journal-remote
+  copy:
+    src: files/systemd-journal-remote.service
+    dest: /usr/lib/systemd/system/systemd-journal-remote.service
+  notify: restart_systemd-journal-remote
