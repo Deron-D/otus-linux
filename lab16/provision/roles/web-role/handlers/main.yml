@@ -12,8 +12,9 @@
     state: reloaded
 
 - name: restart_auditd
-#  shell: service auditd restart
-  systemd:
-    name: auditd
-    state: restarted
-    enabled: yes
+  shell: |
+    systemctl daemon-reload
+    service auditd restart
+  args:
+    executable: /bin/bash
+    warn: no
