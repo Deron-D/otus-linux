@@ -25,8 +25,7 @@
   with_items:
     - { src: 'files/au-remote.conf', dest: '/etc/audisp/plugins.d/au-remote.conf' } 
     - { src: 'files/audisp-remote.conf', dest: '/etc/audisp/audisp-remote.conf' }
-    - { src: 'files/audit.rules', dest: '/etc/audit/rules.d/audit.rules' }
-    - { src: 'files/auditd.conf', dest: '/etc/audit/auditd.conf' }
+    - { src: 'files/nginx.rules', dest: '/etc/audit/rules.d/nginx.rules' }
   notify:
       - restart_auditd
 

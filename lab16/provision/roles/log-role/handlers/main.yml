@@ -5,3 +5,11 @@
     name: systemd-journal-remote
     state: restarted
     daemon_reload: yes
+
+- name: restart_auditd
+  shell: |
+    systemctl daemon-reload
+    service auditd restart
+  args:
+    executable: /bin/bash
+    warn: no

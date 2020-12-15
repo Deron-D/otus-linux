@@ -18,3 +18,11 @@
     src: files/systemd-journal-remote.service
     dest: /usr/lib/systemd/system/systemd-journal-remote.service
   notify: restart_systemd-journal-remote
+
+- name: Configure auditd listen for messages
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regexp: '^##(tcp_listen_port = 60)$'
+    line: '\1'
+    backrefs: yes
+  notify: restart_auditd

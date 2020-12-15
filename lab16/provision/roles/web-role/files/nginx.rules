@@ -1,0 +1,1 @@
+-w /etc/nginx/ -p wa -k nginx_config_changed
