@@ -97,8 +97,11 @@ node=web type=SYSCALL msg=audit(1608071759.087:2729): arch=c000003e syscall=2 su
 ## **Полезное:**
 
 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-defining_audit_rules_and_controls
+
 https://docs.nginx.com/nginx/admin-guide/monitoring/logging/
+
 https://www.server-world.info/en/note?os=CentOS_7&p=audit&f=2
+
 https://bugzilla.redhat.com/show_bug.cgi?id=973697
 
 ```
