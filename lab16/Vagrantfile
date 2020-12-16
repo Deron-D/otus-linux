@@ -42,15 +42,15 @@ Vagrant.configure("2") do |config|
             cp ~vagrant/.ssh/auth* ~root/.ssh
           SHELL
 
-#          case boxname.to_s
-#            when "log"
-#               box.vm.provision "ansible" do |ansible|
+          case boxname.to_s
+            when "log"
+               box.vm.provision "ansible" do |ansible|
 #                ansible.verbose = "vv"
-#                 ansible.playbook = "provision/playbook.yml"
-#                 ansible.become = "true"
-#                 ansible.limit = "all"
-#              end
-#         end
+                 ansible.playbook = "provision/playbook.yml"
+                 ansible.become = "true"
+                 ansible.limit = "all"
+              end
+         end
       end
   end
 end
