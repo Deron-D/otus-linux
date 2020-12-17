@@ -8,7 +8,14 @@ MACHINES = {
         :box_name => "centos/7",
         :ip_addr => '192.168.11.101',
         :ram => 1024,
-        :cpu => 2
+        :cpu => 2,
+        :disks => {
+                :sata1 => {
+                        :dfile => './disks/sata1.vdi',
+                        :size => 250,
+                        :port => 1
+                }
+           }
         },
   :client => {
         :box_name => "centos/7",
