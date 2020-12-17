@@ -1,0 +1,21 @@
+---
+- hosts: all # part running on all hosts
+  become: true
+  tasks:
+  - name: install packages # переведём синтаксис yum из deprecated
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - epel-release
+   
+- hosts: backupserver 
+  become: true
+  roles:
+    - backup-server-role
+    
+- hosts: client 
+  become: true
+  roles:
+    - client-role
