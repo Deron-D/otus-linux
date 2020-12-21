@@ -1,10 +1,10 @@
 ---
 # tasks file for provision/roles/backup-server-role
 
-- name: Check directory exist
+- name: Check directory exists
   ansible.builtin.stat:
     path: /var/backup
-  register: var_backup_exist
+  register: var_backup_exists
 
 
 - name: Create partition, filesystem and mount point
@@ -15,4 +15,4 @@
     mount /dev/sdb1 /var//backup/
   args:
     warn: no
-  when: var_backup_exist.stat.exists == False
+  when: var_backup_exists.stat.exists == False
