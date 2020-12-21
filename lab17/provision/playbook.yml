@@ -2,7 +2,7 @@
 - hosts: all # part running on all hosts
   become: true
   tasks:
-  - name: install packages # переведём синтаксис yum из deprecated
+  - name: Install epel-release # переведём синтаксис yum из deprecated
     yum:
       name: "{{ packages }}"
       state: present
@@ -10,6 +10,14 @@
       packages:
       - epel-release
    
+  - name: Install borg
+    yum:
+      name: "{{ packages }}"
+      state: latest
+    vars:
+      packages:
+      - borgbackup
+
 - hosts: backupserver 
   become: true
   roles:

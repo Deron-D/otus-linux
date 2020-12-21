@@ -7,14 +7,12 @@
   register: var_backup_exist
 
 
-- name: Create partition filesystem and mount point
+- name: Create partition, filesystem and mount point
   shell: |
     echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/sdb
     mkfs.xfs /dev/sdb1
     mkdir /var/backup
     mount /dev/sdb1 /var//backup/
-
   args:
-#    executable: /bin/bash
     warn: no
   when: var_backup_exist.stat.exists == False
