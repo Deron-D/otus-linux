@@ -23,4 +23,4 @@
 
 ## **Полезное:**
 
-(Central repository Borg server with Ansible or Salt)[https://borgbackup.readthedocs.io/en/stable/deployment/central-backup-server.html]
+[Central repository Borg server with Ansible or Salt](https://borgbackup.readthedocs.io/en/stable/deployment/central-backup-server.html)
