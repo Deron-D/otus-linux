@@ -52,4 +52,8 @@
   roles:
     - backup-server-role
 
+- hosts: client
+  become: true
+  roles:
+    - borgclient-role
 

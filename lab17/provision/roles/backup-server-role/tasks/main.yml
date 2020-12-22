@@ -52,5 +52,5 @@
 - name: Add client public key to server
   authorized_key:
     user: "{{ user }}"
-    key: "{{ hostvars['client'].client_public_key.stdout }}"
+    key: "{{ hostvars['client'].main_public_key.stdout }}"
 

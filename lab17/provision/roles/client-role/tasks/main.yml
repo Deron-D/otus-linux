@@ -8,7 +8,7 @@
 
 - name: Get public key
   shell: cat /root/.ssh/id_rsa.pub
-  register: client_public_key
+  register: main_public_key
 
       #- name: Download ssh-key to host machine
       #  fetch:
