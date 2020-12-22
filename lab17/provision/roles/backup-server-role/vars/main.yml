@@ -1,2 +1,6 @@
 ---
 # vars file for provision/roles/backup-server-role
+repo_path: /var/backup
+user: backup
+group: backup
+home: /home/backup

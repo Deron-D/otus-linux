@@ -3,16 +3,54 @@
 
 - name: Check directory exists
   ansible.builtin.stat:
-    path: /var/backup
-  register: var_backup_exists
-
+    path: "{{ repo_path }}"
+  register: repo_path_exists
 
 - name: Create partition, filesystem and mount point
   shell: |
     echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/sdb
     mkfs.xfs /dev/sdb1
-    mkdir /var/backup
-    mount /dev/sdb1 /var//backup/
+    mkdir "{{ repo_path }}"
+    mount /dev/sdb1 "{{ repo_path }}"
   args:
     warn: no
-  when: var_backup_exists.stat.exists == False
+  when: repo_path_exists.stat.exists == False
+
+- name: Create borg repository
+  become_user: root
+  command: borg init -e repokey "{{ repo_path }}"
+  environment:
+    BORG_PASSPHRASE: test
+  when: repo_path_exists.stat.exists == False
+
+- name: Add backup user group 
+  group: 
+    name: "{{ group }}" 
+    state: present    
+
+- name: Add user backup
+  user:
+    name: "{{ user }}"
+    group: "{{ group }}"  
+    home: "{{ home }}"
+    createhome: yes  
+    shell: /bin/bash  
+    state: present
+
+- name: Recursively change ownership of a directory
+  file:
+    path: "{{ repo_path }}"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: '0755'
+
+#- debug:
+#    msg: "{{ hostvars['client'].master_public_key.stdout }}"
+
+- name: Add client public key to server
+  authorized_key:
+    user: "{{ user }}"
+    key: "{{ hostvars['client'].client_public_key.stdout }}"
+

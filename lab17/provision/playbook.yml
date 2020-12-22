@@ -1,7 +1,21 @@
 ---
 - hosts: all # part running on all hosts
   become: true
+  vars:
+    server_address: "192.168.11.101"
+    client_address: "192.168.11.102"
+    client_hostname: client
+    server_hostname: backupserver  
+    user: backup
+    group: backup
+    home: /home/backup
+  
   tasks:
+  - debug:
+      msg:
+      - "{{ user }}"
+      - "{{ group }}"
+
   - name: Install epel-release # переведём синтаксис yum из deprecated
     yum:
       name: "{{ packages }}"
@@ -13,17 +27,29 @@
   - name: Install borg
     yum:
       name: "{{ packages }}"
-      state: latest
+      state: present
+      update_cache: no
     vars:
       packages:
       - borgbackup
 
-- hosts: backupserver 
-  become: true
-  roles:
-    - backup-server-role
-    
-- hosts: client 
+  - name: Add IP address of hosts to /etc/hosts
+    lineinfile: 
+      dest: /etc/hosts
+      line: "{{ item }}"
+      state: present
+    with_items:
+      - "{{ server_address }} {{ server_hostname }}"
+      - "{{ client_address }} {{ client_hostname }}"
+
+- hosts: client
   become: true
   roles:
     - client-role
+
+- hosts: backupserver
+  become: true
+  roles:
+    - backup-server-role
+
+

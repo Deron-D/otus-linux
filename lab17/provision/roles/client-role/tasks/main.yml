@@ -1,2 +1,17 @@
 ---
 # tasks file for provision/roles/client-role
+
+- name: Generate an OpenSSH keypair
+  openssh_keypair:
+    path: /root/.ssh/id_rsa
+    size: 2048
+
+- name: Get public key
+  shell: cat /root/.ssh/id_rsa.pub
+  register: client_public_key
+
+      #- name: Download ssh-key to host machine
+      #  fetch:
+      #    src: /root/.ssh/id_rsa.pub
+      #    dest: tmp/id_rsa.tmp
+      #    flat: yes
