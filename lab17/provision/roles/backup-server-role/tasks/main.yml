@@ -16,12 +16,12 @@
     warn: no
   when: repo_path_exists.stat.exists == False
 
-- name: Create borg repository
-  become_user: root
-  command: borg init -e repokey "{{ repo_path }}"
-  environment:
-    BORG_PASSPHRASE: test
-  when: repo_path_exists.stat.exists == False
+    #- name: Create borg repository
+    #become_user: root
+    #command: borg init -e repokey "{{ repo_path }}"
+    #environment:
+    #BORG_PASSPHRASE: test
+    #when: repo_path_exists.stat.exists == False
 
 - name: Add backup user group 
   group: 

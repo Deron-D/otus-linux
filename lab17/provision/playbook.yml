@@ -1,14 +1,6 @@
 ---
 - hosts: all # part running on all hosts
   become: true
-  vars:
-    server_address: "192.168.11.101"
-    client_address: "192.168.11.102"
-    client_hostname: client
-    server_hostname: backupserver  
-    user: backup
-    group: backup
-    home: /home/backup
   
   tasks:
   - debug:

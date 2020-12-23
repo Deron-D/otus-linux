@@ -1,6 +1,2 @@
 ---
 # vars file for provision/roles/client-role
-repo_path: /var/backup
-user: backup
-group: backup
-home: /home/backup
