@@ -1,0 +1,8 @@
+#!/bin/sh
+
+export BORG_PASSPHRASE="{{ passphrase }}" 
+
+borg create -v --compression lzma,2 {{ user }}@{{ server_hostname }}:{{ repo_path }}/{{ client_hostname }}-etc::etc_backup-{now:%Y-%m-%d_%H:%M:%S} {{ backup_source }}
+
+# After backup
+borg prune -v --show-rc --list  {{ user }}@{{ server_hostname }}:{{ repo_path }}/{{ client_hostname }}-etc --keep-daily=90 --keep-monthly=12

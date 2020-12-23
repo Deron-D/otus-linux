@@ -1,0 +1,57 @@
+---
+# tasks file for provision/roles/borgclient-role
+
+
+- name: Authenticity with server
+  shell: ssh -o StrictHostKeyChecking=no "{{ user }}@{{ server_hostname }}" echo ok
+
+- name: Check borg repo
+  command: borg check "{{ user }}@{{ server_hostname }}:{{ repo_path }}/{{ client_hostname }}-etc"
+  environment:
+    BORG_PASSPHRASE: "{{ passphrase }}"
+  register: borg_check_repo
+  ignore_errors: yes
+    
+
+- debug:
+    msg:
+    - "{{ borg_check_repo }}"
+#    - "{{ server_hostname }}"
+#    - "{{ repo_path }}"
+
+- name: Init borg repo
+  command: borg init -e repokey "{{ user }}@{{ server_hostname }}:{{ repo_path }}/{{ client_hostname }}-etc"
+  environment:
+    BORG_PASSPHRASE: "{{ passphrase }}"
+  when: borg_check_repo.rc != 0
+
+- name: Copy files for configure service backup
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: 'backup.timer', dest: '{{ unit_files_dst_path }}', mode: '0644' }
+    - { src: 'backup.service', dest: '{{ unit_files_dst_path }}', mode: '0644' }
+
+- name: Copy script for backup
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: 'backup.sh.j2', dest: '/opt/backup.sh', mode: '0744' }
+
+- name: Start backup services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  with_items:
+    - backup.service
+    - backup.timer

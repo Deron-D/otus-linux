@@ -3,10 +3,10 @@
   become: true
   
   tasks:
-  - debug:
-      msg:
-      - "{{ user }}"
-      - "{{ group }}"
+    #  - debug:
+    #  msg:
+    #  - "{{ user }}"
+    #  - "{{ group }}"
 
   - name: Install epel-release # переведём синтаксис yum из deprecated
     yum:

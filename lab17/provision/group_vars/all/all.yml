@@ -1,0 +1,12 @@
+---
+server_address: "192.168.11.101"
+client_address: "192.168.11.102"
+client_hostname: client
+server_hostname: backupserver  
+user: backup
+group: backup
+home: /home/backup
+repo_path: /var/backup
+passphrase: 123456
+unit_files_dst_path: /etc/systemd/system/
+backup_source: /etc
