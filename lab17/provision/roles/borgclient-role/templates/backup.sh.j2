@@ -1,8 +1,18 @@
-#!/bin/sh
+#!/bin/bash -ue
+
+sleep 5
 
 export BORG_PASSPHRASE="{{ passphrase }}" 
+DATE=$(date --iso-8601)-$(hostname)
+
+# Log Borg version
+borg --version
+
+echo "Starting backup for $DATE"
 
 borg create -v --compression lzma,2 {{ user }}@{{ server_hostname }}:{{ repo_path }}/{{ client_hostname }}-etc::etc_backup-{now:%Y-%m-%d_%H:%M:%S} {{ backup_source }}
+
+echo "Completed backup for $DATE"
 
 # After backup
 borg prune -v --show-rc --list  {{ user }}@{{ server_hostname }}:{{ repo_path }}/{{ client_hostname }}-etc --keep-daily=90 --keep-monthly=12
