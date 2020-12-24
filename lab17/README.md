@@ -48,12 +48,32 @@ Dec 23 19:38:58 client backup.sh[26652]: terminating with success status, rc 0
 Dec 23 19:38:58 client systemd[1]: Started My backup service.
 Hint: Some lines were ellipsized, use -l to show in full.
 
+[root@client /]# journalctl -u backup
+-- Logs begin at Thu 2020-12-24 12:31:39 UTC, end at Thu 2020-12-24 13:01:01 UTC. --
+Dec 24 12:32:47 client systemd[1]: Starting My backup service...
+Dec 24 12:32:52 client backup.sh[4470]: borg 1.1.14
+Dec 24 12:32:52 client backup.sh[4470]: Starting backup for 2020-12-24-client
+Dec 24 12:32:53 client backup.sh[4470]: Creating archive at "backup@backupserver:/var/backup/client-etc::etc_backup-{now:%Y-%m-%
+Dec 24 12:32:58 client backup.sh[4470]: Completed backup for 2020-12-24-client
+Dec 24 12:32:59 client backup.sh[4470]: Keeping archive: etc_backup-2020-12-24_12-32-52       Thu, 2020-12-24 12:32:53 [8235b7fc
+Dec 24 12:32:59 client backup.sh[4470]: terminating with success status, rc 0
+Dec 24 12:32:59 client systemd[1]: Started My backup service.
+Dec 24 12:38:15 client systemd[1]: Starting My backup service...
+Dec 24 12:38:20 client backup.sh[4563]: borg 1.1.14
+Dec 24 12:38:20 client backup.sh[4563]: Starting backup for 2020-12-24-client
+Dec 24 12:38:21 client backup.sh[4563]: Creating archive at "backup@backupserver:/var/backup/client-etc::etc_backup-{now:%Y-%m-%
+Dec 24 12:38:22 client backup.sh[4563]: Completed backup for 2020-12-24-client
+Dec 24 12:38:23 client backup.sh[4563]: Keeping archive: etc_backup-2020-12-24_12-38-21       Thu, 2020-12-24 12:38:21 [e0478334
+Dec 24 12:38:23 client backup.sh[4563]: Pruning archive: etc_backup-2020-12-24_12-32-52       Thu, 2020-12-24 12:32:53 [8235b7fc
+Dec 24 12:38:23 client backup.sh[4563]: terminating with success status, rc 0
+
+
 [root@client vagrant]# systemctl status backup.timer
 ● backup.timer - Run backup script every 5 minutes
    Loaded: loaded (/etc/systemd/system/backup.timer; enabled; vendor preset: disabled)
-   Active: active (running) since Wed 2020-12-23 15:51:38 UTC; 3h 52min ago
+   Active: active (running) since Thu 2020-12-24 13:33:26 UTC; 1s ago
 
-Dec 23 15:51:38 client systemd[1]: Started Run backup script every 5 minutes.[root@client vagrant]# systemctl status backup.timer
+Dec 24 13:33:26 client systemd[1]: Started Run backup script every 5 minutes.
 
 [root@client vagrant]# systemctl list-timers
 NEXT                         LEFT          LAST PASSED UNIT                         ACTIVATES
