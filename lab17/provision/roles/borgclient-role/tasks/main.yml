@@ -53,5 +53,5 @@
     enabled: yes
     daemon_reload: yes
   with_items:
-    - backup.service
     - backup.timer
+    - backup.service
