@@ -104,17 +104,24 @@ Vagrant.configure("2") do |config|
         when "inetRouter"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
             set -x
-            sysctl net.ipv4.conf.all.forwarding=1
+            echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+            sysctl -p
             iptables -t nat -A POSTROUTING ! -d 192.168.0.0/22 -o eth0 -j MASQUERADE
-            ip route add 192.168.0.0/22 via 192.168.255.2 dev eth1
+            echo "192.168.0.0/22 via 192.168.255.2" >> /etc/sysconfig/network-scripts/route-eth1
+            systemctl restart network
+	    ip route add 192.168.0.0/22 via 192.168.255.2 dev eth1
             SHELL
         when "centralRouter"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
             set -x
+            echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+            sysctl -p
             echo "DEFROUTE=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
+            echo "DEFROUTE=yes" >> /etc/sysconfig/network-scripts/ifcfg-eth1
             echo "GATEWAY=192.168.255.1" >> /etc/sysconfig/network-scripts/ifcfg-eth1
+            echo "192.168.2.0/24 via 192.168.0.18" >> /etc/sysconfig/network-scripts/route-eth5
+            echo "192.168.1.0/24 via 192.168.0.22" >> /etc/sysconfig/network-scripts/route-eth6            
             systemctl restart network
-            sysctl net.ipv4.conf.all.forwarding=1
             ip route del default
             ip route add default via 192.168.255.1 dev eth1
             ip route add 192.168.2.0/24 via 192.168.0.18 dev eth5
@@ -132,10 +139,11 @@ Vagrant.configure("2") do |config|
         when "office1Router"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
             set -x
+            echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+            sysctl -p
             echo "DEFROUTE=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0 
             echo "GATEWAY=192.168.0.17" >> /etc/sysconfig/network-scripts/ifcfg-eth1
-            systemctl restart network
-            sysctl net.ipv4.conf.all.forwarding=1
+	    systemctl restart network
             ip route del default
             ip route add default via 192.168.0.17 dev eth1
             SHELL
@@ -151,6 +159,8 @@ Vagrant.configure("2") do |config|
         when "office2Router"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
             set -x
+            echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+            sysctl -p
             echo "DEFROUTE=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
             echo "GATEWAY=192.168.0.21" >> /etc/sysconfig/network-scripts/ifcfg-eth1
             systemctl restart network
