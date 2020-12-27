@@ -195,5 +195,104 @@ Office2----/
 |192.168.0.248/30 | 192.168.0.249 - 192.168.0.250,2	| 192.168.0.251| 11000000.10101000.00000000.111110 00 |
 |192.168.0.252/30 | 192.168.0.253 - 192.168.0.254,2	| 192.168.0.255| 11000000.10101000.00000000.111111 00 |
 
+В ходе выполнения практической части подготовлен [Vagrantfile](Vagrantfile)
+
+Построена следующая сеть:
+```
+Office1Server--->Office1Router ---\
+CentralServer------------> CentralRouter --InetRouter --> internet
+Office2Server--->Office2Router ---/
+```
+
+![Схема сети](https://github.com/Deron-D/otus-linux/blob/master/lab18/net18.png)
+
+
+| Узел          | Интерфейс | Адрес                              | Default GW                   | virtualbox__intnet |
+|---------------|-----------|------------------------------------|------------------------------|--------------------|
+| inetRouter    | eth0      | DHCP                               | DHCP                         |                    |
+|               | eth1      | 192.168.255.1/255.255.255.252 =30  |                              | "router-net"       |
+| centralRouter | eth1      | 192.168.255.2/255.255.255.252 =30  |  192.168.255.1 (inetRouter)  | "router-net"       |
+|               | eth2      | 192.168.0.1/255.255.255.240 = 28   |                              | "directors-net"    |
+|               | eth3      | 192.168.0.33/255.255.255.240 = 28  |                              | "officehw-net"     |
+|               | eth4      | 192.168.0.65/255.255.255.192 = 26  |                              | "wifi-net"         |
+|               | eth5      | 192.168.0.17/255.255.255.252 = 30  |                              | "office1-net"      |
+|               | eth6      | 192.168.0.21/255.255.255.252 = 30  |                              | "office2-net"      |
+| centralServer | eth1      | 192.168.0.2/255.255.255.240 = 28   | 192.168.0.1(CentralRouter)   | "directors-net"    |
+| office1Router | eth1      | 192.168.0.18/255.255.255.252 = 30  | 192.168.0.17(CentralRouter)  | "office1-net"      |
+|               | eth2      | 192.168.2.1/255.255.255.192 = 26   |                              | "dev1-net"         |
+|               | eth3      | 192.168.2.65/255.255.255.192 = 26  |                              | "testservers1-net" |
+|               | eth4      | 192.168.2.129/255.255.255.192 = 26 |                              | "managers1-net"    |
+|               | eth5      | 192.168.2.193/255.255.255.192 = 26 |                              | "officehw1-net"    |
+| office1Server | eth1      | 192.168.2.66/255.255.255.192 = 26  | 192.168.2.65(Office1Router)  | "testservers1-net" |
+| office2Router | eth1      | 192.168.0.22/255.255.255.252 = 30  | 192.168.0.21(CentralRouter)  | "office2-net"      |
+|               | eth2      | 192.168.1.1/255.255.255.128 = 25   |                              | "dev2-net"         |
+|               | eth3      | 192.168.1.129/255.255.255.192 = 26 |                              | "testservers2-net" |
+|               | eth4      | 192.168.1.193/255.255.255.192 = 26 |                              | "officehw2-net"    |
+| office2Server | eth1      | 192.168.1.130/255.255.255.192 = 26 | 192.168.1.129(office2Router) | "testservers2-net" |
+
+
+- Запускаем:
+```
+vagrant up
+```
+
+- Проверяем:
+```
+vagrant ssh office1Server
+
+[vagrant@office1Server ~]$ tracepath -n 8.8.8.8
+ 1?: [LOCALHOST]                                         pmtu 1500
+ 1:  192.168.2.65                                          0.554ms
+ 1:  192.168.2.65                                          0.419ms
+ 2:  192.168.0.17                                          0.758ms
+ 3:  192.168.255.1                                         1.004ms
+^C
+[vagrant@office1Server ~]$ tracepath -n 192.168.1.130
+ 1?: [LOCALHOST]                                         pmtu 1500
+ 1:  192.168.2.65                                          0.558ms
+ 1:  192.168.2.65                                          0.453ms
+ 2:  192.168.0.17                                          0.903ms
+ 3:  192.168.0.22                                          0.963ms
+ 4:  192.168.1.130                                         1.012ms reached
+     Resume: pmtu 1500 hops 4 back 4
+
+[vagrant@office1Server ~]$  tracepath -n 192.168.0.2
+ 1?: [LOCALHOST]                                         pmtu 1500
+ 1:  192.168.2.65                                          0.391ms
+ 1:  192.168.2.65                                          0.292ms
+ 2:  192.168.0.17                                          0.597ms
+ 3:  192.168.0.2                                           0.722ms reached
+     Resume: pmtu 1500 hops 3 back 3
+
+[root@s01-deron lab18]# vagrant ssh office2Server
+Last login: Sun Dec 27 16:50:20 2020 from 10.0.2.2
+[vagrant@office2Server ~]$ tracepath -n 8.8.8.8
+ 1?: [LOCALHOST]                                         pmtu 1500
+ 1:  192.168.1.129                                         0.464ms
+ 1:  192.168.1.129                                         0.298ms
+ 2:  192.168.0.21                                          0.640ms
+ 3:  192.168.255.1                                         0.850ms
+^C
+
+[vagrant@office2Server ~]$ tracepath -n 192.168.2.66
+ 1?: [LOCALHOST]                                         pmtu 1500
+ 1:  192.168.1.129                                         0.399ms
+ 1:  192.168.1.129                                         0.593ms
+ 2:  192.168.0.21                                          0.947ms
+ 3:  192.168.0.18                                          0.851ms
+ 4:  192.168.2.66                                          1.037ms reached
+     Resume: pmtu 1500 hops 4 back 4
+
+[vagrant@office1Server ~]$  tracepath -n 192.168.0.2
+ 1?: [LOCALHOST]                                         pmtu 1500
+ 1:  192.168.2.65                                          0.391ms
+ 1:  192.168.2.65                                          0.292ms
+ 2:  192.168.0.17                                          0.597ms
+ 3:  192.168.0.2                                           0.722ms reached
+     Resume: pmtu 1500 hops 3 back 3
+
+```
+
+
 ## **Полезное:**
 
