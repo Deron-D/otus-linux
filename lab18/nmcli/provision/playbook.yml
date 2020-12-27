@@ -15,4 +15,25 @@
     vars:
       packages:
       - epel-release
-   
+  
+  - name: Remove default from eth0
+    shell: nmcli connection modify System\ eth0 ipv4.never-default yes && nmcli connection up System\ eth0
+    when: "'inetRouter' not in inventory_hostname"
+
+        #  - name: Install packages 
+        # yum:
+        #name: "{{ packages }}"
+        #state: present
+        #vars:
+        #packages:
+        #- NetworkManager-tui
+
+- hosts: inetRouter
+  become: true
+  roles:
+    - inetrouter-role
+
+- hosts: centralRouter office1Router office2Router 
+  become: true
+  roles:
+    - router-role
