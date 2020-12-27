@@ -264,8 +264,8 @@ vagrant ssh office1Server
  3:  192.168.0.2                                           0.722ms reached
      Resume: pmtu 1500 hops 3 back 3
 
-[root@s01-deron lab18]# vagrant ssh office2Server
-Last login: Sun Dec 27 16:50:20 2020 from 10.0.2.2
+vagrant ssh office2Server
+
 [vagrant@office2Server ~]$ tracepath -n 8.8.8.8
  1?: [LOCALHOST]                                         pmtu 1500
  1:  192.168.1.129                                         0.464ms
