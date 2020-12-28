@@ -15,3 +15,9 @@
 * [Домашняя работа №13: Практика с SELinux](https://github.com/Deron-D/otus-linux/tree/master/lab13)
 * [Домашняя работа №14: Docker](https://github.com/Deron-D/otus-linux/tree/master/lab14)
 * [Домашняя работа №15: Настройка мониторинга](https://github.com/Deron-D/otus-linux/tree/master/lab15)
+* [Домашняя работа №16: Сбор и анализ логов](https://github.com/Deron-D/otus-linux/tree/master/lab16)
+* [Домашняя работа №17: Резервное копирование](https://github.com/Deron-D/otus-linux/tree/master/lab17)
+* [Домашняя работа №18: Архитектура сетей](https://github.com/Deron-D/otus-linux/tree/master/lab18)
+
+
+
