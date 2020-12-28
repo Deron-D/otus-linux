@@ -231,10 +231,17 @@ Office2Server--->Office2Router ---/
 | office2Server | eth1      | 192.168.1.130/255.255.255.192 = 26 | 192.168.1.129(office2Router) | "testservers2-net" |
 
 
-- Запускаем:
+- Запускаем c shell provision (реализовано через iproute2):
 ```
 vagrant up
 ```
+
+- Либо запускаем c ansible provision (реализовано через NetworkManager): 
+```
+cd nmcli
+vagrant up
+```
+
 
 - Проверяем:
 ```
