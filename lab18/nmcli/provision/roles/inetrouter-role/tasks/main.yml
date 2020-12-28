@@ -9,14 +9,13 @@
     reload: yes
 
 - name: Configure internal static route
-  shell: "nmcli connection modify System\\ {{ item.int }} +ipv4.routes \"{{ item.route }}\" && nmcli connection up System\\ {{ item.int }}"
-  with_items:
-    - { int: 'eth1', route: '{{ internal_net }} 192.168.255.2'}
+  shell: "nmcli connection modify System\\ {{ item.dev }} +ipv4.routes \"{{ item.route }}\" && nmcli connection up System\\ {{ item.dev }}"
+  loop: "{{ routes }}"
 
 - name: Setup NAT 
   iptables:
     table: nat
     chain: POSTROUTING
-    out_interface: eth0
+    out_interface: "{{ out_int }}"
     destination: "!{{ internal_net }}"
     jump: MASQUERADE
