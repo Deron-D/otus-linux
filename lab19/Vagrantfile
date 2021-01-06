@@ -49,6 +49,7 @@ config.vm.define "pxeserver" do |server|
           '--boot4', 'none'
         ]
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    vb.customize ["modifyvm", :id, "--vram", "256"]
     end
       # ENABLE to fix memory issues
 #     end

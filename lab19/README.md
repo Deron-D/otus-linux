@@ -18,6 +18,11 @@
 
 ## **Выполнено:**
 
+- Поднимаем стенд:
+```bash
+vagrant up
+```
 
 ## **Полезное:**
 
+[Preparing to install from the network using PXE](https://docs.centos.org/en-US/8-docs/advanced-install/assembly_preparing-for-a-network-install/)
