@@ -1,0 +1,8 @@
+---
+vlans:
+  - vlan_name: vlan100
+    ifname: eth3
+    vlan_id: 100
+  - vlan_name: vlan101
+    ifname: eth3
+    vlan_id: 101

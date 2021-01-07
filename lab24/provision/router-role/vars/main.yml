@@ -1,0 +1,16 @@
+---
+# vars file for provision/router-role
+team_name: Team0
+
+nmcli_bond:
+  - conn_name: "{{ team_name }}"
+    ip4: "{{ ip4addr }}"
+    mode: balance-rr
+
+nmcli_bond_slave:
+  - conn_name: Team-Port0
+    ifname: eth1
+    master: "{{ team_name }}"
+  - conn_name: Team-Port1
+    ifname: eth2
+    master: "{{ team_name }}"

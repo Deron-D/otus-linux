@@ -1,0 +1,40 @@
+---
+- hosts: all # part running on all hosts
+  become: true
+
+  tasks:
+    #  - debug:
+    #  msg:
+    #  - "{{ user }}"
+    #  - "{{ group }}"
+
+  - name: Install epel-release
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - epel-release
+
+        #  - name: Install packages 
+        # yum:
+        #name: "{{ packages }}"
+        #state: present
+        #vars:
+        #packages:
+        #- NetworkManager-tui
+
+- hosts: Routers 
+  become: true
+  roles:
+    - router-role
+
+- hosts: Isolated 
+  become: true
+  roles:
+    - isolated-role
+     
+#- hosts: centralServer office1Server office2Server
+#  become: true
+#  roles:
+#    - server-role

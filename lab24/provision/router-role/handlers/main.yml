@@ -1,0 +1,22 @@
+---
+# handlers file for provision/router-role
+- name: reload_network_interface
+  become: yes
+  shell: 
+    nmcli con reload
+
+- name: restart_Network
+  become: yes
+  service:
+    name: network
+    state: restarted
+
+- name: restart_NetworkManager
+  become: yes
+  systemd:
+    name: NetworkManager
+    state: restarted
+
+- name: wait_for_new_network_settings
+  local_action: 
+    module: wait_for host={{ ansible_ssh_host | default(inventory_hostname) }} port="{{ ansible_port}}" delay=10 timeout=300

@@ -1,0 +1,9 @@
+---
+#routes:
+#  - dev: Team0
+#  
+route: '10.10.10.0/24 192.168.255.2'
+out_int: eth0
+internal_int: eth1
+internal_net: 192.168.0.0/22
+internal_nh: 192.168.255.2

@@ -1,0 +1,13 @@
+---
+# tasks file for provision/isolated-role
+- name: Remove default from eth0
+  shell: nmcli connection modify System\ eth0 ipv4.never-default yes && nmcli connection up System\ eth0
+
+- name: Try to set vlan&ip 
+  shell:
+    nmcli con add type vlan con-name "{{  vlan_name  }}"  dev eth1 id "{{  vlan_id  }}" ip4 "{{  ip4addr  }}"     
+  tags:
+    - set-client-vlan-ip
+  notify:
+    - reload_network_interface
+    - restart_NetworkManager

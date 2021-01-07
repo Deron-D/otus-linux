@@ -1,0 +1,63 @@
+---
+# tasks file for provision/router-role
+- name: Set ip forwarding on in /proc and in the sysctl file and reload if necessary
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Remove default from eth0
+  shell: nmcli connection modify System\ eth0 ipv4.never-default yes && nmcli connection up System\ eth0
+  when: inventory_hostname != "inetRouter"
+
+    #- name: Configure internal static route
+    #shell: "nmcli connection modify System\\ {{ item.dev }} +ipv4.routes \"{{ item.route }}\" && nmcli connection up System\\ {{ item.dev }}"
+    #loop: "{{ routes }}"
+    #when: "'inetRouter' in inventory_hostname"
+
+- name: Setup NAT 
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ out_int }}"
+    destination: "!{{ internal_net }}"
+    jump: MASQUERADE
+  when: inventory_hostname == "inetRouter"
+
+- name: Try to set vlan centralRouter
+  shell:
+    nmcli con add type vlan con-name "{{ item.vlan_name }}" dev "{{ item.ifname }}" id "{{ item.vlan_id }}"      
+  tags:
+    - set-centralRouter-vlans
+  with_items:
+    - '{{ vlans }}'
+  notify:
+    - reload_network_interface
+    - restart_NetworkManager
+  when: "'centralRouter' in inventory_hostname"
+
+- name: Try nmcli add bond - conn_name only & ip4 gw4 mode
+  nmcli:
+    type: bond
+    conn_name: '{{ item.conn_name }}'
+    ip4: '{{ item.ip4 }}'
+    mode: '{{ item.mode }}'
+    state: present
+  with_items:
+    - '{{ nmcli_bond }}'
+
+- name: Try nmcli add bond-slave
+  nmcli:
+    type: bond-slave
+    conn_name: '{{ item.conn_name }}'
+    ifname: '{{ item.ifname }}'
+    master: '{{ item.master }}'
+    state: present
+  with_items:
+    - '{{ nmcli_bond_slave }}'
+  notify:
+    - reload_network_interface
+    - restart_NetworkManager
+
