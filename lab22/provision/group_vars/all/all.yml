@@ -1,2 +1,2 @@
 ---
-net_dev: tun
+net_dev: tap

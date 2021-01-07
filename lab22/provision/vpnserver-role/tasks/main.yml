@@ -26,6 +26,21 @@
   tags:
     - fetch-static.key
 
+- name: Copy SystemD unit for iperf3
+  copy:
+    src: files/iperfd.service
+    dest: /etc/systemd/system/iperfd.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable iperf service
+  systemd:
+    state: started
+    name: iperfd
+    enabled: yes
+    daemon_reload: yes
+
 - name: Create openvpn config file from template
   template:
     src: templates/server.conf.j2

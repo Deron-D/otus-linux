@@ -9,8 +9,6 @@
         dest: /etc/openvpn/server.conf
         owner: root
         group: root
-      notify:
-        - restart_openvpn
       tags:
         - openvpn-server-configuration
 
