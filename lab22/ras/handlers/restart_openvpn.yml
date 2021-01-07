@@ -1,0 +1,7 @@
+debug: msg="This will be printed"- name: restart_openvpn
+  systemd:
+    name: openvpn@server
+    state: restarted
+    enabled: yes
+    debug: "Restart openvpn"
+

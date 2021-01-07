@@ -15,4 +15,29 @@
     vars:
       packages:
       - epel-release
-   
+ 
+  - name: Install needed packages 
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - openvpn 
+      - iperf3 
+      - easy-rsa
+      - tcpdump
+      - policycoreutils-python
+    tags:
+      - install-packages
+
+- name: Setup vpnserver
+  hosts: vpnserver
+  become: yes
+  roles:
+    - vpnserver-role
+
+- name: Setup client
+  hosts: client
+  become: yes
+  roles:
+    - client-role

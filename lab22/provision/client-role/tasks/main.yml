@@ -1,0 +1,20 @@
+---
+# tasks file for provision/client-role
+- name: Copy the file from master to client
+  copy:
+    src=buffer/static.key
+    dest=/etc/openvpn/
+  tags:
+    - get-static.key
+
+- name: Create openvpn config file from template
+  template:
+    src: templates/client.conf.j2
+    dest: /etc/openvpn/server.conf
+    owner: root
+    group: root
+  notify:
+    - restart_openvpn
+    - reboot_host
+  tags:
+    - openvpn-client-configuration

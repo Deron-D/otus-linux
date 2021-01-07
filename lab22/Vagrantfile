@@ -6,15 +6,15 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 MACHINES = {
   :vpnserver => {
         :box_name => "centos/7",
-        :ip_addr => '192.168.11.101',
+        :ip_addr => '192.168.11.100',
         :ram => 1024,
-        :cpu => 2,
+        :cpu => 1,
         },
   :client => {
         :box_name => "centos/7",
-        :ip_addr => '192.168.11.102',
+        :ip_addr => '192.168.11.20',
         :ram => 1024,
-        :cpu => 2
+        :cpu => 1
         }
 }
 

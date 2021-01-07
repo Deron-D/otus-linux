@@ -1,0 +1,44 @@
+# -*- mode: ruby -*-
+# vim: set ft=ruby :
+home = ENV['HOME']
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+MACHINES = {
+  :rasvpn => {
+        :box_name => "centos/7",
+        :ip_addr => '192.168.11.200',
+        :hostname => 'rasvpn',
+        :ssh_port => '2201'
+  }
+}
+
+Vagrant.configure("2") do |config|
+
+  MACHINES.each do |boxname, boxconfig|
+      
+      config.vm.synced_folder '.', '/vagrant', disabled: true
+      config.ssh.port = boxconfig[:ssh_port]
+      config.vm.network :forwarded_port, guest: 22, host: boxconfig[:ssh_port], id: "ssh", auto_correct: true
+      config.vm.define boxname do |box|
+
+          box.vm.box = boxconfig[:box_name]
+          box.vm.host_name = boxconfig[:hostname]
+
+          box.vm.network "private_network", ip: boxconfig[:ip_addr]
+        
+          box.vm.provision "shell",
+            name: "Setup Remote Access Server",
+            path: "setup_ras.sh"
+
+          box.vm.provision "ansible" do |ansible|
+                 #ansible.verbose = "vv"
+                 ansible.playbook = "playbook.yml"
+                 ansible.become = "true"
+                 ansible.limit = "all"
+          end
+
+      end
+  end
+         
+end
+

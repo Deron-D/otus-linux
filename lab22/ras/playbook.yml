@@ -1,0 +1,34 @@
+---
+- name:  Configurate rasvpn
+  hosts: rasvpn
+  become: yes
+  tasks:
+    - name: Create openvpn config file from template
+      template:
+        src: templates/server.conf.j2
+        dest: /etc/openvpn/server.conf
+        owner: root
+        group: root
+      notify:
+        - restart_openvpn
+      tags:
+        - openvpn-server-configuration
+
+    - name: Fetch keys and crts from server to the host
+      fetch: 
+        src={{ item }}
+        dest=client/
+        flat=yes
+      with_items:
+        - /etc/openvpn/pki/ca.crt
+        - /etc/openvpn/pki/issued/client.crt
+        - /etc/openvpn/pki/private/client.key
+        - /etc/openvpn/ta.key
+      tags:
+        - fetch-client-sertificates
+
+    - name: Restart openvpn
+      systemd:
+        name: openvpn@server
+        state: restarted
+        enabled: yes
