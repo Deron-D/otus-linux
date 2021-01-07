@@ -1,0 +1,94 @@
+# -*- mode: ruby -*-
+# vim: set ft=ruby :
+home = ENV['HOME']
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+MACHINES = {
+  
+  :inetRouter => {
+        :box_name => "centos/7",
+        #:public => {:ip => '10.10.10.1', :adapter => 1},
+        :net => [
+                   {adapter: 2, auto_config: false, virtualbox__intnet: "router-net"},
+                   {adapter: 3, auto_config: false, virtualbox__intnet: "router-net"},  
+                ]
+  },
+  
+  :centralRouter => {
+        :box_name => "centos/7",
+        :net => [
+                   {adapter: 2, auto_config: false, virtualbox__intnet: "router-net"},
+                   {adapter: 3, auto_config: false, virtualbox__intnet: "router-net"},
+                   {adapter: 4, auto_config: false, virtualbox__intnet: "virtual-switch"},
+                ]
+  },
+  
+  :testServer1 => {
+        :box_name => "centos/7",
+        :net => [
+                   {adapter: 2, auto_config: false, virtualbox__intnet: "virtual-switch"},
+                ]
+  },
+  
+  :testClient1 => {
+      :box_name => "centos/7",
+      :net => [
+                   {adapter: 2, auto_config: false, virtualbox__intnet: "virtual-switch"},
+              ]
+   },
+  
+  :testServer2 => {
+        :box_name => "centos/7",
+        :net => [
+                   {adapter: 2, auto_config: false, virtualbox__intnet: "virtual-switch"},
+                ]
+  },
+  
+  :testClient2 => {
+      :box_name => "centos/7",
+      :net => [
+                   {adapter: 2, auto_config: false, virtualbox__intnet: "virtual-switch"},
+              ]
+   },
+
+}
+
+Vagrant.configure("2") do |config|
+
+  MACHINES.each do |boxname, boxconfig|
+    # Disable synced folder
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+
+    config.vm.define boxname do |box|
+
+        box.vm.box = boxconfig[:box_name]
+        box.vm.host_name = boxname.to_s
+
+        boxconfig[:net].each do |ipconf|
+          box.vm.network "private_network", ipconf
+        end
+
+        if boxconfig.key?(:public)
+          box.vm.network "public_network", boxconfig[:public]
+        end
+
+        box.vm.provision "shell", inline: <<-SHELL
+          timedatectl set-timezone Europe/Moscow
+          mkdir -p ~root/.ssh
+          cp ~vagrant/.ssh/auth* ~root/.ssh
+        SHELL
+
+#        case boxname.to_s
+#          when "office2Server"
+#            box.vm.provision "ansible" do |ansible|
+#           ansible.verbose = "vv"
+#            ansible.playbook = "provision/playbook.yml"
+#            ansible.become = "true"
+#            ansible.limit = "all"
+#          end
+#        end
+
+      end
+  end
+end
+
