@@ -1,3 +1,4 @@
+---
 vlan_id: 100
 vlan_name: vlan100      
 ip4addr: 10.10.10.1/24 
