@@ -7,7 +7,7 @@
   shell:
     nmcli con add type vlan con-name "{{  vlan_name  }}"  dev eth1 id "{{  vlan_id  }}" ip4 "{{  ip4addr  }}"     
   tags:
-    - set-client-vlan-ip
+    - set-isolated-hosts-vlan-ip
   notify:
     - reload_network_interface
     - restart_NetworkManager

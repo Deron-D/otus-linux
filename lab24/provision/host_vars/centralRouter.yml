@@ -1,4 +1,8 @@
 ---
+ip4addr: 192.168.255.2/30
+gw: 
+    ip4: 192.168.255.1
+    conn_name: Team0
 vlans:
   - vlan_name: vlan100
     ifname: eth3

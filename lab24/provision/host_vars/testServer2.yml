@@ -1,0 +1,3 @@
+vlan_id: 101
+vlan_name: vlan101      
+ip4addr: 10.10.10.254/24 
