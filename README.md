@@ -22,15 +22,3 @@
 * [Домашняя работа №22: Мосты, туннели и VPN](https://github.com/Deron-D/otus-linux/tree/master/lab22)
 * [Домашняя работа №24: Сетевые пакеты. VLAN'ы. LACP](https://github.com/Deron-D/otus-linux/tree/master/lab24)
 
-
-
-
-
-
-
-
-
-
-
-
-
