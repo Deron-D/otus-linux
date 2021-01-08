@@ -18,6 +18,19 @@
 * [Домашняя работа №16: Сбор и анализ логов](https://github.com/Deron-D/otus-linux/tree/master/lab16)
 * [Домашняя работа №17: Резервное копирование](https://github.com/Deron-D/otus-linux/tree/master/lab17)
 * [Домашняя работа №18: Архитектура сетей](https://github.com/Deron-D/otus-linux/tree/master/lab18)
+* [Домашняя работа №19: Настройка PXE сервера для автоматической установки](https://github.com/Deron-D/otus-linux/tree/master/lab19)
+* [Домашняя работа №22: Мосты, туннели и VPN](https://github.com/Deron-D/otus-linux/tree/master/lab22)
+* [Домашняя работа №24: Сетевые пакеты. VLAN'ы. LACP](https://github.com/Deron-D/otus-linux/tree/master/lab24)
+
+
+
+
+
+
+
+
+
+
 
 
 
