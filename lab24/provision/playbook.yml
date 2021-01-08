@@ -16,13 +16,13 @@
       packages:
       - epel-release
 
-        #  - name: Install packages 
-        # yum:
-        #name: "{{ packages }}"
-        #state: present
-        #vars:
-        #packages:
-        #- NetworkManager-tui
+  - name: Install packages 
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+        - tcpdump
 
 - hosts: inetRouter centralRouter 
   become: true
