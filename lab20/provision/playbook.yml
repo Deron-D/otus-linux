@@ -1,0 +1,40 @@
+---
+- hosts: all # part running on all hosts
+  become: true
+  
+  tasks:
+    #  - debug:
+    #  msg:
+    #  - "{{ user }}"
+    #  - "{{ group }}"
+
+  - name: Install epel-release # переведём синтаксис yum из deprecated
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - epel-release
+
+        #  - name: Install packages 
+        # yum:
+        #name: "{{ packages }}"
+        #state: present
+        #vars:
+        #packages:
+        #- NetworkManager-tui
+
+- hosts: inetRouter
+  become: true
+  roles:
+    - inetrouter-role
+
+- hosts: centralRouter office1Router office2Router 
+  become: true
+  roles:
+    - router-role
+
+- hosts: centralServer office1Server office2Server
+  become: true
+  roles:
+    - server-role

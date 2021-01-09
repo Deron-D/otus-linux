@@ -1,0 +1,21 @@
+---
+# tasks file for provision/roles/inetrouter-role
+- name: Set ip forwarding on in /proc and in the sysctl file and reload if necessary
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Configure internal static route
+  shell: "nmcli connection modify System\\ {{ item.dev }} +ipv4.routes \"{{ item.route }}\" && nmcli connection up System\\ {{ item.dev }}"
+  loop: "{{ routes }}"
+
+- name: Setup NAT 
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ out_int }}"
+    destination: "!{{ internal_net }}"
+    jump: MASQUERADE
