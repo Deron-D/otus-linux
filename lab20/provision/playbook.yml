@@ -24,17 +24,17 @@
         #packages:
         #- NetworkManager-tui
 
-- hosts: inetRouter
+- hosts: inetRouter inetRouter2
   become: true
   roles:
     - inetrouter-role
 
-- hosts: centralRouter office1Router office2Router 
+- hosts: centralRouter 
   become: true
   roles:
     - router-role
 
-- hosts: centralServer office1Server office2Server
+- hosts: centralServer
   become: true
   roles:
     - server-role

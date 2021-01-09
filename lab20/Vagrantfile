@@ -4,13 +4,21 @@ home = ENV['HOME']
 ENV["LC_ALL"] = "en_US.UTF-8"
 
 MACHINES = {
-:inetRouter => {
+  :inetRouter => {
         :box_name => "centos/7",
         #:public => {:ip => '10.10.10.1', :adapter => 1},
         :net => [
                    {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
                 ]
   },
+ :inetRouter2 => {
+        :box_name => "centos/7",
+        #:public => {:ip => '10.10.10.1', :adapter => 1},
+        :net => [
+                   {ip: '192.168.255.5', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router2-net"},
+                   {ip: '192.168.10.100', adapter: 3, netmask: "255.255.255.0"},
+                ]
+  },  
   :centralRouter => {
         :box_name => "centos/7",
         :net => [
@@ -20,6 +28,7 @@ MACHINES = {
                    {ip: '192.168.0.65', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "wifi-net"},
                    {ip: '192.168.0.17', adapter: 6, netmask: "255.255.255.252", virtualbox__intnet: "office1-net"},
                    {ip: '192.168.0.21', adapter: 7, netmask: "255.255.255.252", virtualbox__intnet: "office2-net"},
+                   {ip: '192.168.255.6', adapter: 8, netmask: "255.255.255.252", virtualbox__intnet: "router2-net"},
                 ]
   },
   
@@ -54,16 +63,12 @@ Vagrant.configure("2") do |config|
 
         box.vm.provision "shell", inline: <<-SHELL
         	timedatectl set-timezone Europe/Moscow
-#		yum install -y policycoreutils-python \
-#               bash-completion \
-#		bash-completion-extras \ 
-#		vim-enhanced 
 		mkdir -p ~root/.ssh
                 cp ~vagrant/.ssh/auth* ~root/.ssh
         SHELL
         
         case boxname.to_s
-          when "office2Server"
+          when "centralServer"
             box.vm.provision "ansible" do |ansible|
 #           ansible.verbose = "vv"
             ansible.playbook = "provision/playbook.yml"

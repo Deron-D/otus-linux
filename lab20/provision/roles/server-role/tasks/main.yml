@@ -1,5 +1,17 @@
 ---
 # tasks file for provision/roles/server-role
+- name: Install nginx
+  yum:
+    name: nginx
+    state: present
+
+- name: Start nginx
+  systemd:
+    name: nginx
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
 - name: Remove default from eth0
   shell: nmcli connection modify System\ eth0 ipv4.never-default yes && nmcli connection up System\ eth0
 
@@ -7,3 +19,4 @@
   shell: "nmcli connection modify System\\ {{ item.dev }} ipv4.gateway {{ item.nh }} && nmcli connection up System\\ {{ item.dev }}"
   with_items: 
     - "{{ gw }}"
+
