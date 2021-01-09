@@ -1,5 +1,12 @@
 ---
 # tasks file for provision/roles/inetrouter-role
+- name: Install requied packages
+  yum:
+    name: '{{ item }}'
+    state: present
+  when: packages is defined
+  loop: '{{ packages }}'
+
 - name: Set ip forwarding on in /proc and in the sysctl file and reload if necessary
   sysctl:
     name: net.ipv4.ip_forward
@@ -19,3 +26,14 @@
     out_interface: "{{ out_int }}"
     destination: "!{{ internal_net }}"
     jump: MASQUERADE
+  when: inventory_hostname == "inetRouter"
+
+- name: Config DNAT and SNAT 
+  copy:
+    src: files/iptables-nat
+    dest: /etc/sysconfig/iptables
+    owner: root
+    group: root
+    mode: 0644
+  when: inventory_hostname == "inetRouter2"
+  notify: reload_iptables

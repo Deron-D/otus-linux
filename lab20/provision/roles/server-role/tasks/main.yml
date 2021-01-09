@@ -1,6 +1,6 @@
 ---
 # tasks file for provision/roles/server-role
-- name: Install nginx
+- name: Install packages
   yum:
     name: nginx
     state: present

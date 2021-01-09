@@ -1,2 +1,6 @@
 ---
 # handlers file for provision/roles/inetrouter-role
+- name: reload_iptables
+  systemd:
+    name: iptables
+    state: reloaded
