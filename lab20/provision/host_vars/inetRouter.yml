@@ -3,3 +3,16 @@ routes:
   - dev: eth1
     route: '192.168.0.0/24 192.168.255.2'
 internal_nh: 192.168.255.2
+
+packages:
+  - iptables-services
+  - tcpdump
+
+services:
+  - name: firewalld
+    state: stopped
+    enabled: no
+
+  - name: iptables
+    state: started
+    enabled: yes

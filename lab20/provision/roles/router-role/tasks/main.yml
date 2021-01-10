@@ -20,3 +20,13 @@
   shell: "nmcli connection modify System\\ {{ item.dev }} ipv4.gateway {{ item.nh }} && nmcli connection up System\\ {{ item.dev }}"
   with_items: 
     - "{{ gw }}"
+
+- name: Copy knock.sh
+  copy:
+    src: files/knock.sh
+    dest: /home/vagrant/
+    owner: vagrant
+    group: vagrant
+    mode: 0755
+  when: inventory_hostname == "centralRouter"
+ 

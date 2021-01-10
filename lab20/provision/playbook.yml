@@ -16,13 +16,22 @@
       packages:
       - epel-release
 
-        #  - name: Install packages 
-        # yum:
-        #name: "{{ packages }}"
-        #state: present
-        #vars:
-        #packages:
-        #- NetworkManager-tui
+  - name: Install requied packages
+    yum:
+      name: '{{ item }}'
+      state: present
+    when: packages is defined
+    loop: '{{ packages }}'
+
+  - name: Enable services
+    systemd:
+      state: '{{ item.state }}'
+      name: '{{ item.name }}'
+      enabled: '{{ item.enabled }}'
+      daemon_reload: yes
+    when: services is defined
+    with_items:
+      - '{{ services }}'      
 
 - hosts: inetRouter inetRouter2
   become: true

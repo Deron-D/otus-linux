@@ -8,3 +8,6 @@ gw:
   - dev: eth1
     nh: 192.168.255.1
 
+packages:
+    - nmap
+    - tcpdump

@@ -2,3 +2,12 @@
 gw:
   - dev: eth1
     nh: 192.168.0.1
+
+packages:
+  - nginx
+  - tcpdump
+
+services:
+  - name: nginx
+    state: started
+    enabled: yes

@@ -1,11 +1,5 @@
 ---
 # tasks file for provision/roles/inetrouter-role
-- name: Install requied packages
-  yum:
-    name: '{{ item }}'
-    state: present
-  when: packages is defined
-  loop: '{{ packages }}'
 
 - name: Set ip forwarding on in /proc and in the sysctl file and reload if necessary
   sysctl:
@@ -19,16 +13,16 @@
   shell: "nmcli connection modify System\\ {{ item.dev }} +ipv4.routes \"{{ item.route }}\" && nmcli connection up System\\ {{ item.dev }}"
   loop: "{{ routes }}"
 
-- name: Setup NAT 
-  iptables:
-    table: nat
-    chain: POSTROUTING
-    out_interface: "{{ out_int }}"
-    destination: "!{{ internal_net }}"
-    jump: MASQUERADE
-  when: inventory_hostname == "inetRouter"
+    #- name: Setup NAT at inetRouter 
+    #iptables:
+    #table: nat
+    #chain: POSTROUTING
+    #out_interface: "{{ out_int }}"
+    #destination: "!{{ internal_net }}"
+    #jump: MASQUERADE
+    #when: inventory_hostname == "inetRouter"
 
-- name: Config DNAT and SNAT 
+- name: Config DNAT and SNAT at inetRouter2
   copy:
     src: files/iptables-nat
     dest: /etc/sysconfig/iptables
@@ -36,4 +30,23 @@
     group: root
     mode: 0644
   when: inventory_hostname == "inetRouter2"
-  notify: reload_iptables
+  notify: restart_iptables
+
+- name: Enable password authdAuthentication 
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regex: "^PasswordAuthentication"
+    line: PasswordAuthentication yes
+    state: present
+  when: inventory_hostname == "inetRouter"
+  notify: restart_sshd
+
+- name: Enable iptables knocking
+  copy:
+    src: files/iptables-knock
+    dest: /etc/sysconfig/iptables
+    owner: root
+    group: root
+    mode: 0644
+  when: inventory_hostname == "inetRouter"
+  notify: restart_iptables
