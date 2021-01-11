@@ -6,16 +6,28 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 MACHINES = {
   :master => {
         :box_name => "centos/7",
-        :ip_addr => '192.168.11.150'
+        :ip_addr => '192.168.11.150',
+        # VM CPU count
+        :cpus => 2,
+        # VM RAM size (Mb)
+        :memory => 1024 
   },
   :slave => {
         :box_name => "centos/7",
-        :ip_addr => '192.168.11.151'
-  },
+        :ip_addr => '192.168.11.151',
+        # VM CPU count
+        :cpus => 2,
+        # VM RAM size (Mb)
+        :memory => 1024 
+},
   :backup => {
         :box_name => "centos/7",
-        :ip_addr => '192.168.11.152'
-  },
+        :ip_addr => '192.168.11.152',
+        # VM CPU count
+        :cpus => 2,
+        # VM RAM size (Mb)
+        :memory => 1024 
+ },
 }
 
 Vagrant.configure("2") do |config|
@@ -33,10 +45,16 @@ Vagrant.configure("2") do |config|
           box.vm.network "public_network", boxconfig[:public]
         end
 
+        box.vm.provider "virtualbox" do |v|
+          # Set VM RAM size and CPU count
+          v.memory = boxconfig[:memory]
+          v.cpus = boxconfig[:cpus]
+        end
+
         box.vm.provision "shell", inline: <<-SHELL
         	timedatectl set-timezone Europe/Moscow
-		mkdir -p ~root/.ssh
-                cp ~vagrant/.ssh/auth* ~root/.ssh
+		      mkdir -p ~root/.ssh
+          cp ~vagrant/.ssh/auth* ~root/.ssh
         SHELL
         
 #        case boxname.to_s
