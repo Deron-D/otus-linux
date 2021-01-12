@@ -1,0 +1,88 @@
+# -*- mode: ruby -*-
+# vim: set ft=ruby :
+home = ENV['HOME']
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+MACHINES = {
+  :r1 => {
+        :box_name => "centos/7",
+        # VM CPU count
+        :cpus => 1,
+        # VM RAM size (Mb)
+        :memory => 256,
+        :net => [
+                   {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+                ]
+
+  },
+  :r2 => {
+        :box_name => "centos/7",
+        :ip_addr => '192.168.11.151',
+        # VM CPU count
+        :cpus => 1,
+        # VM RAM size (Mb)
+        :memory => 256,
+        :net => [
+                   {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+                ]
+
+},
+  :r3 => {
+        :box_name => "centos/7",
+        :ip_addr => '192.168.11.152',
+        # VM CPU count
+        :cpus => 1,
+        # VM RAM size (Mb)
+        :memory => 256,
+        :net => [
+                   {ip: '192.168.255.3', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+                ]
+
+ },
+}
+
+Vagrant.configure("2") do |config|
+
+  MACHINES.each do |boxname, boxconfig|
+    # Disable synced folder
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+
+    config.vm.define boxname do |box|
+
+        box.vm.box = boxconfig[:box_name]
+        box.vm.host_name = boxname.to_s
+
+        boxconfig[:net].each do |ipconf|
+          box.vm.network "private_network", ipconf
+        end
+
+        if boxconfig.key?(:public)
+          box.vm.network "public_network", boxconfig[:public]
+        end
+
+        box.vm.provider "virtualbox" do |v|
+          # Set VM RAM size and CPU count
+          v.memory = boxconfig[:memory]
+          v.cpus = boxconfig[:cpus]
+        end
+
+        box.vm.provision "shell", inline: <<-SHELL
+        	timedatectl set-timezone Europe/Moscow
+		      mkdir -p ~root/.ssh
+          cp ~vagrant/.ssh/auth* ~root/.ssh
+        SHELL
+        
+#        case boxname.to_s
+#          when "r3"
+#            box.vm.provision "ansible" do |ansible|
+#           ansible.verbose = "vv"
+#            ansible.playbook = "provision/playbook.yml"
+#            ansible.become = "true"
+#            ansible.limit = "all"
+#          end
+#        end
+
+      end
+  end
+end
+
