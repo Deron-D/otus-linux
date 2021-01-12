@@ -11,7 +11,8 @@ MACHINES = {
         # VM RAM size (Mb)
         :memory => 256,
         :net => [
-                   {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+                   {ip: '172.16.1.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "link1"},
+                   {ip: '172.16.2.1', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "link2"}
                 ]
 
   },
@@ -23,7 +24,8 @@ MACHINES = {
         # VM RAM size (Mb)
         :memory => 256,
         :net => [
-                   {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+                   {ip: '172.16.1.2', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "link1"},
+                   {ip: '172.16.3.2', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "link3"}
                 ]
 
 },
@@ -35,7 +37,8 @@ MACHINES = {
         # VM RAM size (Mb)
         :memory => 256,
         :net => [
-                   {ip: '192.168.255.3', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
+                   {ip: '172.16.2.3', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "link2"},
+                   {ip: '172.16.3.3', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "link3"}
                 ]
 
  },

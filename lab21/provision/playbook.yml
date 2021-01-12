@@ -1,0 +1,40 @@
+---
+- hosts: all # part running on all hosts
+  become: true
+  
+  tasks:
+    #  - debug:
+    #  msg:
+    #  - "{{ user }}"
+    #  - "{{ group }}"
+
+#  - name: Install epel-release # переведём синтаксис yum из deprecated
+#    yum:
+#      name: "{{ packages }}"
+#      state: present
+#    vars:
+#      packages:
+#      - epel-release
+
+  - name: Install requied packages
+    yum:
+      name: '{{ item }}'
+      state: present
+    when: packages is defined
+    loop: '{{ packages }}'
+
+#  - name: Enable services
+#    systemd:
+#      state: '{{ item.state }}'
+#      name: '{{ item.name }}'
+#      enabled: '{{ item.enabled }}'
+#      daemon_reload: yes
+#    when: services is defined
+#    with_items:
+#      - '{{ services }}'      
+
+- hosts: all
+  become: true
+  roles:
+    - router-role
+

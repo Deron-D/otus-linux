@@ -1,0 +1,11 @@
+---
+# tasks file for provision/router-role
+- name: Copy chrony.conf
+  copy:
+    src: files/chrony.conf
+    dest: /etc/
+    owner: root
+    group: root
+    mode: 0644
+      #when: inventory_hostname == "r1"
+  notify: restart_chrony

@@ -1,0 +1,6 @@
+---
+# handlers file for provision/router-role
+- name: restart_chrony
+  systemd:
+    name: chronyd
+    state: restarted
