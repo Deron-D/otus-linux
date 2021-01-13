@@ -20,3 +20,17 @@
   with_items:
     - '{{ sysctl_params }}'
 
+- name: Setup loopback sub interface
+  template:
+    src: ifcfg-lo.2.j2
+    dest: '/etc/sysconfig/network-scripts/ifcfg-lo.2'
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart_Network
+
+- name: Remove default from eth0
+  shell: nmcli connection modify System\ eth0 ipv4.never-default yes && nmcli connection up System\ eth0
+  when: inventory_hostname != "r1"
+
+
