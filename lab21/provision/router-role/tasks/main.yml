@@ -9,3 +9,14 @@
     mode: 0644
       #when: inventory_hostname == "r1"
   notify: restart_chrony
+
+- name: Set sysctl parameters
+  sysctl:
+    name: '{{ item.parameter }}'
+    value: '{{ item.value}} '
+    sysctl_set: yes
+    state: present
+    reload: yes
+  with_items:
+    - '{{ sysctl_params }}'
+
