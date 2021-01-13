@@ -34,3 +34,11 @@
   when: inventory_hostname != "r1"
 
 
+- name: Enable services
+  systemd:
+    state: '{{ item.state }}'
+    name: '{{ item.name }}'
+    enabled: '{{ item.enabled }}'
+    daemon_reload: yes
+  with_items:
+    - '{{ quagga_services }}' 

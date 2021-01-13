@@ -10,3 +10,11 @@ sysctl_params:
     value: '1'
   - parameter: net.ipv4.conf.all.rp_filter
     value: '2'
+
+quagga_services:
+  - name: zebra
+    state: started
+    enabled: yes
+  - name: ospfd
+    state: started
+    enabled: yes
