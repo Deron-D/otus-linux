@@ -2,6 +2,7 @@
 packages:
     - quagga
     - tcpdump
+    - libsemanage-python
 
 sysctl_params:
   - parameter: net.ipv4.ip_forward

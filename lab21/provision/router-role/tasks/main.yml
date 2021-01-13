@@ -33,12 +33,17 @@
   shell: nmcli connection modify System\ eth0 ipv4.never-default yes && nmcli connection up System\ eth0
   when: inventory_hostname != "r1"
 
+- name: Create ospfd.conf
+  template:
+    src: ospfd.conf.j2
+    dest: '/etc/quagga/ospfd.conf'
+    owner: quagga
+    group: quaggavt
+    mode: 0664
+  notify: start_quagga
 
-- name: Enable services
-  systemd:
-    state: '{{ item.state }}'
-    name: '{{ item.name }}'
-    enabled: '{{ item.enabled }}'
-    daemon_reload: yes
-  with_items:
-    - '{{ quagga_services }}' 
+- name: Allow zebra to write config
+  seboolean:
+    name: zebra_write_config
+    state: yes
+    persistent: yes

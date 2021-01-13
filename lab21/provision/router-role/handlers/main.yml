@@ -25,3 +25,20 @@
 - name: wait_for_new_network_settings
   local_action: 
     module: wait_for host={{ ansible_ssh_host | default(inventory_hostname) }} port="{{ ansible_port}}" delay=10 timeout=300
+
+- name: start_quagga
+  systemd:
+    state: '{{ item.state }}'
+    name: '{{ item.name }}'
+    enabled: '{{ item.enabled }}'
+    daemon_reload: yes
+  with_items:
+    - '{{ quagga_services }}' 
+
+- name: retart_quagga
+  systemd:
+    state: restarted
+    name: '{{ item.name }}'
+  with_items:
+    - '{{ quagga_services }}' 
+
