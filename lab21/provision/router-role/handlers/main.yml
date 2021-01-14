@@ -37,8 +37,10 @@
 
 - name: restart_quagga
   systemd:
-    state: restarted
     name: '{{ item.name }}'
+    enabled: '{{ item.enabled }}'
+    daemon_reload: yes
+    state: restarted
   with_items:
     - '{{ quagga_services }}' 
 

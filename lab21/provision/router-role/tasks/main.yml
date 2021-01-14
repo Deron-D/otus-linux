@@ -33,14 +33,18 @@
   shell: nmcli connection modify System\ eth0 ipv4.never-default yes && nmcli connection up System\ eth0
   when: inventory_hostname != "r1"
 
-- name: Create ospfd.conf
+- name: Copy ospfd.conf and zebra.conf
   template:
-    src: ospfd.conf.j2
-    dest: '/etc/quagga/ospfd.conf'
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
     owner: quagga
-    group: quaggavt
-    mode: 0664
-  notify: start_quagga
+    group: '{{ item.group }}'
+    mode: '{{ item.mode }}'
+  with_items: 
+    - { src: 'ospfd.conf.j2', dest: '/etc/quagga/ospfd.conf', mode: '0664', group: 'quaggavt' }
+    - { src: 'zebra.conf.j2', dest: '/etc/quagga/zebra.conf', mode: '0640', group: 'quagga' }
+  notify: restart_quagga
+
 
 - name: Allow zebra to write config
   seboolean:

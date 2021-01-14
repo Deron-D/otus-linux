@@ -2,3 +2,4 @@
 #packages:
 #  - tcpdump
 lo_ip: 10.0.0.3
+default_information: '!'
