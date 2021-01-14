@@ -47,3 +47,13 @@
     name: zebra_write_config
     state: yes
     persistent: yes
+
+- name: Start FirewallD
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Config firewalld
+  command: firewall-cmd --add-protocol=ospf --permanent
+  notify: reload_firewalld

@@ -35,10 +35,14 @@
   with_items:
     - '{{ quagga_services }}' 
 
-- name: retart_quagga
+- name: restart_quagga
   systemd:
     state: restarted
     name: '{{ item.name }}'
   with_items:
     - '{{ quagga_services }}' 
 
+- name: reload_firewalld
+  systemd:
+    state: reloaded
+    name: firewalld
