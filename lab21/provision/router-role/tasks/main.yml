@@ -52,12 +52,12 @@
     state: yes
     persistent: yes
 
-      #- name: Start FirewallD
-      #systemd:
-      #    name: firewalld
-      #    state: started
-      #    enabled: yes
+- name: Start FirewallD
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
 
-      #- name: Config firewalld
-      #  command: firewall-cmd --add-protocol=ospf --permanent
-      #  notify: reload_firewalld
+- name: Config firewalld
+  command: firewall-cmd --add-protocol=ospf --permanent
+  notify: reload_firewalld

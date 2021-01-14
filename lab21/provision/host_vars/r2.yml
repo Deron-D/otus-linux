@@ -1,7 +1,7 @@
 ---
-#packages:
-#  - tcpdump
 lo_ip: 10.0.0.2
 default_information: '!'
 eth1_cost: '20'
 eth2_cost: '20'
+net_eth1: '172.16.1.0/24'
+net_eth2: '172.16.3.0/24'

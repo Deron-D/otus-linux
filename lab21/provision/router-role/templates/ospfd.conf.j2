@@ -1,0 +1,38 @@
+!
+! Zebra configuration saved from vty
+!   2021/01/14 14:43:49
+!
+!
+
+log file /var/log/quagga/ospfd.log
+!
+interface eth0
+!
+interface eth1
+ !ip ospf mtu-ignore
+ !ip ospf network point-to-point
+ !ip ospf cost {{ eth1_cost }}
+ !ip ospf hello-interval 5
+ !ip ospf dead-interval 10
+!
+interface eth2
+ !ip ospf mtu-ignore
+ !ip ospf network point-to-point
+ !ip ospf cost {{ eth2_cost }}
+ !ip ospf hello-interval 5
+ !ip ospf dead-interval 10
+!
+interface lo
+!
+router ospf
+ ospf router-id {{ lo_ip }}
+ passive-interface default
+ no passive-interface eth1
+ no passive-interface eth2
+ network 10.0.0.1/32 area 0.0.0.0
+ network {{ net_eth1 }}  area 0.0.0.0
+ network {{ net_eth2 }}  area 0.0.0.0
+{{ default_information }}
+!
+line vty
+!

@@ -1,0 +1,23 @@
+!
+! Zebra configuration saved from vty
+!   2021/01/14 14:43:49
+!
+hostname {{ inventory_hostname }}
+!
+interface eth0
+ ipv6 nd suppress-ra
+!
+interface eth1
+ ipv6 nd suppress-ra
+!
+interface eth2
+ ipv6 nd suppress-ra
+!
+interface lo
+!
+ip forwarding
+!
+!
+line vty
+!
+log file /var/log/quagga/zebra.log
