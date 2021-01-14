@@ -2,4 +2,7 @@
 #packages:
 #    - tcpdump
 lo_ip: 10.0.0.1
-default_information: ' default-information originate'
+default_information: ' default-information originate always'
+#default_information: '!'
+eth1_cost: '20'
+eth2_cost: '20'

@@ -3,3 +3,5 @@
 #  - tcpdump
 lo_ip: 10.0.0.2
 default_information: '!'
+eth1_cost: '20'
+eth2_cost: '20'

@@ -7,7 +7,7 @@ packages:
 sysctl_params:
   - parameter: net.ipv4.ip_forward
     value: '1'
-  - parameter: net.ipv4.ip_forward
+  - parameter: net.ipv4.conf.all.forwarding
     value: '1'
   - parameter: net.ipv4.conf.all.rp_filter
     value: '2'
