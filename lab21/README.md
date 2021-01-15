@@ -25,18 +25,6 @@ Vagrantfile + ansible
 vagrant up
 ```
 
-- Проверяем настройку ассиметричной маршутизации:
-```
-[root@r2 vagrant]# tcpdump -nv -ieth1 icmp
-
-[root@r1 vagrant]# tracepath -n 10.0.0.2
- 1?: [LOCALHOST]                                         pmtu 1500
- 1:  172.16.2.3                                            1.222ms
- 1:  172.16.2.3                                            0.854ms
- 2:  172.16.2.3                                            0.746ms !H
-     Resume: pmtu 1500
-```
-
 - Проверяем таблицы маршутизации на машинах:
 ```
 [root@s01-deron lab21]# vagrant ssh r1
@@ -80,6 +68,18 @@ default via 172.16.2.1 dev eth1 proto zebra metric 1
 172.16.2.0/24 dev eth1 proto kernel scope link src 172.16.2.3 metric 101
 172.16.3.0/24 dev eth2 proto kernel scope link src 172.16.3.3 metric 102
 [vagrant@r3 ~]$
+```
+
+- Проверяем настройку ассиметричной маршутизации:
+```
+[root@r2 vagrant]# tcpdump -nv -ieth1 icmp
+
+[root@r1 vagrant]# tracepath -n 10.0.0.2
+ 1?: [LOCALHOST]                                         pmtu 1500
+ 1:  172.16.2.3                                            1.222ms
+ 1:  172.16.2.3                                            0.854ms
+ 2:  172.16.2.3                                            0.746ms !H
+     Resume: pmtu 1500
 ```
 
 - Восстанавливаем симметричную маршрутизацию не уменьшая цену интерфейса из предыдущего пункта:
