@@ -14,3 +14,9 @@ barman_username: barman
 barman_password: Pass@Word@Bar
 streaming_barman: streaming_barman
 streaming_barman_password: Pass@Word@Str
+packages:
+  - postgresql11
+  - postgresql11-server
+  - postgresql11-contrib
+  - python-psycopg2
+  - unzip

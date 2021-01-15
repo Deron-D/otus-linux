@@ -1,2 +1,33 @@
 ---
 # tasks file for provision/barman_install
+#- name: Get 2ndQuadrant repo
+#  get_url:
+#    url: https://dl.2ndquadrant.com/default/release/get/11/rpm
+#    dest: /home/vagrant/2ndQuadrant.sh
+#    mode: 0755
+#    
+#- name: Install 2ndQuadrant repo
+#  shell: bash /home/vagrant/2ndQuadrant.sh
+
+- name: Copy config files on backup
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'barman.conf.j2', dest: '/etc/barman.conf' }
+    - { src: 'master.conf.j2', dest: '/etc/barman.d/master.conf' }
+
+- name: Create replication slot for backup
+  become_user: "{{ barman_username }}"
+  command: barman receive-wal --create-slot "{{ barman_stream_slot }}"
+  ignore_errors: yes
+
+- name: Verification of WAL archiving configuration
+  become_user: "{{ barman_username }}"
+  shell: |
+    barman switch-wal --force --archive --archive-timeout 60 "{{ barman_stream_slot }}"
+    barman switch-wal --force --archive --archive-timeout 60 "{{ barman_stream_slot }}"
+  ignore_errors: yes

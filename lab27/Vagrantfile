@@ -45,6 +45,8 @@ Vagrant.configure("2") do |config|
           box.vm.network "public_network", boxconfig[:public]
         end
 
+        box.vm.network "private_network", ip: boxconfig[:ip_addr]
+
         box.vm.provider "virtualbox" do |v|
           # Set VM RAM size and CPU count
           v.memory = boxconfig[:memory]
@@ -57,15 +59,15 @@ Vagrant.configure("2") do |config|
           cp ~vagrant/.ssh/auth* ~root/.ssh
         SHELL
         
-#        case boxname.to_s
-#          when "backup"
-#            box.vm.provision "ansible" do |ansible|
+        case boxname.to_s
+          when "backup"
+            box.vm.provision "ansible" do |ansible|
 #           ansible.verbose = "vv"
-#            ansible.playbook = "provision/playbook.yml"
-#            ansible.become = "true"
-#            ansible.limit = "all"
-#          end
-#        end
+            ansible.playbook = "provision/playbook.yml"
+            ansible.become = "true"
+            ansible.limit = "all"
+          end
+        end
 
       end
   end

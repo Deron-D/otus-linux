@@ -12,7 +12,7 @@
       - epel-release
 
 - name: Установка postgres11
-  hosts: master, slave
+  hosts: master, slave, backup
   become: yes
   roles:
     - postgres_install
