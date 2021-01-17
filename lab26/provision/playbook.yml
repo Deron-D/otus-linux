@@ -17,4 +17,6 @@
   roles:
     - init-role
     - laravel-role
+    - flask-role
+
 

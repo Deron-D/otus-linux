@@ -19,3 +19,6 @@ packages:
   - php-cli
   - unzip
   - policycoreutils-python
+  - python-pip 
+  - python-devel 
+  - python-virtualenv
