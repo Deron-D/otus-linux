@@ -1,0 +1,61 @@
+# -*- mode: ruby -*-
+# vim: set ft=ruby :
+home = ENV['HOME']
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+MACHINES = {
+  :web => {
+        :box_name => "centos/7",
+        :ip_addr => '192.168.11.150',
+        # VM CPU count
+        :cpus => 3,
+        # VM RAM size (Mb)
+        :memory => 2048
+  }
+}
+
+Vagrant.configure("2") do |config|
+
+  MACHINES.each do |boxname, boxconfig|
+    # Disable synced folder
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+
+    config.vm.define boxname do |box|
+
+        box.vm.box = boxconfig[:box_name]
+        box.vm.host_name = boxname.to_s
+
+        if boxconfig.key?(:public)
+          box.vm.network "public_network", boxconfig[:public]
+        end
+       
+        box.vm.network "private_network", ip: boxconfig[:ip_addr]
+        
+        box.vm.network :forwarded_port, guest: 8080, host: 8080
+
+        box.vm.provider "virtualbox" do |v|
+          # Set VM RAM size and CPU count
+          v.memory = boxconfig[:memory]
+          v.cpus = boxconfig[:cpus]
+        end
+
+        box.vm.provision "shell", inline: <<-SHELL
+        	timedatectl set-timezone Europe/Moscow
+		      mkdir -p ~root/.ssh
+          cp ~vagrant/.ssh/auth* ~root/.ssh
+        SHELL
+        
+        case boxname.to_s
+          when "web"
+            box.vm.provision "ansible" do |ansible|
+#           ansible.verbose = "vv"
+            ansible.playbook = "provision/playbook.yml"
+            ansible.become = "true"
+            ansible.limit = "all"
+          end
+        end
+
+      end
+  end
+end
+

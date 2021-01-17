@@ -1,0 +1,20 @@
+---
+- hosts: all # part running on all hosts
+  become: true
+  tasks:
+
+  - name: Install epel-release 
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - epel-release
+
+- name: Setup web
+  hosts: web
+  become: yes
+  roles:
+    - init-role
+    - laravel-role
+

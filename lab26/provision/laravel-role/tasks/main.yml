@@ -1,0 +1,53 @@
+---
+# tasks file for provision/laravel-role
+
+- name: Install composer
+  shell: curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+  args:
+    warn: false
+
+- name: Check laravel project previous installation
+  stat:
+    path: /var/www/laravel/
+  register: laravel_installation_exist
+
+- name: Install Laravel
+  shell: /usr/local/bin/composer create-project laravel/laravel /var/www/laravel
+  when: laravel_installation_exist.stat.exists == False
+  args:
+    warn: false
+
+- name: Copy php-fpm config
+  copy:
+    src: www.conf
+    dest: /etc/php-fpm.d/www.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: Yes
+  notify: Restart_php-fpm
+
+- name: Copy nginx config for laravel
+  copy:
+    src: laravel.conf
+    dest: /etc/nginx/conf.d/laravel.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: Yes
+
+- name: Change owner laravel directory
+  file: 
+    path: /var/www/laravel
+    owner: nginx
+    group: nginx
+    recurse: Yes
+  notify: Restart_nginx
+
+- name: Modify file labels for the laravel directory
+  command: "{{ item }}" 
+  with_items:
+    - semanage fcontext -a -t httpd_sys_content_t /var/www/laravel(/.*)?
+    - restorecon -Rv /var/www/laravel/
+  notify: Restart_php-fpm
+

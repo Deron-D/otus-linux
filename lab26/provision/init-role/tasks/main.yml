@@ -1,0 +1,19 @@
+---
+# tasks file for provision/init-role
+- name: Install requied packages
+  yum:
+    name: '{{ item }}'
+    state: present
+  when: packages is defined
+  loop: '{{ packages }}'
+
+    #- name: Add the httpd_t to the list of permissive domains
+    #selinux_permissive:
+    #name: httpd_t
+    #permissive: true
+
+- name: Set httpd_unified seboolean
+  seboolean:
+    name: httpd_unified
+    state: yes
+    persistent: yes

@@ -1,0 +1,21 @@
+---
+# vars file for provision/init-role
+#PHP >= 5.6.4
+#PDO расширение для PHP (для версии 5.1+)
+#MCrypt расширение для PHP (для версии 5.0)
+#OpenSSL (расширение для PHP)
+#Mbstring (расширение для PHP)
+#Tokenizer (расширение для PHP)
+#XML (расширение для PHP) (для версии 5.3+)
+packages:
+  - nginx
+  - libsemanage-python
+  - php-fpm
+  - php-pdo
+  - php-mcrypt 
+  - php-mbstring
+    #  - php-tokenizer
+  - php-xml
+  - php-cli
+  - unzip
+  - policycoreutils-python
