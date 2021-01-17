@@ -3,8 +3,11 @@
 ## **Задание:**
 развернуть стенд с веб приложениями в vagrant
 Варианты стенда
+
 nginx + php-fpm (laravel/wordpress) + python (flask/django) + js(react/angular)
+
 nginx + java (tomcat/jetty/netty) + go + ruby
+
 можно свои комбинации
 
 Реализации на выбор
