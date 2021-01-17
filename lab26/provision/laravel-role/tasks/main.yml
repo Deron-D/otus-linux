@@ -36,6 +36,11 @@
     mode: '0644'
     force: Yes
 
+- name: Copy laravel helloworld route
+  copy:
+    src: routes.php
+    dest: /var/www/laravel/app/Http/routes.php      
+
 - name: Change owner laravel directory
   file: 
     path: /var/www/laravel
@@ -50,4 +55,5 @@
     - semanage fcontext -a -t httpd_sys_content_t /var/www/laravel(/.*)?
     - restorecon -Rv /var/www/laravel/
   notify: Restart_php-fpm
+
 
