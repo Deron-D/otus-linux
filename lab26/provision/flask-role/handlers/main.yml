@@ -1,2 +1,8 @@
 ---
 # handlers file for provision/flask-role
+
+- name: Restart_nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

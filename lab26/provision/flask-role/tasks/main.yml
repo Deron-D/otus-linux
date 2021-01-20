@@ -1,3 +1,76 @@
 ---
 # tasks file for provision/flask-role
 
+- name: Upgrade pip
+  pip:
+    name: pip
+    state: latest
+    executable: pip2.7
+
+- name: Install virtualenv
+  pip:
+    name: 
+      - virtualenv
+    state: present
+    executable: pip2.7
+
+- name: Create a directory for app
+  file:
+    path: /opt/lab26
+    state: directory
+    mode: 0755
+
+- name: Copy files of app
+  copy:
+    src: "lab26/{{ item }}"
+    dest: "/opt/lab26/{{ item }}"
+  loop:
+    - lab26.py
+    - wsgi.py
+    - lab26.ini
+    - requirements.txt
+  
+- name: Initiate virtualenv
+  pip: 
+    virtualenv: /opt/lab26/lab26_env
+    virtualenv_python: python2.7
+    requirements: /opt/lab26/requirements.txt
+
+- name: Change ownership of app directory
+  file:
+    path: /opt/lab26
+    state: directory
+    recurse: yes
+    owner: nginx
+    group: nginx
+
+- name: Copy systemd unit file
+  copy:
+    src: lab26.service
+    dest: /etc/systemd/system/lab26.service
+
+- name: Run systemd unit of app
+  systemd:
+    name: lab26
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+
+- name: Modify file labels for the flask directory
+  command: "{{ item }}" 
+  with_items:
+    - semanage fcontext -a -t httpd_sys_rw_content_t /opt/lab26(/.*)?
+    - restorecon -Rv /opt/lab26/
+
+- name: Copy nginx config for a Flask
+  copy:
+    src: flask.conf
+    dest: /etc/nginx/conf.d/flask.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: yes
+  notify: Restart_nginx 
+
+

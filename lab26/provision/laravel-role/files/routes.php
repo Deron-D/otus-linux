@@ -20,7 +20,7 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-Route::get('/', function () {
-  return '<h1>Hello from LAB26</h1>';
+Route::get('lab26', function () {
+  return '<h1>Hello from LAB26!!!</h1><p>Powered by Laravel</p>';
 });
  

@@ -14,11 +14,15 @@ packages:
   - php-pdo
   - php-mcrypt 
   - php-mbstring
-    #  - php-tokenizer
   - php-xml
   - php-cli
   - unzip
+  - libselinux-python
   - policycoreutils-python
+    # Components for the Flask enviroment
+    #  - python3-pip 
+    #  - python3-devel
   - python-pip 
   - python-devel 
-  - python-virtualenv
+  - gcc
+    #- python-virtualenv
