@@ -1,0 +1,70 @@
+---
+# tasks file for provision/react-role
+- name: Get Nodejs
+  shell: curl -sL https://rpm.nodesource.com/setup_15.x | bash -
+  args:
+    warn: false
+
+- name: Install nodejs
+  yum:
+    name: nodejs
+    state: latest
+
+- name: Remove previous app creations
+  file:
+    path: /tmp/lab26
+    state: absent
+
+- name: React app create
+  shell: |
+    cd /tmp
+    npm install -g create-react-app
+    create-react-app lab26
+
+- name: React app copy
+  copy: src=App.js dest=/tmp/lab26/src/App.js
+
+- name: build react app
+  shell: |
+    cd /tmp/lab26
+    npm run build
+
+- name: Create React app directory
+  file:
+    path: /var/www/react
+    state: directory
+    mode: '0755'
+    owner: nginx
+    group: nginx
+
+- name: Copy app to directory
+  copy:
+    src: /tmp/lab26/build/
+    dest: /var/www/react
+    remote_src: yes
+
+- name: Set owner to directory
+  file:
+    path: /var/www/react
+    state: directory
+    recurse: yes
+    owner: nginx
+    group: nginx
+
+- name: Modify file labels for the react directory
+  command: "{{ item }}" 
+  with_items:
+    - semanage fcontext -a -t httpd_sys_rw_content_t '/var/www/react(/.*)?'
+    - restorecon -Rv /var/www/react/
+
+- name: Copy nginx config for a React
+  copy:
+    src: react.conf
+    dest: /etc/nginx/conf.d/react.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: yes
+  notify: Restart_nginx 
+
+

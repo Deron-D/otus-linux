@@ -1,0 +1,8 @@
+---
+# handlers file for provision/react-role
+
+- name: Restart_nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

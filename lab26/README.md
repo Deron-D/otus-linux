@@ -42,6 +42,13 @@ firewall-cmd --reload
 - [Flask http://192.168.0.243:8082/](http://192.168.0.243:8082/)
 - [React http://192.168.0.243:8083/](http://192.168.0.243:8083/)
 
+![Laravel](png/laravel.png)
+
+![Laravel2](png/laravel2.png)
+
+![Flask](png/flask.png)
+
+![React](png/react.png)
 
 ## **Полезное:**
 
