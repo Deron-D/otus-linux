@@ -8,7 +8,7 @@ MACHINES = {
         :box_name => "centos/7",
         :ip_addr => '192.168.11.150',
         # VM CPU count
-        :cpus => 3,
+        :cpus => 2,
         # VM RAM size (Mb)
         :memory => 2048
   }
@@ -31,9 +31,9 @@ Vagrant.configure("2") do |config|
        
         box.vm.network "private_network", ip: boxconfig[:ip_addr]
         
-        box.vm.network :forwarded_port, guest: 8080, host: 8080
         box.vm.network :forwarded_port, guest: 8081, host: 8081
         box.vm.network :forwarded_port, guest: 8082, host: 8082
+        box.vm.network :forwarded_port, guest: 8083, host: 8083
 
         box.vm.provider "virtualbox" do |v|
           # Set VM RAM size and CPU count

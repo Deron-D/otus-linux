@@ -21,7 +21,7 @@
 - name: Manages SELinux network port type definitions
   command: semanage port -m -t http_port_t -p tcp "{{ item }}"
   loop:
-    - '8080'
     - '8081'
     - '8082'
+    - '8083'
 
