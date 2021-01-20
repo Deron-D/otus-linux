@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI instance to serve Hello World!
+After=network.target
+
+[Service]
+User=nginx
+Group=nginx
+WorkingDirectory=/opt/lab26
+Environment="PATH=/opt/lab26/lab26_env/bin"
+ExecStart=/opt/lab26/lab26_env/bin/uwsgi --ini lab26.ini
+
+[Install]
+WantedBy=multi-user.target
