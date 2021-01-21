@@ -19,6 +19,12 @@
 * [Домашняя работа №17: Резервное копирование](https://github.com/Deron-D/otus-linux/tree/master/lab17)
 * [Домашняя работа №18: Архитектура сетей](https://github.com/Deron-D/otus-linux/tree/master/lab18)
 * [Домашняя работа №19: Настройка PXE сервера для автоматической установки](https://github.com/Deron-D/otus-linux/tree/master/lab19)
+* [Домашняя работа №20: Сценарии iptables](https://github.com/Deron-D/otus-linux/tree/master/lab20)
+* [Домашняя работа №21: OSPF](https://github.com/Deron-D/otus-linux/tree/master/lab21)
 * [Домашняя работа №22: Мосты, туннели и VPN](https://github.com/Deron-D/otus-linux/tree/master/lab22)
+* [Домашняя работа №23: DNS - настройка и обслуживание](https://github.com/Deron-D/otus-linux/tree/master/lab23)
 * [Домашняя работа №24: Сетевые пакеты. VLAN'ы. LACP](https://github.com/Deron-D/otus-linux/tree/master/lab24)
+* [Домашняя работа №25: ](https://github.com/Deron-D/otus-linux/tree/master/lab25)
+* [Домашняя работа №26: Динамический веб](https://github.com/Deron-D/otus-linux/tree/master/lab26)
+* [Домашняя работа №27: PostgreSQL](https://github.com/Deron-D/otus-linux/tree/master/lab27)
 
