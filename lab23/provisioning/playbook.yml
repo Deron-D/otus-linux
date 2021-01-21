@@ -4,10 +4,30 @@
   tasks:
   - name: install packages
     yum: name={{ item }} state=latest 
-    with_items:
-      - bind
+    loop:
       - bind-utils
       - ntp
+      - libsemanage-python
+      - policycoreutils-python
+
+  - name: install bind packages for ns
+    yum: name={{ item }} state=latest
+    loop:
+      - bind
+    when: inventory_hostname == "ns01" or
+           inventory_hostname == "ns02"
+
+  - name: selinux /etc/named/
+    sefcontext:
+      target: '/etc/named(/.*)?'
+      setype: named_zone_t
+      state: present
+      reload: yes
+    register: sefcontext
+    
+  - name: apply  file context 
+    command: restorecon -Rv /etc/named
+    when: sefcontext.changed
 
   - name: copy transferkey to all servers and the client
     copy: src=named.zonetransfer.key dest=/etc/named.zonetransfer.key owner=root group=named mode=0644
