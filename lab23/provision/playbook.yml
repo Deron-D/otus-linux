@@ -15,7 +15,7 @@
     loop:
       - bind
     when: inventory_hostname == "ns01" or
-           inventory_hostname == "ns02"
+          inventory_hostname == "ns02"
 
   - name: selinux /etc/named/
     sefcontext:
@@ -24,23 +24,33 @@
       state: present
       reload: yes
     register: sefcontext
-    
+    when: inventory_hostname == "ns01" or
+          inventory_hostname == "ns02"
+
   - name: apply  file context 
     command: restorecon -Rv /etc/named
-    when: sefcontext.changed
+    when: 
+      - sefcontext.changed
+      - inventory_hostname == "ns01" or inventory_hostname == "ns02"
 
-  - name: copy transferkey to all servers and the client
+  - name: copy transferkey to all servers
     copy: src=named.zonetransfer.key dest=/etc/named.zonetransfer.key owner=root group=named mode=0644
+    when: 
+      - inventory_hostname != "client"
+      - inventory_hostname != "client2"
+
 
 - hosts: ns01
   become: yes
   tasks:
   - name: copy named.conf
     copy: src=master-named.conf dest=/etc/named.conf owner=root group=named mode=0640
+  
   - name: copy zones
     copy: src={{ item }} dest=/etc/named/ owner=root group=named mode=0660
     with_fileglob:
       - named.d*
+  
   - name: copy resolv.conf to the servers
     copy: src=servers-resolv.conf dest=/etc/resolv.conf owner=root group=root mode=0644
   
@@ -55,6 +65,7 @@
   tasks:
   - name: copy named.conf
     copy: src=slave-named.conf dest=/etc/named.conf owner=root group=named mode=0640
+
   - name: copy resolv.conf to the servers
     copy: src=servers-resolv.conf dest=/etc/resolv.conf owner=root group=root mode=0644
 
@@ -69,7 +80,22 @@
   tasks:
   - name: copy resolv.conf to the client
     copy: src=client-resolv.conf dest=/etc/resolv.conf owner=root group=root mode=0644
+  
   - name: copy rndc conf file
     copy: src=rndc.conf dest=/home/vagrant/rndc.conf owner=vagrant group=vagrant mode=0644
+  
   - name: copy motd to the client
     copy: src=client-motd dest=/etc/motd owner=root group=root mode=0644
+
+- hosts: client2
+  become: yes
+  tasks:
+  - name: copy resolv.conf to the client
+    copy: src=client-resolv.conf dest=/etc/resolv.conf owner=root group=root mode=0644
+
+  - name: copy rndc conf file
+    copy: src=rndc.conf dest=/home/vagrant/rndc.conf owner=vagrant group=vagrant mode=0644
+
+  - name: copy motd to the client
+    copy: src=client-motd dest=/etc/motd owner=root group=root mode=0644
+
