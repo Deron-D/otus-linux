@@ -49,8 +49,8 @@
   - name: copy zones
     copy: src={{ item }} dest=/etc/named/ owner=root group=named mode=0660
     with_fileglob:
-      - named.d*
-  
+      - "named.d*"
+
   - name: copy resolv.conf to the servers
     copy: src=servers-resolv.conf dest=/etc/resolv.conf owner=root group=root mode=0644
   

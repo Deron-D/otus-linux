@@ -1,7 +1,7 @@
 $TTL 3600
 $ORIGIN ddns.lab.
 @               IN      SOA     ns01.dns.lab. root.dns.lab. (
-                            2711201407 ; serial
+                            2020012201 ; serial
                             3600       ; refresh (1 hour)
                             600        ; retry (10 minutes)
                             86400      ; expire (1 day)
