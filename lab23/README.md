@@ -82,8 +82,7 @@ web1.dns.lab.
 
 ## **Полезное:**
 
-#### В случае запуска dnssec-keygen на Centos без указания /dev/urandom генерация ключей зависает,
-поэтому:
+#### В случае запуска dnssec-keygen на Centos без указания /dev/urandom генерация ключей зависает, поэтому:
 ```
-dnssec-keygen -a HMAC-MD5 -b 128 -r /dev/urandom -n HOST zonetransfer2key | base64
+dnssec-keygen -a HMAC-MD5 -b 128 -r /dev/urandom -n HOST client2-view | base64
 ```
