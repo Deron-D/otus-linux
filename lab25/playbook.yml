@@ -1,0 +1,28 @@
+---
+- hosts: ipaserver ipaclients
+  become: true
+  
+  pre_tasks:
+  - name: Modify /etc/hosts
+    blockinfile:
+      path: /etc/hosts
+      block: |
+        192.168.11.150	ldapsrv.otus.lab	ldapsrv
+        192.168.11.10	  client.otus.lab	client
+        #        nameserver 192.168.11.150
+        #domain otus.lab
+      state: present
+
+- name: Playbook to configure IPA servers
+  hosts: ipaserver
+  become: true
+  roles:
+    - role: ipaserver
+      state: present
+
+- name: Playbook to configure IPA clients with username/password
+  hosts: ipaclients
+  become: true
+  roles:
+    - role: ipaclient
+      state: present
