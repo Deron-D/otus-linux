@@ -19,7 +19,7 @@ LDAP
 git clone https://github.com/Deron-D/otus-linux && cd otus-linux/lab25 && git clone https://github.com/freeipa/ansible-freeipa.git && vagrant up && ansible-playbook playbook.yml
 ```
 
-
+![Консоль FreeIPA](./png/freeipa.png)
 
 ```
 [vagrant@ldapsrv ~]$ ipa user-add --first="Jinny" --last="Pattanajee" --cn="Jinny Pattanajee" --password jpattan --shell="/bin/bash"         Password:
