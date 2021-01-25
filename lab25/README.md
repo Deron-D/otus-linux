@@ -88,7 +88,7 @@ Creating home directory for jpattan.
 ![Добавляем ключи](./png/freeipa2.png)
 
 
-#### Проверяем с хостовой машины:
+#### Проверяем с хостовой машины, пробуя зайти на client:
 ```
 [root@s01-deron lab25]# ssh jpattan@127.0.0.1 -p 2200
 Last login: Mon Jan 25 19:50:46 2021
