@@ -10,16 +10,16 @@
     vars:
       packages:
       - epel-release
+  
   pre_tasks:
   - name: Modify /etc/hosts
-    blockinfile:
+    lineinfile:
       path: /etc/hosts
-      block: |
-        {{ master_ip }}	{{ master_hostname }}.{{ lab_domain_name }}	{{ master_hostname }}
-        {{ slave_ip }}  {{ slave_hostname }}.{{ lab_domain_name }}	{{ slave_hostname }}
-        {{ backup_ip }}	{{ backup_hostname }}.{{ lab_domain_name }}	{{ backup_hostname }}
-        {{ monlog_ip }}	{{ monlog_hostname }}.{{ lab_domain_name }}	{{ monlog_hostname }}
-      state: present
+      line: '{{ item.node_ip }} {{ item.node }}.{{ item.domain }} {{ item.node }}'
+    with_items:
+      - "{{ nodes }}"
+    tags:
+      - hosts_modify
 
 - name: Установка postgres11
   hosts: master, slave, backup
@@ -64,13 +64,12 @@
   vars:
     prometheus_targets:
       node:
-      - targets:
-        - "{{ monlog_hostname }}:9100"
-        - "{{ master_hostname }}:9100"
-        - "{{ slave_hostname }}:9100"
-        - "{{ backup_hostname }}:9100"
+      - targets: 
+          "{{ targets }}"
         labels:
           env: otusproject
+  tags:
+    - prometheus_install
 
 - name: Установка cloudalchemy.node-exporter
   hosts: master, slave, backup, monlog

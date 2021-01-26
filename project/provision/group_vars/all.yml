@@ -1,13 +1,21 @@
 lab_domain_name: otus.lab
 
-master_ip: 192.168.11.150
-master_hostname: master
+nodes:
+  - node: master
+    node_ip: 192.168.11.150
+    domain: "{{ lab_domain_name }}"
+  - node: slave
+    node_ip: 192.168.11.151
+    domain: "{{ lab_domain_name }}"
+  - node: backup
+    node_ip: 192.168.11.152
+    domain: "{{ lab_domain_name }}"
+  - node: monlog
+    node_ip: 192.168.11.153
+    domain: "{{ lab_domain_name }}"
 
-slave_ip: 192.168.11.151
-slave_hostname: slave
-
-backup_ip: 192.168.11.152
-backup_hostname: backup
-
-monlog_ip: 192.168.11.153
-monlog_hostname: monlog
+targets: 
+  - master:9100
+  - slave:9100
+  - backup:9100
+  - monlog:9100
