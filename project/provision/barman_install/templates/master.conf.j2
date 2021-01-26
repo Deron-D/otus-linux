@@ -1,0 +1,12 @@
+[{{ barman_stream_slot}}]
+description =  "Backup PostgreSQL Database (Streaming-Only) on {{ barman_stream_slot}}"
+conninfo = host={{ master_ip }} user={{ barman_username }} dbname=demo
+streaming_conninfo = host={{ master_ip }} user={{ streaming_barman }} dbname=demo
+backup_method = postgres
+streaming_archiver = on
+slot_name = barman
+create_slot = auto
+archiver = on
+retention_policy_mode = auto
+retention_policy = RECOVERY WINDOW OF 7 days
+wal_retention_policy = main

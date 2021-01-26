@@ -1,0 +1,26 @@
+---
+# tasks file for provision/slave-setup
+- name: Remove current database
+  become: yes
+  become_user: postgres
+  file:
+    path: "{{ postgresql_data_dir }}"
+    state: absent
+
+- name: Run pg_basebackup
+  become_user: postgres
+  become: yes
+  shell: "/usr/pgsql-11/bin/pg_basebackup -D {{ postgresql_data_dir }} --write-recovery-conf --wal-method=stream --checkpoint=fast --host={{ master_ip }} --user={{ replica_username }} --slot='{{ physical_replication_slot }}'"
+  notify: Restart_PostgreSQL
+
+- name: Copy config files on slave
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: postgres
+    group: postgres
+    mode: 0600
+  with_items:
+     - { src: 'pg_hba.conf.j2', dest: '{{ postgresql_data_dir }}/pg_hba.conf'}
+     - { src: 'postgresql.conf.j2', dest: '{{ postgresql_data_dir }}/postgresql.conf'}
+  notify: Reload_PostgreSQL

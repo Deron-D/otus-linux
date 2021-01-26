@@ -1,0 +1,45 @@
+---
+- hosts: all # part running on all hosts
+  become: true
+  tasks:
+
+  - name: Install epel-release # переведём синтаксис yum из deprecated
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - epel-release
+
+- name: Установка postgres11
+  hosts: master, slave, backup
+  become: yes
+  roles:
+    - postgres_install
+
+- name: Настройка master
+  hosts: master
+  become: yes
+  roles:
+    - master-setup
+
+- name: Настройка slave
+  hosts: slave
+  become: yes
+  roles:
+    - slave-setup
+
+- name: Создание тестовой БД
+  hosts: master
+  become: yes
+  roles:
+    - create_test_db
+
+- name: Настройка barman
+  hosts: backup
+  become: yes
+  roles:
+    - barman_install
+  tags:
+    - barman
+

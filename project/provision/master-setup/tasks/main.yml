@@ -1,0 +1,56 @@
+---
+# tasks file for provision/master-setup
+- name: PostgreSQL database init
+  command: "{{ postgresql_bin_path }}/postgresql-11-setup initdb"
+  args:
+    creates: "{{ postgresql_data_dir }}/PG_VERSION"
+
+- name: Copy config files on master
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: postgres
+    group: postgres
+    mode: 0600
+  with_items:
+    - { src: 'templates/pg_hba.conf.j2', dest: '{{ postgresql_data_dir }}/pg_hba.conf'} 
+    - { src: 'templates/postgresql.conf.j2', dest: '{{ postgresql_data_dir }}/postgresql.conf'} 
+
+- name: Start firewalld
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Enable remote connections to postgresql service by firewalld
+  firewalld:
+    service: postgresql
+    permanent: yes
+    state: enabled
+    immediate: yes
+              
+- name: Run PostgreSQL
+  systemd:
+    name: "{{ postgresql_service }}"
+    state: started
+    enabled: yes
+
+- name: Create physical slot for replication if doesn't exist
+  become_user: postgres
+  postgresql_slot:
+    slot_name: "{{ physical_replication_slot }}"
+
+- name: Create database users
+  postgresql_user:
+    db: postgres
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    role_attr_flags: "{{ item.flags }}"
+  become: yes
+  become_user: postgres
+  with_items:
+    - { name: "{{ replica_username }}", password: "{{ replica_password }}", flags: REPLICATION,LOGIN}
+    - { name: "{{ barman_username }}", password: "{{ barman_password }}", flags: SUPERUSER}
+    - { name: "{{ streaming_barman }}", password: "{{ streaming_barman_password }}", flags: REPLICATION,LOGIN}
+        
+

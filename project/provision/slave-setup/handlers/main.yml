@@ -1,0 +1,3 @@
+---
+# handlers file for provision/slave-setup
+- include: ../handlers/all.yml
