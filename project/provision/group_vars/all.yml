@@ -1,1 +1,13 @@
----
+lab_domain_name: otus.lab
+
+master_ip: 192.168.11.150
+master_hostname: master
+
+slave_ip: 192.168.11.151
+slave_hostname: slave
+
+backup_ip: 192.168.11.152
+backup_hostname: backup
+
+monlog_ip: 192.168.11.153
+monlog_hostname: monlog

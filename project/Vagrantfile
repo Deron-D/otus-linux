@@ -5,6 +5,7 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 
 MACHINES = {
   :master => {
+        :hostname => "master.otus.lab",
         :box_name => "centos/7",
         :ip_addr => '192.168.11.150',
         # VM CPU count
@@ -13,6 +14,7 @@ MACHINES = {
         :memory => 1024 
   },
   :slave => {
+        :hostname => "slave.otus.lab",
         :box_name => "centos/7",
         :ip_addr => '192.168.11.151',
         # VM CPU count
@@ -21,7 +23,8 @@ MACHINES = {
         :memory => 1024 
 },
   :backup => {
-        :box_name => "centos/7",
+        :hostname => "backup.otus.lab",
+          :box_name => "centos/7",
         :ip_addr => '192.168.11.152',
         # VM CPU count
         :cpus => 2,
@@ -29,6 +32,7 @@ MACHINES = {
         :memory => 1024 
  },
    :monlog => {
+        :hostname => "monlog.otus.lab",
         :box_name => "centos/7",
         :ip_addr => '192.168.11.153',
         # VM CPU count
@@ -49,7 +53,7 @@ Vagrant.configure("2") do |config|
     config.vm.define boxname do |box|
 
         box.vm.box = boxconfig[:box_name]
-        box.vm.host_name = boxname.to_s
+        box.vm.host_name = boxconfig[:hostname]
 
         if boxconfig.key?(:public)
           box.vm.network "public_network", boxconfig[:public]

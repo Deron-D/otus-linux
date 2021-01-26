@@ -28,6 +28,13 @@
     permanent: yes
     state: enabled
     immediate: yes
+
+- name: Enable remote connections to nodeexporter service by firewalld
+  firewalld:
+    port: 9100/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
               
 - name: Run PostgreSQL
   systemd:

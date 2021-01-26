@@ -1,6 +1,6 @@
 ---
 #prometheus_targets:
-localhost:9100
-192.168.11.150:9100
-192.168.11.151:9100
-192.168.11.152:9100
+{{ master_hostname }}:9100
+{{ slave_hostname }}:9100
+{{ backup_hostname }}:9100
+{{ monlog_hostname }}:9100
