@@ -11,35 +11,60 @@
       packages:
       - epel-release
 
-- name: Установка postgres11
-  hosts: master, slave, backup
-  become: yes
-  roles:
-    - postgres_install
+#- name: Установка postgres11
+#  hosts: master, slave, backup
+#  become: yes
+#  roles:
+#    - postgres_install
 
-- name: Настройка master
-  hosts: master
-  become: yes
-  roles:
-    - master-setup
+#- name: Настройка master
+#  hosts: master
+#  become: yes
+#  roles:
+#    - master-setup
+    
+#- name: Настройка slave
+#  hosts: slave
+#  become: yes
+#  roles:
+#    - slave-setup
 
-- name: Настройка slave
-  hosts: slave
-  become: yes
-  roles:
-    - slave-setup
+#- name: Создание тестовой БД
+#  hosts: master
+#  become: yes
+#  roles:
+#    - create_test_db
 
-- name: Создание тестовой БД
-  hosts: master
-  become: yes
-  roles:
-    - create_test_db
+#- name: Настройка barman
+#  hosts: backup
+#  become: yes
+#  roles:
+#    - barman_install
+#  tags:
+#    - barman
 
-- name: Настройка barman
-  hosts: backup
+- name: Configure Prometheus + Node Exporter + Grafana
+  hosts: monlog
   become: yes
   roles:
-    - barman_install
-  tags:
-    - barman
+#    - base_config
+    - cloudalchemy.prometheus
+    - cloudalchemy.node-exporter
+    - cloudalchemy.grafana
+  vars:
+    prometheus_targets:
+      node:
+      - targets:
+        - localhost:9100
+        - 192.168.11.150:9100
+        - 192.168.11.151:9100
+        - 192.168.11.152:9100
+        labels:
+          env: lab15
+
+- name: Установка cloudalchemy.node-exporter
+  hosts: master, slave, backup, monlog
+  become: yes
+  roles:
+    - cloudalchemy.node-exporter
 
