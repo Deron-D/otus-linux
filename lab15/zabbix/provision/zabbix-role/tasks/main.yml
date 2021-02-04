@@ -1,0 +1,11 @@
+---
+# tasks file for provision/zabbix-role
+- name:  Install a repository configuration package using the official Zabbix repository for CentOS
+  yum:
+    name: "{{ zabbix_repo }}"
+    state: present
+
+- name: Clear all entries for currently enabled repositories from the cache
+  command: yum clean all
+  args:
+    warn: false
