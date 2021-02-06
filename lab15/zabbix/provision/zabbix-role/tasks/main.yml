@@ -1,11 +1,81 @@
 ---
 # tasks file for provision/zabbix-role
-- name:  Install a repository configuration package using the official Zabbix repository for CentOS
+- name: Install Zabbix repository
   yum:
-    name: "{{ zabbix_repo }}"
+    name: '{{ zabbix_repo }}'
+    state: present
+
+- name: Install Percona repository
+  yum:
+    name: '{{ percona_repo }}'
     state: present
 
 - name: Clear all entries for currently enabled repositories from the cache
   command: yum clean all
   args:
     warn: false
+
+- name: Install Zabbix server and agent 
+  yum:
+    name: '{{ zabbix_packages }}'
+    state: present
+  loop: '{{ zabbix_packages }}'
+
+- name: Edit file /etc/yum.repos.d/zabbix.repo and enable zabbix-frontend repository 
+  blockinfile:
+    path: /etc/yum.repos.d/zabbix.repo
+    block: |
+      [zabbix-frontend]
+      enabled=1
+
+- name: Install Zabbix frontend packages 
+  yum:
+    name: '{{ frontend_packages }}'
+    state: present
+  loop: '{{ frontend_packages }}'
+
+- name: Start MySQL
+  systemd:
+    name: mysql
+    state: started
+        
+- name: Get automate generated mysql password
+  shell: grep 'A temporary password is generated' /var/log/mysqld.log | awk '{print $11}' 
+  register: current_password
+      
+- debug:
+    msg:
+    - "{{ current_password.stdout_lines }}"
+    #- "{{ mysql_password }}"
+
+- name: Set mysql password
+  shell: >
+    mysql --connect-expired-password -uroot 
+    -p'{{ current_password.stdout }}'
+    -e 'ALTER USER USER() IDENTIFIED BY "{{ mysql_password }}"'
+  ignore_errors: yes
+  #' 
+
+- name: Copy my.cnf
+  template:
+    src: my.cnf.j2
+    dest: /root/.my.cnf
+    mode: 0600
+
+- name: Create zabbix database
+  mysql_db:
+    login_user: root
+      #login_password: "{{ mysql_password }}"
+    name: zabbix
+    state: present
+    encoding: utf8
+    collation: utf8_bin
+
+- name: Create user zabbix
+  mysql_user:
+    name: zabbix
+    password: "{{ zabbix_password }}"
+    priv: 'zabbix.*:ALL'
+    state: present
+  no_log: true
+
