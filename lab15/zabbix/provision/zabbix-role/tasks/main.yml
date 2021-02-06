@@ -53,8 +53,9 @@
     mysql --connect-expired-password -uroot 
     -p'{{ current_password.stdout }}'
     -e 'ALTER USER USER() IDENTIFIED BY "{{ mysql_password }}"'
-  ignore_errors: yes
   #' 
+  ignore_errors: yes
+  no_log: true
 
 - name: Copy my.cnf
   template:
@@ -74,8 +75,25 @@
 - name: Create user zabbix
   mysql_user:
     name: zabbix
-    password: "{{ zabbix_password }}"
+    password: '{{ zabbix_password }}'
     priv: 'zabbix.*:ALL'
     state: present
   no_log: true
+
+- name: Zabbix server host import initial schema and data
+  shell: | 
+    zcat '{{ zabbix_schema }}' | mysql -uzabbix -p'{{ zabbix_password }}' zabbix
+  #'
+  no_log: true
+  ignore_errors: yes
+  tags:
+    - import_schema
+
+- name: Configure the database for Zabbix server
+  lineinfile:
+    path: /etc/zabbix/zabbix_server.conf
+    regexp: '^DBPassword='
+    insertafter: '^# DBPassword='
+    line: DBPassword={{ zabbix_password }} 
+
 

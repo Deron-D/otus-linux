@@ -19,3 +19,5 @@ frontend_packages:
 mysql_password: 3p*e}kAQo%1i
 
 zabbix_password: 3p*e}kAQo%1i
+
+zabbix_schema: /usr/share/doc/zabbix-server-mysql-5.0.8/create.sql.gz
