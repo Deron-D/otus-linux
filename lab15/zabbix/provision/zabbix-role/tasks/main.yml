@@ -1,5 +1,11 @@
 ---
 # tasks file for provision/zabbix-role
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  selinux:
+    policy: targeted
+      #state: permissive
+    state: enforcing
+
 - name: Install Zabbix repository
   yum:
     name: '{{ zabbix_repo }}'
@@ -45,8 +51,8 @@
       
 - debug:
     msg:
-    - "{{ current_password.stdout_lines }}"
-    #- "{{ mysql_password }}"
+    - '{{ current_password.stdout_lines }}'
+    - '{{ mysql_password }}'
 
 - name: Set mysql password
   shell: >
@@ -57,11 +63,17 @@
   ignore_errors: yes
   no_log: true
 
-- name: Copy my.cnf
-  template:
-    src: my.cnf.j2
-    dest: /root/.my.cnf
-    mode: 0600
+- name: Copy my.cnf and nginx config files
+  template: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: 'my.cnf.j2', dest: '/root/.my.cnf', mode: '0640' } 
+    - { src: 'nginx.conf.j2', dest: '/etc/opt/rh/rh-nginx116/nginx/nginx.conf', mode: '0644' }
+    - { src: 'zabbix.conf.j2', dest: '/etc/opt/rh/rh-nginx116/nginx/conf.d/zabbix.conf', mode: '0644'  }
 
 - name: Create zabbix database
   mysql_db:
@@ -96,4 +108,61 @@
     insertafter: '^# DBPassword='
     line: DBPassword={{ zabbix_password }} 
 
+- name: Configure PHP for Zabbix frontend (php-fpm)
+  lineinfile:
+    path: /etc/opt/rh/rh-php72/php-fpm.d/zabbix.conf
+    regexp: 'listen.acl_users = apache'
+      #insertafter: '^#        listen          80;'
+    line: 'listen.acl_users = apache,nginx'
 
+- name: Configure PHP for Zabbix frontend (timezone)
+  lineinfile:
+    path: /etc/opt/rh/rh-php72/php-fpm.d/zabbix.conf
+    regexp: '; php_value[date.timezone] = Europe/Riga'
+    insertafter: '^; php_value[date.timezone] = Europe/Riga'
+    line: 'php_value[date.timezone] = Europe/Moscow'
+
+- name: Set seboolean flags on and keep it persistent across reboots
+  seboolean:
+    name: "{{ item }}"
+    state: yes
+    persistent: yes
+  loop:
+    - daemons_enable_cluster_mode
+    - httpd_can_network_connect
+    - httpd_can_connect_zabbix
+
+- name: Change the zabbix_t to permissive
+  selinux_permissive:
+    name: "{{ item }}"
+    permissive: true
+  loop:
+      - zabbix_agent_t
+      - zabbix_t
+
+- name: Start FirewallD
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Enable http service
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Start Zabbix server and agent processes
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  loop:
+    - zabbix-server
+    - zabbix-agent
+    - rh-nginx116-nginx
+    - rh-php72-php-fpm
+  tags:
+    - start_zabbix

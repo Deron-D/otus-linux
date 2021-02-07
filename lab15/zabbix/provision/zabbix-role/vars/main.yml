@@ -8,9 +8,10 @@ zabbix_packages:
   - zabbix-server-mysql
   - zabbix-agent
   - centos-release-scl
-  - nginx
   - Percona-Server-server-57
   - MySQL-python
+  - policycoreutils-python
+  - setools-console
 
 frontend_packages: 
   - zabbix-web-mysql-scl 
