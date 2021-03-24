@@ -24,6 +24,6 @@
 * [Домашняя работа №22: Мосты, туннели и VPN](https://github.com/Deron-D/otus-linux/tree/master/lab22)
 * [Домашняя работа №23: DNS - настройка и обслуживание](https://github.com/Deron-D/otus-linux/tree/master/lab23)
 * [Домашняя работа №24: Сетевые пакеты. VLAN'ы. LACP](https://github.com/Deron-D/otus-linux/tree/master/lab24)
-* [Домашняя работа №25: ](https://github.com/Deron-D/otus-linux/tree/master/lab25)
+* [Домашняя работа №25: LDAP](https://github.com/Deron-D/otus-linux/tree/master/lab25)
 * [Домашняя работа №26: Динамический веб](https://github.com/Deron-D/otus-linux/tree/master/lab26)
 * [Домашняя работа №27: PostgreSQL](https://github.com/Deron-D/otus-linux/tree/master/lab27)
