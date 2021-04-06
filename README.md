@@ -27,3 +27,4 @@
 * [Домашняя работа №25: LDAP](https://github.com/Deron-D/otus-linux/tree/master/lab25)
 * [Домашняя работа №26: Динамический веб](https://github.com/Deron-D/otus-linux/tree/master/lab26)
 * [Домашняя работа №27: PostgreSQL](https://github.com/Deron-D/otus-linux/tree/master/lab27)
+*
