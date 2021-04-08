@@ -14,21 +14,21 @@
 #shutdown -r now
 
 
-yum install -y ncurses-devel make bc bison flex elfutils-libelf-devel openssl-devel grub2 wget perl bzip2 &&
+yum install -y ncurses-devel make gcc bc bison flex elfutils-libelf-devel openssl-devel grub2 wget perl bzip2 &&
 yum install -y centos-release-scl-rh &&
 yum install -y devtoolset-7-gcc-c++ &&
 cd /opt/rh/devtoolset-7
 . enable
 cd /usr/src/ &&
-wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.8.1.tar.xz &&
-tar -xf linux-5.8.1.tar.xz &&
-rm -f linux-5.8.1.tar.xz &&
-cd linux-5.8.1 &&
+wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.109.tar.xz &&
+tar -xf linux-5.4.109.tar.xz &&
+rm -f linux-5.4.109.tar.xz &&
+cd linux-5.4.109 &&
 cp -v /boot/config-$(uname -r) .config &&
 make olddefconfig &&
-date && make -j8 &&
+date && make -j12 &&
 sleep 1m &&
-date && make -j8 modules_install &&
+date && make -j12 modules_install &&
 sleep 1m &&
 date && make install &&
 date

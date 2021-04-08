@@ -3,11 +3,11 @@ MACHINES = {
   # VM name "kernel update"
   :"kernel-build" => {
               # VM box
-              :box_name => "centos-7-5",
+              :box_name => "centos-7-9",
               # VM CPU count
               :cpus => 2,
               # VM RAM size (Mb)
-              :memory => 4096,
+              :memory => 1024,
               # networks
               :net => [],
               # forwarded ports

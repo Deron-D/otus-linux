@@ -1,8 +1,8 @@
 {
   "variables": {
-    "artifact_description": "CentOS 7.8 with kernel 5.8.1",
-    "artifact_version": "7.8.2003",
-    "image_name": "centos-7.8"
+    "artifact_description": "CentOS 7.9 with kernel 5.4.109",
+    "artifact_version": "7.9.2009",
+    "image_name": "centos-7.9"
   },
 
   "builders": [
@@ -16,8 +16,8 @@
       "guest_os_type": "RedHat_64",
       "http_directory": "http",
 
-      "iso_url": "http://mirror.corbina.net/pub/Linux/centos/7.8.2003/isos/x86_64/CentOS-7-x86_64-Minimal-2003.iso",
-      "iso_checksum": "659691c28a0e672558b003d223f83938f254b39875ee7559d1a4a14c79173193",
+      "iso_url": "http://mirror.corbina.net/pub/Linux/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso",
+      "iso_checksum": "07b94e6b1a0b0260b94c83d6bb76b26bf7a310dc78d7a9c7432809fb9bc6194a",
 
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/vagrant.ks<enter><wait>"
@@ -38,7 +38,7 @@
 
       "vboxmanage": [
         [  "modifyvm",  "{{.Name}}",  "--memory",  "12288" ],
-        [  "modifyvm",  "{{.Name}}",  "--cpus",  "8" ]
+        [  "modifyvm",  "{{.Name}}",  "--cpus",  "12" ]
       ],
 
       "export_opts":
@@ -54,7 +54,7 @@
 
   "post-processors": [
     {
-      "output": "centos-{{user `artifact_version`}}-kernel-5.8.1-x86_64-Minimal.box",
+      "output": "centos-{{user `artifact_version`}}-kernel-5.4.109-x86_64-Minimal.box",
       "compression_level": "9",
       "type": "vagrant"
     }
@@ -71,7 +71,7 @@
           "scripts" :
             [
               "scripts/stage-1-1-kernel-build.sh",
-              "scripts/stage-1-2-vbox-sf-install.sh",              
+              "scripts/stage-1-2-vbox-sf-install.sh",
               "scripts/stage-2-clean.sh"
             ]
         }
