@@ -20,7 +20,7 @@ rm -rf /var/cache/yum
 rm -rf /vagrant/home/*.iso
 rm  -f ~/.bash_history
 rm -rf /usr/src/linux-5.4.109
-yum remove kernel* -y
+#yum remove kernel* -y
 history -c
 
 rm -rf /run/log/journal/*
@@ -30,4 +30,4 @@ dd if=/dev/zero of=/EMPTY bs=1M
 rm -f /EMPTY
 sync
 grub2-set-default 1
-echo "###   Hi from secone stage" >> /boot/grub2/grub.cfg
+echo "###   Hi from second stage" >> /boot/grub2/grub.cfg
