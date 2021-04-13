@@ -60,7 +60,9 @@ centos-7.9.2009-kernel-5.4.109-x86_64-Minimal.box  centos.json  centos-kernel-bu
 ```
 
 - Выгрузка полученного образа centos-7.9.2009-kernel-5.4.109-x86_64-Minimal.box в [Vagrant Cloud](https://app.vagrantup.com/Deron-D/boxes/centos-7-9)
-
+```Bash
+vagrant cloud publish --release Deron-D/centos-7-9 1.0 virtualbox centos-7.9.2009-kernel-5.4.109-x86_64-Minimal.box
+```
 
 ### Полезное
 
