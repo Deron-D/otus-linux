@@ -1,18 +1,18 @@
 ---
 # tasks file for provision/flask-role
 
-- name: Upgrade pip
-  pip:
-    name: pip
-    state: latest
-    executable: pip2.7
+#- name: Upgrade pip
+#  pip:
+#    name: pip
+#    state: latest
+#    executable: pip2.7
 
-- name: Install virtualenv
-  pip:
-    name: 
-      - virtualenv
-    state: present
-    executable: pip2.7
+#- name: Install virtualenv
+#  pip:
+#    name: 
+#      - virtualenv
+#    state: present
+#    executable: pip2.7
 
 - name: Create a directory for app
   file:
@@ -55,7 +55,6 @@
     state: started
     enabled: yes
     daemon_reload: yes
-
 
 - name: Modify file labels for the flask directory
   command: "{{ item }}" 

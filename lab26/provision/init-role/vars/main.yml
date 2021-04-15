@@ -21,7 +21,8 @@ packages:
   - policycoreutils-python
     # Components for the Flask enviroment
   - python-pip 
-  - python-devel 
+  - python-devel
+  - python-virtualenv 
   - gcc
     # Components for the NodeJS enviroment
   - gcc-c++
