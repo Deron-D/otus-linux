@@ -1,2 +1,52 @@
 ---
 # tasks file for provision/master-setup
+
+- name: Copy database dump file
+  copy:
+    src: files/bet.dmp
+    dest: /tmp/bet.dmp
+
+- name: Restore database
+  mysql_db:
+    login_user: root
+    name: bet
+    state: import
+    target: /tmp/bet.dmp
+
+- name: Create database user for replication with all database privileges
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_password }}"
+    name: "{{ replication_user }}"
+    password: "{{ replication_password }}"
+    host: '%'
+    priv: '*.*:ALL'
+    state: present
+  no_log: true 
+
+  #- name: Xtrabackup backup running
+  #  shell: |
+  #  echo "bet.bookmaker" > /tmp/tables.txt
+  #  echo "bet.competition" >> /tmp/tables.txt
+  #  echo "bet.market" >> /tmp/tables.txt
+  #  echo "bet.odds" >> /tmp/tables.txt
+  #  echo "bet.outcome" >> /tmp/tables.txt
+  #  xtrabackup --backup --stream=xbstream --compress --databases='bet' --tables-file=/tmp/tables.txt --target-dir=./ > /tmp/backup.xbstream
+  #ignore_errors: yes
+
+  #- name: Get xbstream from master to host machine
+  #fetch:
+  #  src: /tmp/backup.xbstream
+  #  dest: backup.xbstream
+  #  flat: yes
+ 
+- name: Dump database for slave
+  shell:
+    mysqldump --defaults-file=/root/.my.cnf --all-databases --triggers --routines --master-data --ignore-table=bet.events_on_demand --ignore-table=bet.v_same_event > /tmp/master.sql
+
+- name: Store master.sql
+  fetch:
+    src: /tmp/master.sql
+    dest: master.sql
+    flat: yes
+ 

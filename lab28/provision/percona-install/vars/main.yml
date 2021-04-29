@@ -1,4 +1,2 @@
 ---
 # vars file for provision/percona-install
-xtrabackup_package_name: percona-xtrabackup-80
-mysql_password: 'q1XLrVcmK$bD'

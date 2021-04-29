@@ -8,3 +8,4 @@
 .vimrc
 packer_cache/
 .DS_Store
+*.xbstream
