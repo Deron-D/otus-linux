@@ -57,6 +57,14 @@
   with_fileglob:
     - files/conf/conf.d/*
 
+- name: Copy 01-base.cnf file 
+  template:
+    src: templates/01-base.cnf.j2
+    dest: /etc/my.cnf.d/01-base.cnf
+    owner: root
+    group: root
+    mode: '0644'
+
 - name: Restart MySQL
   systemd:
     name: mysql
