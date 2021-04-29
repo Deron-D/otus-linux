@@ -1,0 +1,31 @@
+---
+- hosts: all # part running on all hosts
+  become: true
+  tasks:
+
+  - name: Install epel-release # переведём синтаксис yum из deprecated
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - epel-release
+
+- name: Установка percona
+  hosts: master, slave
+  become: yes
+  roles:
+    - percona-install
+
+- name: Настройка master
+  hosts: master
+  become: yes
+  roles:
+    - master-setup
+
+- name: Настройка slave
+  hosts: slave
+  become: yes
+  roles:
+    - slave-setup
+
