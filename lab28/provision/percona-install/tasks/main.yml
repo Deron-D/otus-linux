@@ -1,7 +1,7 @@
 ---
 # tasks file for provision/percona-install
 #
-- name: Install percona repository
+- name: Install Percona repository
   yum:
     name: https://repo.percona.com/yum/percona-release-latest.noarch.rpm
     state: present
@@ -44,9 +44,20 @@
 
 #'
 
-- name: Copy my.cnf
+- name: Copy .my.cnf
   template:
     src: templates/my.cnf.j2
     dest: /root/.my.cnf
     mode: 0600
 
+- name: Copy Percona configuration files
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/my.cnf.d/"
+  with_fileglob:
+    - files/conf/conf.d/*
+
+- name: Restart MySQL
+  systemd:
+    name: mysql
+    state: restarted
