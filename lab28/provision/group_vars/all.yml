@@ -1,0 +1,6 @@
+---
+# vars file for all
+xtrabackup_package_name: percona-xtrabackup-24
+mysql_password: 'q1XLrVcmK$bD'
+replication_user: repl
+replication_password: '!OtusLinux2021'
