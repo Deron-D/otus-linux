@@ -29,7 +29,8 @@
     enabled: yes
 
 - name: Get automate generated mysql password
-  shell: grep 'A temporary password is generated' /var/log/mysqld.log | awk '{print $11}' 
+  shell: cat /var/log/mysqld.log | grep 'root@localhost:' | awk '{print $11}'
+  #grep 'A temporary password is generated' /var/log/mysqld.log | awk '{print $11}' 
   register: current_password
       
 - debug:
