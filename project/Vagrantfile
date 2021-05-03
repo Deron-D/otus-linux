@@ -49,18 +49,18 @@ MACHINES = {
                  {ip: '192.168.11.152', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
                 ]
  },
-   :monlog => {
+   :elk => {
         :hostname => "monlog.otus.lab",
         :box_name => "centos/7",
         # VM CPU count
         :cpus => 2,
         # VM RAM size (Mb)
-        :memory => 1024, 
+        :memory => 4096, 
 	:net => [
                  {ip: '192.168.11.153', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
                 ]
  },
-   :zabbixsrv => {
+   :zabbix => {
         :hostname => "zabbixsrv.otus.lab",
         :box_name => "centos/7",
         # VM CPU count

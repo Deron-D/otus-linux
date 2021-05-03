@@ -19,7 +19,7 @@
     with_items:
       - "{{ nodes }}"
     tags:
-      - hosts_modify
+      - etc_hosts_modify
 
 - name: Установка postgres11
   hosts: master, slave, backup
@@ -53,29 +53,29 @@
   tags:
     - barman
 
-- name: Configure Prometheus + Node Exporter + Grafana
-  hosts: monlog
-  become: yes
-  roles:
+      #- name: Configure Prometheus + Node Exporter + Grafana
+      #hosts: monlog
+      #become: yes
+      #roles:
     #    - base_config
     - cloudalchemy.prometheus
     - cloudalchemy.node-exporter
     - cloudalchemy.grafana
-  vars:
-    prometheus_targets:
-      node:
-      - targets: 
-          "{{ targets }}"
-        labels:
-          env: otusproject
-  tags:
-    - prometheus_install
+      #vars:
+      #prometheus_targets:
+      #node:
+      #- targets: 
+      #    "{{ targets }}"
+      #  labels:
+      #    env: otusproject
+      #tags:
+      #- prometheus_install
 
-- name: Установка cloudalchemy.node-exporter
-  hosts: master, slave, backup, monlog
-  become: yes
-  roles:
-    - cloudalchemy.node-exporter
-  tags:
-    - nodeexporter
+      #- name: Установка cloudalchemy.node-exporter
+      #hosts: master, slave, backup, monlog
+      #become: yes
+      #roles:
+      #- cloudalchemy.node-exporter
+      #tags:
+      #- nodeexporter
 

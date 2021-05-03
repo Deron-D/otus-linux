@@ -1,6 +1,9 @@
 lab_domain_name: otus.lab
 
 nodes:
+  - node: router
+    node_ip: 192.168.11.254
+    domain: "{{ lab_domain_name }}"
   - node: master
     node_ip: 192.168.11.150
     domain: "{{ lab_domain_name }}"
@@ -10,8 +13,11 @@ nodes:
   - node: backup
     node_ip: 192.168.11.152
     domain: "{{ lab_domain_name }}"
-  - node: monlog
+  - node: elk
     node_ip: 192.168.11.153
+    domain: "{{ lab_domain_name }}"
+  - node: zabbix
+    node_ip: 192.168.11.154
     domain: "{{ lab_domain_name }}"
 
 targets: 
