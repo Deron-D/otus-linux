@@ -4,50 +4,72 @@ home = ENV['HOME']
 ENV["LC_ALL"] = "en_US.UTF-8"
 
 MACHINES = {
+  :router => {
+        :hostname => "router.otus.lab",
+        :box_name => "centos/7",
+        # VM CPU count
+        :cpus => 1,
+        # VM RAM size (Mb)
+        :memory => 256,
+	:net => [
+                 {ip: '192.168.11.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                 {ip: '192.168.10.100', adapter: 3, netmask: "255.255.255.0"},   
+                ]
+  },
   :master => {
         :hostname => "master.otus.lab",
         :box_name => "centos/7",
-        :ip_addr => '192.168.11.150',
         # VM CPU count
         :cpus => 2,
         # VM RAM size (Mb)
-        :memory => 1024 
+        :memory => 1024, 
+	:net => [
+                 {ip: '192.168.11.150', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                ]
   },
   :slave => {
         :hostname => "slave.otus.lab",
         :box_name => "centos/7",
-        :ip_addr => '192.168.11.151',
         # VM CPU count
         :cpus => 2,
         # VM RAM size (Mb)
-        :memory => 1024 
+        :memory => 1024, 
+	:net => [
+                 {ip: '192.168.11.151', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                ]
 },
   :backup => {
         :hostname => "backup.otus.lab",
           :box_name => "centos/7",
-        :ip_addr => '192.168.11.152',
         # VM CPU count
         :cpus => 2,
         # VM RAM size (Mb)
-        :memory => 1024 
+        :memory => 1024,
+	:net => [
+                 {ip: '192.168.11.152', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                ]
  },
    :monlog => {
         :hostname => "monlog.otus.lab",
         :box_name => "centos/7",
-        :ip_addr => '192.168.11.153',
         # VM CPU count
         :cpus => 2,
         # VM RAM size (Mb)
-        :memory => 1024 
+        :memory => 1024, 
+	:net => [
+                 {ip: '192.168.11.153', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                ]
  },
    :zabbixsrv => {
         :hostname => "zabbixsrv.otus.lab",
         :box_name => "centos/7",
-        :ip_addr => '192.168.11.154',
         # VM CPU count
         :cpus => 2,
         # VM RAM size (Mb)
-        :memory => 1024 
+        :memory => 1024,
+	:net => [
+                 {ip: '192.168.11.154', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                ]
  },
 
 }
@@ -67,23 +89,26 @@ Vagrant.configure("2") do |config|
           box.vm.network "public_network", boxconfig[:public]
         end
 
-        box.vm.network "private_network", ip: boxconfig[:ip_addr]
-
-        case boxname.to_s
-           when "monlog"
-             box.vm.network "forwarded_port", guest: 9090, host: 9090
-             box.vm.network "forwarded_port", guest: 3000, host: 3000
-       end
+        #box.vm.network "private_network", ip: boxconfig[:ip_addr]
+        boxconfig[:net].each do |ipconf|
+          box.vm.network "private_network", ipconf
+        end
+        
+	#case boxname.to_s
+        #   when "monlog"
+        #     box.vm.network "forwarded_port", guest: 9090, host: 9090
+        #     box.vm.network "forwarded_port", guest: 3000, host: 3000
+        #end
            
-       box.vm.provider "virtualbox" do |v|
+        box.vm.provider "virtualbox" do |v|
           # Set VM RAM size and CPU count
           v.memory = boxconfig[:memory]
           v.cpus = boxconfig[:cpus]
         end
 
         box.vm.provision "shell", inline: <<-SHELL
-        	timedatectl set-timezone Europe/Moscow
-		      mkdir -p ~root/.ssh
+          timedatectl set-timezone Europe/Moscow
+	  mkdir -p ~root/.ssh
           cp ~vagrant/.ssh/auth* ~root/.ssh
         SHELL
         
