@@ -1,0 +1,29 @@
+---
+# vars file for provision/srv1cv83_setup
+
+app1c_directory: /opt/1C
+
+packages_for1c:
+  - fontconfig
+  - freetype
+  - libgsf
+  - unixODBC
+
+app1cversion_major: 8.3.18
+app1cversion_minor: 1433
+app1cversion1: "{{ app1cversion_major }}.{{ app1cversion_minor }}"
+app1cversion2: 8.3.18-1433
+1c_platform: x86_64
+
+
+app1c_packages:
+  #- 1c-enterprise-{{ app1cversion1 }}-common-{{ app1cversion2 }}.{{ 1c_platform }}.rpm
+  #- 1c-enterprise-{{ app1cversion1 }}-common-nls-{{ app1cversion2 }}.{{ 1c_platform }}.rpm
+  #- 1c-enterprise-{{ app1cversion1 }}-server-{{ app1cversion2 }}.{{ 1c_platform }}.rpm
+  #- 1c-enterprise-{{ app1cversion1 }}-server-nls-{{ app1cversion2 }}.{{ 1c_platform }}.rpm
+  - 1c-enterprise-8.3.18.1433-common-8.3.18-1433.x86_64.rpm
+  - 1c-enterprise-8.3.18.1433-common-nls-8.3.18-1433.x86_64.rpm
+  - 1c-enterprise-8.3.18.1433-server-8.3.18-1433.x86_64.rpm
+  - 1c-enterprise-8.3.18.1433-server-nls-8.3.18-1433.x86_64.rpm
+
+app1c_packages_pattern: 1c-enterprise-*.x86_64.rpm

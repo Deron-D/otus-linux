@@ -1,0 +1,65 @@
+---
+# tasks file for provision/srv1cv83_setup
+
+- name: Config 1540-1541 port firewalld
+  firewalld:
+    port: 1540-1541/tcp
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Config 1560-1590 port firewalld
+  firewalld:
+    port: 1560-1590/tcp
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Install list of necessary for 1c packages
+  yum:
+    name: "{{ packages_for1c }}"
+    state: latest
+
+- name: Get stats of the srv1cv8 install directory
+  stat:
+    path: "{{ app1c_directory }}"
+  register: path_1c
+
+- name: Copy app from remote server and unarchive
+  unarchive:
+    src: files/rpm64_8_3_18_1433.tar.gz
+    dest: /tmp/
+    owner: vagrant
+    group: vagrant
+    mode: '0644' 
+
+- debug:
+    msg:
+    - "{{ app1c_packages }}"
+
+- name: Install list of 1c packages
+  yum:
+    name: "/tmp/{{ item }}"
+    state: present 
+    disable_gpg_check: yes
+  loop: "{{ app1c_packages }}"
+  tags:
+    - 1c_rpm
+
+- name: Prepare 1c unit
+  template:
+    src: srv1cv83.service.j2
+    dest: /etc/systemd/system/srv1cv83.service
+    owner: root
+    group: root
+  tags:
+    - 1c_unit
+
+- name: Start srv1cv83 systemd unit
+  systemd:
+    name: srv1cv83.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  tags:
+    - 1c_start

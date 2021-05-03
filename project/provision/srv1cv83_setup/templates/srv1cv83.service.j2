@@ -1,0 +1,16 @@
+[Unit]
+Description=1C:Enterprise Server
+Wants=network.target
+After=network.target
+
+[Service]
+Type=simple
+Environment=LANG=ru_RU.UTF-8
+Environment=TZ=Europe/Moscow
+ExecStart=/opt/1cv8/x86_64/{{ app1cversion1 }}/ragent -d /home/usr1cv8/.1cv8/1C/1cv8 -port 1540 -regport 1541 -range 1560:1590 -seclev 0 -debug
+Restart=always
+RestartSec=3
+User=usr1cv8
+
+[Install]
+WantedBy=multi-user.target
