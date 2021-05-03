@@ -1,24 +1,4 @@
 ---
-master_ip: 192.168.11.150
-slave_ip: 192.168.11.151
-backup_ip: 192.168.11.152
-postgresql_version: "11"
-postgresql_service: postgresql-11
-postgresql_bin_path: "/usr/pgsql-11/bin"
-postgresql_data_dir: "/var/lib/pgsql/11/data"
-postgresql_config_path: "/var/lib/pgsql/11/data"
-physical_replication_slot: standby_slot
-replica_username: replica
-replica_password: Pass@Word@Rep
-barman_username: barman
-barman_password: Pass@Word@Bar
-streaming_barman: streaming_barman
-streaming_barman_password: Pass@Word@Str
 barman_stream_slot: master
-packages:
-  - postgresql11
-  - postgresql11-server
-  - postgresql11-contrib
-  - python-psycopg2
-  - unzip
+barman_packages:
   - barman

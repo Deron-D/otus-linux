@@ -10,3 +10,4 @@ packer_cache/
 .DS_Store
 *.xbstream
 *.sql
+*.gz

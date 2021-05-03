@@ -1,6 +1,0 @@
----
-#prometheus_targets:
-{{ master_hostname }}:9100
-{{ slave_hostname }}:9100
-{{ backup_hostname }}:9100
-{{ monlog_hostname }}:9100

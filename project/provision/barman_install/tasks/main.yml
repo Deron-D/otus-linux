@@ -8,6 +8,10 @@
 #    
 #- name: Install 2ndQuadrant repo
 #  shell: bash /home/vagrant/2ndQuadrant.sh
+- name: Install barman packages
+  yum:
+    name: "{{ barman_packages }}"
+    state: present
 
 - name: Copy config files on backup
   template:
