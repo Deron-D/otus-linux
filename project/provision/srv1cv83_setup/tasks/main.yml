@@ -27,7 +27,7 @@
 
 - name: Copy app from remote server and unarchive
   unarchive:
-    src: files/rpm64_8_3_18_1433.tar.gz
+    src: files/rpm64_8_3_16_1814.tar.gz
     dest: /tmp/
     owner: vagrant
     group: vagrant
@@ -36,6 +36,8 @@
 - debug:
     msg:
     - "{{ app1c_packages }}"
+  tags:
+    - 1c_vars
 
 - name: Install list of 1c packages
   yum:
