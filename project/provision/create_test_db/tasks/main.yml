@@ -5,12 +5,12 @@
 #    name: unzip
 #    state: present
   
-- name: Remove demo database if exists
-  postgresql_db:
-    name: demo
-    state: absent
-  become: yes
-  become_user: postgres
+#- name: Remove demo database if exists
+#  postgresql_db:
+#    name: demo
+#    state: absent
+#  become: yes
+#  become_user: postgres
 
 - name: Get demo database
   unarchive:

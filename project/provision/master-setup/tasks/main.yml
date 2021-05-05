@@ -1,10 +1,25 @@
 ---
 # tasks file for provision/master-setup
 
-- name: PostgreSQL database init
-  become_user: postgres
-  shell: "{{ postgresql_bin_path }}/initdb --encoding UTF-8 --lc-collate='ru_RU.UTF-8' --lc-ctype='ru_RU.UTF-8' -D /var/lib/pgsql/11/data"
-  ignore_errors: yes
+#- name: PostgreSQL database init
+#  become_user: postgres
+#  shell: "{{ postgresql_bin_path }}/initdb --encoding UTF-8 --lc-collate='ru_RU.UTF-8' --lc-ctype='ru_RU.UTF-8' -D /var/lib/pgsql/11/data"
+#  ignore_errors: yes
+
+- name: Run PostgreSQL
+  systemd:
+    name: "{{ postgresql_service }}"
+    state: stopped
+
+- name: Remove default installed by postgrespro data dir
+  file:
+    path: "{{ postgresql_data_dir }}"
+    state: absent
+
+- name: PostgreSQL database re-init
+  command: "{{ postgresql_bin_path }} initdb --tune=1c"
+  args:
+    creates: "{{ postgresql_data_dir }}"
 
 - name: Copy config files on master
   template:
@@ -43,20 +58,33 @@
     state: started
     enabled: yes
 
-- name: Create physical slot for replication if doesn't exist
-  become_user: postgres
-  postgresql_slot:
-    slot_name: "{{ physical_replication_slot }}"
+    #- name: Create physical slot for replication if doesn't exist
+    #become_user: postgres
+    #postgresql_slot:
+    #slot_name: "{{ physical_replication_slot }}"
 
-- name: Create database users
-  postgresql_user:
-    db: postgres
-    name: "{{ item.name }}"
-    password: "{{ item.password }}"
-    role_attr_flags: "{{ item.flags }}"
-  become: yes
+- name: Create slot for replication
   become_user: postgres
-  with_items:
-    - { name: "{{ replica_username }}", password: "{{ replica_password }}", flags: REPLICATION,LOGIN}
-    - { name: "{{ barman_username }}", password: "{{ barman_password }}", flags: SUPERUSER}
-    - { name: "{{ streaming_barman }}", password: "{{ streaming_barman_password }}", flags: REPLICATION,LOGIN}
+  shell: |
+    psql postgres -c "SELECT pg_create_physical_replication_slot('{{ physical_replication_slot }}')"
+    psql postgres -c "SELECT slot_name, slot_type, active FROM pg_replication_slots;"
+
+- name: Create slot for replication
+  become_user: postgres
+  shell: |
+    psql postgres -c "CREATE USER {{ replica_username }} WITH REPLICATION PASSWORD '{{ replica_password }}'"
+    psql postgres -c "CREATE USER {{ barman_username }} WITH SUPERUSER PASSWORD '{{ barman_password }}'"
+    psql postgres -c "CREATE USER {{ streaming_barman }} WITH REPLICATION PASSWORD '{{ streaming_barman_password }}'"
+   
+   #- name: Create database users
+    #postgresql_user:
+    #db: postgres
+    #name: "{{ item.name }}"
+    #password: "{{ item.password }}"
+    #role_attr_flags: "{{ item.flags }}"
+    #become: yes
+    #become_user: postgres
+    #with_items:
+    #- { name: "{{ replica_username }}", password: "{{ replica_password }}", flags: REPLICATION,LOGIN}
+    #- { name: "{{ barman_username }}", password: "{{ barman_password }}", flags: SUPERUSER}
+    #- { name: "{{ streaming_barman }}", password: "{{ streaming_barman_password }}", flags: REPLICATION,LOGIN}

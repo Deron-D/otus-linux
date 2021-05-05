@@ -40,6 +40,8 @@
   become: yes
   roles:
     - postgres_install
+  tags:
+    - pg_install
 
 - name: Настройка master
   hosts: master

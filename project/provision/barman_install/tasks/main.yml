@@ -8,6 +8,12 @@
 #    
 #- name: Install 2ndQuadrant repo
 #  shell: bash /home/vagrant/2ndQuadrant.sh
+
+- name: Install PostgreSQL repo
+  yum:
+    name: "{{ postgresql_repo }}"
+    state: present
+
 - name: Install barman packages
   yum:
     name: "{{ barman_packages }}"

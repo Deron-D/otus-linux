@@ -10,7 +10,7 @@
 - name: Run pg_basebackup
   become_user: postgres
   become: yes
-  shell: "/usr/pgsql-11/bin/pg_basebackup -D {{ postgresql_data_dir }} --write-recovery-conf --wal-method=stream --checkpoint=fast --host={{ master_ip }} --user={{ replica_username }} --slot='{{ physical_replication_slot }}'"
+  shell: "/opt/pgpro/std-11/bin/pg_basebackup -D {{ postgresql_data_dir }} --write-recovery-conf --wal-method=stream --checkpoint=fast --host={{ master_ip }} --user={{ replica_username }} --slot='{{ physical_replication_slot }}'"
   notify: Restart_PostgreSQL
 
 - name: Copy config files on slave
