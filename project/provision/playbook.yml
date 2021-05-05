@@ -58,6 +58,8 @@
   become: yes
   roles:
     - create_test_db
+  tags:
+    - create_db
 
 - name: Настройка barman
   hosts: backup

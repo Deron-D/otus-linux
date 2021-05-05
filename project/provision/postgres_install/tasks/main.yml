@@ -1,5 +1,9 @@
 ---
 # tasks file for provision/postgres_install
+
+- name: RU localedef
+  shell: localedef -i ru_RU -f UTF-8 ru_RU.UTF-8
+
 - name: Install PostgreSQL repo
   yum:
     name: "{{ postgresql_repo }}"

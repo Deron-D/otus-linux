@@ -11,3 +11,4 @@ packer_cache/
 *.xbstream
 *.sql
 *.gz
+*.zip

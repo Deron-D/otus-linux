@@ -1,9 +1,10 @@
 ---
 # tasks file for provision/master-setup
+
 - name: PostgreSQL database init
-  command: "{{ postgresql_bin_path }}/postgresql-11-setup initdb"
-  args:
-    creates: "{{ postgresql_data_dir }}/PG_VERSION"
+  become_user: postgres
+  shell: "{{ postgresql_bin_path }}/initdb --encoding UTF-8 --lc-collate='ru_RU.UTF-8' --lc-ctype='ru_RU.UTF-8' -D /var/lib/pgsql/11/data"
+  ignore_errors: yes
 
 - name: Copy config files on master
   template:
@@ -59,5 +60,3 @@
     - { name: "{{ replica_username }}", password: "{{ replica_password }}", flags: REPLICATION,LOGIN}
     - { name: "{{ barman_username }}", password: "{{ barman_password }}", flags: SUPERUSER}
     - { name: "{{ streaming_barman }}", password: "{{ streaming_barman_password }}", flags: REPLICATION,LOGIN}
-        
-

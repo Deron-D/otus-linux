@@ -1,5 +1,10 @@
 ---
 # tasks file for provision/create_test_db
+#- name: Install unzip
+#  yum:
+#    name: unzip
+#    state: present
+  
 - name: Remove demo database if exists
   postgresql_db:
     name: demo
@@ -10,12 +15,12 @@
 - name: Get demo database
   unarchive:
     #src: https://edu.postgrespro.ru/demo_small.zip
-    src: demo_small.zip
-    dest: /var/tmp
+    src: 1CDocDemo.zip
+    dest: /var/tmp/
     #remote_src: yes
     remote_src: no
 
 - name: Load demo database
   become: yes 
   become_user: postgres
-  shell: psql -f /var/tmp/demo_small.sql
+  shell: psql -f /var/tmp/1CDocDemo.sql

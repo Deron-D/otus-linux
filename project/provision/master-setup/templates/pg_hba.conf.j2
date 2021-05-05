@@ -6,6 +6,7 @@ local   all             all                                     peer
 host    all             all             127.0.0.1/32            ident
 host    all             all             {{ slave_ip }}/32  trust
 host    all             all             {{ backup_ip }}/32  trust
+host    all             all             {{ srv1c_ip }}/32  trust
 # IPv6 local connections:
 host    all             all             ::1/128                 ident
 # Allow replication connections from localhost, by a user with the

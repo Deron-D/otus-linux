@@ -94,7 +94,7 @@ MACHINES = {
                 ]
  },
    :srv1c => {
-        :hostname => "srv1cv83.otus.lab",
+        :hostname => "srv1c.otus.lab",
         :box_name => "centos/7",
         # VM CPU count
         :cpus => 2,
@@ -127,11 +127,12 @@ Vagrant.configure("2") do |config|
           box.vm.network "private_network", ipconf
         end
         
-	#case boxname.to_s
-        #   when "monlog"
-        #     box.vm.network "forwarded_port", guest: 9090, host: 9090
-        #     box.vm.network "forwarded_port", guest: 3000, host: 3000
-        #end
+	case boxname.to_s
+           when "srv1c"
+             box.vm.network "forwarded_port", guest: 1540, host: 1540
+             box.vm.network "forwarded_port", guest: 1541, host: 1541
+             box.vm.network "forwarded_port", guest: 1560, host: 1560
+        end
            
         box.vm.provider "virtualbox" do |v|
           # Set VM RAM size and CPU count

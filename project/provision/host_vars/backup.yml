@@ -2,3 +2,4 @@
 barman_stream_slot: master
 barman_packages:
   - barman
+backup_base: 1CDocDemo
