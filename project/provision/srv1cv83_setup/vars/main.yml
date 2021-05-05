@@ -18,3 +18,9 @@ app1c_packages:
   - 1C_Enterprise83-server-nls-{{ app1cversion }}.x86_64.rpm
 
 app1c_packages_pattern: 1c-enterprise-*.x86_64.rpm
+
+database_1c: 1CDocDemo
+db_server: master.otus.lab
+db_user: barman
+db_pwd: Pass@Word@Bar
+
