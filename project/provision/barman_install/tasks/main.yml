@@ -16,8 +16,10 @@
 
 - name: Install barman packages
   yum:
-    name: "{{ barman_packages }}"
+    name: "{{ item }}"
     state: present
+  loop:
+    - "{{ barman_packages }}"
 
 - name: Copy config files on backup
   template:

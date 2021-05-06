@@ -1,0 +1,9 @@
+---
+# tasks file for provision/apache_setup
+
+- name: Install packages for apache_setup role
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ packages }}"

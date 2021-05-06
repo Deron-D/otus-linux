@@ -27,7 +27,6 @@
       state: started
       enabled: yes
 
-
 - name: Установка postgres11
   hosts: master, slave, backup
   become: yes
@@ -62,7 +61,7 @@
   roles:
     - barman_install
   tags:
-    - barman
+    - backup
 
 - name: Установка 1c сервера
   hosts: srv1c
@@ -71,6 +70,14 @@
     - srv1cv83_setup
   tags:
     - 1c
+
+- name: Установка apache2
+  hosts: apache
+  become: yes
+  roles:
+    - apache_setup
+  tags:
+    - apache
 
       #- name: Configure Prometheus + Node Exporter + Grafana
       #hosts: monlog
