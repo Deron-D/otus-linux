@@ -1,0 +1,14 @@
+---
+# tasks file for provision/nginx_setup
+- name: Install packages for nginx_setup role
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ packages }}"
+
+- name: Start nginx
+  systemd:
+    name: nginx
+    state: started
+    enabled: yes

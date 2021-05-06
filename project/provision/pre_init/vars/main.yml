@@ -1,0 +1,4 @@
+---
+# vars file for provision/pre_init
+packages:
+  - libsemanage-python

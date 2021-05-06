@@ -15,12 +15,18 @@
     state: enabled
     immediate: yes
 
+- name: Set httpd_can_network_connect seboolean
+  seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+
+- name: Publish 1c informbase
+  shell: /opt/1C/v8.3/x86_64/webinst -publish -apache24 -wsdir 1CDocDemo -dir /var/www/1CDocDemo/ -connstr "Srvr=srv1c.otus.lab;Ref=1CDocDemo" -confpath /etc/httpd/conf/httpd.conf
+
 - name: Start httpd service
   systemd:
     name: httpd
-    state: started
+    state: restarted
     enabled: yes
-
-#./webinst -publish -apache24 -wsdir 1CDocDemo -dir /var/www/1CDocDemo/ -connstr "Srvr=srv1c.otus.lab;Ref=1CDocDemo;Usr=admin;Pwd=admin" -confpath /etc/httpd/conf/httpd.conf
-#./webinst -delete -apache24 -wsdir 1CDocDemo -dir /var/www/1CDocDemo/ -connstr "Srvr=srv1c.otus.lab;Ref=1CDocDemo" -confpath /etc/httpd/conf/httpd.conf
 

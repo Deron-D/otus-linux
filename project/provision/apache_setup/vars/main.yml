@@ -2,4 +2,3 @@
 # vars file for provision/apache_setup
 packages:
   - httpd
-

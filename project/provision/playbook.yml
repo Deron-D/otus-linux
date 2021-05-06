@@ -1,31 +1,15 @@
 ---
-- hosts: all # part running on all hosts
-  become: true
-  tasks:
+#- hosts: all # part running on all hosts
+#  become: true
+#  tasks:
 
-  - name: Install epel-release # переведём синтаксис yum из deprecated
-    yum:
-      name: "{{ packages }}"
-      state: present
-    vars:
-      packages:
-      - epel-release
-  
-  pre_tasks:
-  - name: Modify /etc/hosts
-    lineinfile:
-      path: /etc/hosts
-      line: '{{ item.node_ip }} {{ item.node }}.{{ item.domain }} {{ item.node }}'
-    with_items:
-      - "{{ nodes }}"
-    tags:
-      - etc_hosts_modifiy
-
-  - name: Start FirewallD
-    systemd:
-      name: firewalld
-      state: started
-      enabled: yes
+- name: First initilization
+  hosts: all
+  become: yes
+  roles:
+    - pre_init
+  tags:
+    - pre_init
 
 - name: Установка postgres11
   hosts: master, slave
@@ -87,6 +71,13 @@
   tags:
     - apache
 
+- name: Установка nginx
+  hosts: nginx
+  become: yes
+  roles:
+    - nginx_setup
+  tags:
+    - nginx
       #- name: Configure Prometheus + Node Exporter + Grafana
       #hosts: monlog
       #become: yes

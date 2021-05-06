@@ -44,9 +44,9 @@
   shell: /opt/1C/v8.3/x86_64/rac cluster list | grep 'cluster' | awk '{ print $3 }'
   register: cluster_name
 
-- debug:
-    msg:
-    - "{{ cluster_name.stdout }}"
+  #- debug:
+  #  msg:
+  #  - "{{ cluster_name.stdout }}"
 
 - name: Create 1C database
   become_user: usr1cv8

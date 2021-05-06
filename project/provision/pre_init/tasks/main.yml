@@ -1,0 +1,33 @@
+---
+# tasks file for provision/pre_init
+
+- name: Install epel-release # переведём синтаксис yum из deprecated
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - epel-release
+
+- name: Install requied packages 
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ packages }}"
+
+- name: Modify /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: '{{ item.node_ip }} {{ item.node }}.{{ item.domain }} {{ item.node }}'
+  with_items:
+    - "{{ nodes }}"
+  tags:
+    - etc_hosts_modifiy
+
+- name: Start FirewallD
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+

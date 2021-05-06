@@ -19,11 +19,11 @@
     group: vagrant
     mode: '0644' 
 
-- debug:
-    msg:
-    - "{{ app1c_packages }}"
-  tags:
-    - 1c_vars
+    #- debug:
+    #msg:
+    #- "{{ app1c_packages }}"
+    #tags:
+    #- 1c_vars
 
 - name: Install list of 1c packages
   yum:
