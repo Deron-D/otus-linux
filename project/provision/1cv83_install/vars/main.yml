@@ -1,0 +1,11 @@
+---
+# vars file for provision/1cv83_install
+packages_for1c:
+  - fontconfig
+  - freetype
+  - libgsf
+  - unixODBC
+
+app1c_packages_pattern: 1C-Enterprise83-*.x86_64.rpm
+
+app1c_directory: /opt/1C

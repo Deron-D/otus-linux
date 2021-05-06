@@ -28,7 +28,7 @@
       enabled: yes
 
 - name: Установка postgres11
-  hosts: master, slave, backup
+  hosts: master, slave
   become: yes
   roles:
     - postgres_install
@@ -63,13 +63,21 @@
   tags:
     - backup
 
-- name: Установка 1c сервера
+- name: Установка 1c 
+  hosts: srv1c, apache
+  become: yes
+  roles:
+    - 1cv83_install
+  tags:
+    - 1c_install
+
+- name: Настройка 1c сервера
   hosts: srv1c
   become: yes
   roles:
     - srv1cv83_setup
   tags:
-    - 1c
+    - 1c_setup
 
 - name: Установка apache2
   hosts: apache

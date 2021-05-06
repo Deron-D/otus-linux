@@ -7,3 +7,20 @@
     state: present
   loop:
     - "{{ packages }}"
+
+- name: Permit traffic in default zone for http service
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Start httpd service
+  systemd:
+    name: httpd
+    state: started
+    enabled: yes
+
+#./webinst -publish -apache24 -wsdir 1CDocDemo -dir /var/www/1CDocDemo/ -connstr "Srvr=srv1c.otus.lab;Ref=1CDocDemo;Usr=admin;Pwd=admin" -confpath /etc/httpd/conf/httpd.conf
+#./webinst -delete -apache24 -wsdir 1CDocDemo -dir /var/www/1CDocDemo/ -connstr "Srvr=srv1c.otus.lab;Ref=1CDocDemo" -confpath /etc/httpd/conf/httpd.conf
+

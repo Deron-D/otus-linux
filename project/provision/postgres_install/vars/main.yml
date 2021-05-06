@@ -1,5 +1,6 @@
 ---
 # vars file for provision/postgres_install
+postgrespro_repo: https://repo.postgrespro.ru/pgpro-11/keys/centos.rpm
 
 packages:
         #- postgresql11

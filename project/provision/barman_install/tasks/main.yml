@@ -1,18 +1,14 @@
 ---
 # tasks file for provision/barman_install
-#- name: Get 2ndQuadrant repo
-#  get_url:
-#    url: https://dl.2ndquadrant.com/default/release/get/11/rpm
-#    dest: /home/vagrant/2ndQuadrant.sh
-#    mode: 0755
-#    
-#- name: Install 2ndQuadrant repo
-#  shell: bash /home/vagrant/2ndQuadrant.sh
 
-- name: Install PostgreSQL repo
-  yum:
-    name: "{{ postgresql_repo }}"
-    state: present
+- name: Get 2ndQuadrant repo
+  get_url:
+    url: https://dl.2ndquadrant.com/default/release/get/11/rpm
+    dest: /home/vagrant/2ndQuadrant.sh
+    mode: 0755
+    
+- name: Install 2ndQuadrant repo
+  shell: bash /home/vagrant/2ndQuadrant.sh
 
 - name: Install barman packages
   yum:
@@ -20,6 +16,21 @@
     state: present
   loop:
     - "{{ barman_packages }}"
+
+- name: Install PostgreSQL repo
+  yum:
+    name: "{{ postgresql_repo }}"
+    state: present
+
+- name: Yum config for pgdg repo
+  shell: yum-config-manager --save --setopt=pgdg-common.skip_if_unavailable=true      
+
+- name: Install postgres packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ postgres_packages }}"
 
 - name: Copy config files on backup
   template:

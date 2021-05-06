@@ -8,10 +8,11 @@
   #yum:
   #  name: "{{ postgresql_repo }}"
   #  state: present
+
 - name: Install centos.rpm from PostgresPro
-  shell: |
-    rpm -i https://repo.postgrespro.ru/pgpro-11/keys/centos.rpm
-    yum makecache
+  yum:
+    name: "{{ postgrespro_repo }}"
+    update_cache: yes
 
 - name: Install PostgreSQL packages
   package:
