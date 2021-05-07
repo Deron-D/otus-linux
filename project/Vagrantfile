@@ -4,18 +4,18 @@ home = ENV['HOME']
 ENV["LC_ALL"] = "en_US.UTF-8"
 
 MACHINES = {
-#  :router => {
-#        :hostname => "router.otus.lab",
-#        :box_name => "centos/7",
-#        # VM CPU count
-#        :cpus => 1,
-#        # VM RAM size (Mb)
-#        :memory => 256,
-#	:net => [
-#                 {ip: '192.168.11.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-#                 {ip: '192.168.10.100', adapter: 3, netmask: "255.255.255.0"},   
-#                ]
-#  },
+  :router => {
+        :hostname => "router.otus.lab",
+        :box_name => "centos/7",
+        # VM CPU count
+        :cpus => 1,
+        # VM RAM size (Mb)
+        :memory => 256,
+	:net => [
+                 {ip: '192.168.11.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                 {ip: '192.168.10.100', adapter: 3, netmask: "255.255.255.0"},   
+                ]
+  },
   :master => {
         :hostname => "master.otus.lab",
         :box_name => "centos/7",
@@ -145,6 +145,7 @@ Vagrant.configure("2") do |config|
 	     box.vm.network "forwarded_port", guest: 80, host: 8088, protocol: "tcp", auto_correct: true
              box.vm.network "forwarded_port", guest: 443, host: 8443, protocol: "tcp", auto_correct: true
            when "apachehost"
+	     box.vm.network "forwarded_port", guest: 80, host: 8080, protocol: "tcp", auto_correct: true
              box.vm.network "forwarded_port", guest: 22, host: 2206, id: "ssh"
            when "srv1c"
              box.vm.network "forwarded_port", guest: 22, host: 2207, id: "ssh"

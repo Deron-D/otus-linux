@@ -31,3 +31,12 @@
     state: started
     enabled: yes
 
+- name: Set sysctl parameters
+  sysctl:
+    name: '{{ item.parameter }}'
+    value: '{{ item.value}} '
+    sysctl_set: yes
+    state: present
+    reload: yes
+  with_items:
+    - '{{ sysctl_params }}'

@@ -55,3 +55,8 @@ targets:
   - slave:9100
   - backup:9100
   - monlog:9100
+
+sysctl_params:
+  - parameter: vm.swappiness
+    value: '10'
+

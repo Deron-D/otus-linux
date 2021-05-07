@@ -48,7 +48,7 @@
     - backup
 
 - name: Установка 1c 
-  hosts: srv1c, apache
+  hosts: srv1c, apachehost
   become: yes
   roles:
     - 1cv83_install
@@ -64,7 +64,7 @@
     - 1c_setup
 
 - name: Установка apache2
-  hosts: apache
+  hosts: apachehost
   become: yes
   roles:
     - apache_setup
@@ -72,12 +72,20 @@
     - apache
 
 - name: Установка nginx
-  hosts: nginx
+  hosts: nginxhost
   become: yes
   roles:
     - nginx_setup
   tags:
     - nginx
+
+- name: Router setup
+  hosts: router
+  become: yes
+  roles:
+    - router_setup
+  tags:
+    - router
       #- name: Configure Prometheus + Node Exporter + Grafana
       #hosts: monlog
       #become: yes
