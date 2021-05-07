@@ -1,2 +1,28 @@
 ---
 # tasks file for provision/router_setup
+
+- name: Install requied packages
+  yum:
+    name: '{{ item }}'
+    state: present
+  when: packages is defined
+  loop: '{{ packages }}'
+
+- name: Enable services
+  systemd:
+    state: '{{ item.state }}'
+    name: '{{ item.name }}'
+    enabled: '{{ item.enabled }}'
+    daemon_reload: yes
+  when: services is defined
+  with_items:
+    - '{{ services }}'    
+
+- name: Config DNAT and SNAT at Router
+  copy:
+    src: iptables-nat
+    dest: /etc/sysconfig/iptables
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart_iptables

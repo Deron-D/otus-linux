@@ -1,2 +1,6 @@
 ---
 # handlers file for provision/router_setup
+- name: restart_iptables
+  systemd:
+    name: iptables
+    state: restarted

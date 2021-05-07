@@ -1,2 +1,13 @@
 ---
 # vars file for provision/router_setup
+packages:
+  - iptables-services
+
+services:
+  - name: firewalld
+    state: stopped
+    enabled: no
+
+  - name: iptables
+    state: started
+    enabled: yes
