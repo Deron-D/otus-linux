@@ -145,7 +145,7 @@ Vagrant.configure("2") do |config|
 	     box.vm.network "forwarded_port", guest: 80, host: 8088, protocol: "tcp", auto_correct: true
              box.vm.network "forwarded_port", guest: 443, host: 8443, protocol: "tcp", auto_correct: true
            when "apachehost"
-	     box.vm.network "forwarded_port", guest: 80, host: 8080, protocol: "tcp", auto_correct: true
+	     #box.vm.network "forwarded_port", guest: 80, host: 8080, protocol: "tcp", auto_correct: true
              box.vm.network "forwarded_port", guest: 22, host: 2206, id: "ssh"
            when "srv1c"
              box.vm.network "forwarded_port", guest: 22, host: 2207, id: "ssh"

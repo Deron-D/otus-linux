@@ -2,3 +2,7 @@
 # vars file for provision/nginx_setup
 packages:
   - nginx
+
+location: /1CDocDemo/
+
+proxy_pass: http://192.168.11.101/1CDocDemo/

@@ -11,3 +11,10 @@ services:
   - name: iptables
     state: started
     enabled: yes
+
+#NAT
+ext_ip: 192.168.10.100
+ext_net: 192.168.10.0/24
+out_dport: 8080
+frontend_ip: 192.168.11.100
+frontend_dport: 80

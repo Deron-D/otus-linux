@@ -19,8 +19,8 @@
     - '{{ services }}'    
 
 - name: Config DNAT and SNAT at Router
-  copy:
-    src: iptables-nat
+  template:
+    src: iptables-nat.j2
     dest: /etc/sysconfig/iptables
     owner: root
     group: root
