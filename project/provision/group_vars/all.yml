@@ -35,16 +35,16 @@ nodes:
   - node: backup
     node_ip: 192.168.11.152
     domain: "{{ lab_domain_name }}"
-  - node: elk
+  - node: elkhost
     node_ip: 192.168.11.153
     domain: "{{ lab_domain_name }}"
-  - node: zabbix
+  - node: zabbixhost
     node_ip: 192.168.11.154
     domain: "{{ lab_domain_name }}"
-  - node: nginx
+  - node: nginxhost
     node_ip: 192.168.11.100
     domain: "{{ lab_domain_name }}"
-  - node: apache
+  - node: apachehost
     node_ip: 192.168.11.101
     domain: "{{ lab_domain_name }}"
   - node: srv1c
