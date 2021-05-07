@@ -4,18 +4,18 @@ home = ENV['HOME']
 ENV["LC_ALL"] = "en_US.UTF-8"
 
 MACHINES = {
-  :router => {
-        :hostname => "router.otus.lab",
-        :box_name => "centos/7",
-        # VM CPU count
-        :cpus => 1,
-        # VM RAM size (Mb)
-        :memory => 256,
-	:net => [
-                 {ip: '192.168.11.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-                 {ip: '192.168.10.100', adapter: 3, netmask: "255.255.255.0"},   
-                ]
-  },
+#  :router => {
+#        :hostname => "router.otus.lab",
+#        :box_name => "centos/7",
+#        # VM CPU count
+#        :cpus => 1,
+#        # VM RAM size (Mb)
+#        :memory => 256,
+#	:net => [
+#                 {ip: '192.168.11.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+#                 {ip: '192.168.10.100', adapter: 3, netmask: "255.255.255.0"},   
+#                ]
+#  },
   :master => {
         :hostname => "master.otus.lab",
         :box_name => "centos/7",
@@ -27,51 +27,51 @@ MACHINES = {
                  {ip: '192.168.11.150', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
                 ]
   },
-  :slave => {
-        :hostname => "slave.otus.lab",
-        :box_name => "centos/7",
-        # VM CPU count
-        :cpus => 2,
-        # VM RAM size (Mb)
-        :memory => 1024, 
-	:net => [
-                 {ip: '192.168.11.151', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-                ]
-},
-  :backup => {
-        :hostname => "backup.otus.lab",
-          :box_name => "centos/7",
-        # VM CPU count
-        :cpus => 2,
-        # VM RAM size (Mb)
-        :memory => 1024,
-	:net => [
-                 {ip: '192.168.11.152', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-                ]
- },
-   :elk => {
-        :hostname => "monlog.otus.lab",
-        :box_name => "centos/7",
-        # VM CPU count
-        :cpus => 2,
-        # VM RAM size (Mb)
-        :memory => 4096, 
-	:net => [
-                 {ip: '192.168.11.153', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-                ]
- },
-   :zabbix => {
-        :hostname => "zabbixsrv.otus.lab",
-        :box_name => "centos/7",
-        # VM CPU count
-        :cpus => 2,
-        # VM RAM size (Mb)
-        :memory => 2048,
-	:net => [
-                 {ip: '192.168.11.154', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-                ]
- },
-   :nginx => {
+#  :slave => {
+#        :hostname => "slave.otus.lab",
+#        :box_name => "centos/7",
+#        # VM CPU count
+#        :cpus => 2,
+#        # VM RAM size (Mb)
+#        :memory => 1024, 
+#	:net => [
+#                 {ip: '192.168.11.151', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+#                ]
+#},
+#  :backup => {
+#        :hostname => "backup.otus.lab",
+#          :box_name => "centos/7",
+#        # VM CPU count
+#        :cpus => 2,
+#        # VM RAM size (Mb)
+#        :memory => 1024,
+#	:net => [
+#                 {ip: '192.168.11.152', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+#                ]
+# },
+#   :elkhost => {
+#        :hostname => "monlog.otus.lab",
+#        :box_name => "centos/7",
+#        # VM CPU count
+#        :cpus => 2,
+#        # VM RAM size (Mb)
+#        :memory => 4096, 
+#	:net => [
+#                 {ip: '192.168.11.153', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+#                ]
+# },
+#  :zabbixhost => {
+#       :hostname => "zabbixsrv.otus.lab",
+#       :box_name => "centos/7",
+#       # VM CPU count
+#       :cpus => 2,
+#       # VM RAM size (Mb)
+#       :memory => 2048,
+#	:net => [
+#                 {ip: '192.168.11.154', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+#                ]
+#},
+   :nginxhost => {
         :hostname => "nginx.otus.lab",
         :box_name => "centos/7",
         # VM CPU count
@@ -82,7 +82,7 @@ MACHINES = {
                  {ip: '192.168.11.100', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
                 ]
  },
-   :apache => {
+   :apachehost => {
         :hostname => "apache.otus.lab",
         :box_name => "centos/7",
         # VM CPU count
@@ -128,13 +128,29 @@ Vagrant.configure("2") do |config|
         end
         
 	case boxname.to_s
+           when "router"
+             box.vm.network "forwarded_port", guest: 22, host: 2222, id: "ssh"
+	   when "master"
+             box.vm.network "forwarded_port", guest: 22, host: 2200, id: "ssh"
+           when "slave"
+             box.vm.network "forwarded_port", guest: 22, host: 2201, id: "ssh"
+           when "backup"
+             box.vm.network "forwarded_port", guest: 22, host: 2202, id: "ssh"
+           when "elkhost"
+             box.vm.network "forwarded_port", guest: 22, host: 2203, id: "ssh"
+           when "zabbixhost"
+             box.vm.network "forwarded_port", guest: 22, host: 2204, id: "ssh"
+           when "nginxhost"
+             box.vm.network "forwarded_port", guest: 22, host: 2205, id: "ssh"
+	     box.vm.network "forwarded_port", guest: 80, host: 8088, protocol: "tcp", auto_correct: true
+             box.vm.network "forwarded_port", guest: 443, host: 8443, protocol: "tcp", auto_correct: true
+           when "apachehost"
+             box.vm.network "forwarded_port", guest: 22, host: 2206, id: "ssh"
            when "srv1c"
-             box.vm.network "forwarded_port", guest: 1540, host: 1540
-             box.vm.network "forwarded_port", guest: 1541, host: 1541
-             box.vm.network "forwarded_port", guest: 1560, host: 1560
-             #box.vm.network "forwarded_port", guest: 80, host: 8080
-           when "nginx"
-             box.vm.network "forwarded_port", guest: 80, host: 8080
+             box.vm.network "forwarded_port", guest: 22, host: 2207, id: "ssh"
+             box.vm.network "forwarded_port", guest: 1540, host: 1540, auto_correct: true
+             box.vm.network "forwarded_port", guest: 1541, host: 1541, auto_correct: true
+             box.vm.network "forwarded_port", guest: 1560, host: 1560, auto_correct: true
         end
            
         box.vm.provider "virtualbox" do |v|
