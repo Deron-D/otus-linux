@@ -12,7 +12,7 @@ MACHINES = {
         # VM RAM size (Mb)
         :memory => 256,
 	:net => [
-                 {ip: '192.168.11.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                 {ip: '192.168.255.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "router-net"},
                 ]
   },
 #  :master => {
@@ -78,7 +78,8 @@ MACHINES = {
         # VM RAM size (Mb)
         :memory => 1024,
 	:net => [
-                 {ip: '192.168.11.100', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                 {ip: '192.168.255.100', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "router-net"},
+                 {ip: '192.168.11.100', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
                 ]
  },
 #   :apachehost => {
