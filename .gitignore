@@ -12,3 +12,4 @@ packer_cache/
 *.sql
 *.gz
 *.zip
+*.log
