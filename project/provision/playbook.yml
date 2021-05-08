@@ -87,6 +87,14 @@
   tags:
     - router
 
+- name: Elk setup
+  hosts: elkhost
+  become: yes
+  roles:
+    - elk_setup
+  tags:
+    - elk
+
       #- name: Configure Prometheus + Node Exporter + Grafana
       #hosts: monlog
       #become: yes
