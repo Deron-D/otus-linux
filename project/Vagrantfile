@@ -13,20 +13,19 @@ MACHINES = {
         :memory => 256,
 	:net => [
                  {ip: '192.168.11.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-                 {ip: '192.168.10.100', adapter: 3, netmask: "255.255.255.0"},   
                 ]
   },
-  :master => {
-        :hostname => "master.otus.lab",
-        :box_name => "centos/7",
-        # VM CPU count
-        :cpus => 2,
-        # VM RAM size (Mb)
-        :memory => 1024, 
-	:net => [
-                 {ip: '192.168.11.150', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-                ]
-  },
+#  :master => {
+#        :hostname => "master.otus.lab",
+#        :box_name => "centos/7",
+#        # VM CPU count
+#        :cpus => 2,
+#        # VM RAM size (Mb)
+#        :memory => 1024, 
+#	:net => [
+#                 {ip: '192.168.11.150', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+#                ]
+#  },
 #  :slave => {
 #        :hostname => "slave.otus.lab",
 #        :box_name => "centos/7",
@@ -82,28 +81,28 @@ MACHINES = {
                  {ip: '192.168.11.100', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
                 ]
  },
-   :apachehost => {
-        :hostname => "apache.otus.lab",
-        :box_name => "centos/7",
-        # VM CPU count
-        :cpus => 2,
-        # VM RAM size (Mb)
-        :memory => 1024,
-	:net => [
-                 {ip: '192.168.11.101', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-                ]
- },
-   :srv1c => {
-        :hostname => "srv1c.otus.lab",
-        :box_name => "centos/7",
-        # VM CPU count
-        :cpus => 2,
-        # VM RAM size (Mb)
-        :memory => 1024,
-	:net => [
-                 {ip: '192.168.11.102', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-                ]
- },
+#   :apachehost => {
+#        :hostname => "apache.otus.lab",
+#        :box_name => "centos/7",
+#        # VM CPU count
+#        :cpus => 2,
+#        # VM RAM size (Mb)
+#        :memory => 1024,
+#	:net => [
+#                 {ip: '192.168.11.101', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+#                ]
+# },
+#   :srv1c => {
+#        :hostname => "srv1c.otus.lab",
+#        :box_name => "centos/7",
+#        # VM CPU count
+#        :cpus => 2,
+#        # VM RAM size (Mb)
+#        :memory => 1024,
+#	:net => [
+#                 {ip: '192.168.11.102', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+#                ]
+# },
 
 }
 
@@ -130,6 +129,8 @@ Vagrant.configure("2") do |config|
 	case boxname.to_s
            when "router"
              box.vm.network "forwarded_port", guest: 22, host: 2222, id: "ssh"
+	     box.vm.network "forwarded_port", guest: 8080, host: 8080, protocol: "tcp", auto_correct: true
+             box.vm.network "forwarded_port", guest: 8443, host: 8443, protocol: "tcp", auto_correct: true
 	   when "master"
              box.vm.network "forwarded_port", guest: 22, host: 2200, id: "ssh"
            when "slave"
@@ -143,9 +144,7 @@ Vagrant.configure("2") do |config|
            when "nginxhost"
              box.vm.network "forwarded_port", guest: 22, host: 2205, id: "ssh"
 	     box.vm.network "forwarded_port", guest: 80, host: 8088, protocol: "tcp", auto_correct: true
-             box.vm.network "forwarded_port", guest: 443, host: 8443, protocol: "tcp", auto_correct: true
            when "apachehost"
-	     #box.vm.network "forwarded_port", guest: 80, host: 8080, protocol: "tcp", auto_correct: true
              box.vm.network "forwarded_port", guest: 22, host: 2206, id: "ssh"
            when "srv1c"
              box.vm.network "forwarded_port", guest: 22, host: 2207, id: "ssh"

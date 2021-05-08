@@ -14,6 +14,13 @@
     state: enabled
     immediate: yes
 
+- name: Permit traffic in default zone for https service
+  firewalld:
+    service: https
+    permanent: yes
+    state: enabled
+    immediate: yes
+
 - name: Config nginx
   template:
     src: nginx.conf.j2
@@ -28,3 +35,10 @@
     state: restarted
     enabled: yes
 
+- name: Remove default from eth0
+  shell: nmcli connection modify System\ eth0 ipv4.never-default yes && nmcli connection up System\ eth0
+
+- name: Setup default route
+  shell: "nmcli connection modify System\\ {{ item.dev }} ipv4.gateway {{ item.nh }} && nmcli connection up System\\ {{ item.dev }}"
+  with_items: 
+    - "{{ gw }}"
