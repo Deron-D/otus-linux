@@ -3,4 +3,4 @@
 packages:
   - libsemanage-python
   - tcpdump
-
+  - policycoreutils-python

@@ -1,7 +1,6 @@
 ---
 # tasks file for provision/router_setup
 
-
 - name: Get UUID for externalinterface
   shell: nmcli c show | grep eth0 | awk '{ print $3 }'
   register: external_uuid
@@ -15,7 +14,7 @@
     nmcli c mod {{ internal_uuid.stdout }} connection.zone dmz
     nmcli c mod {{ external_uuid.stdout }} connection.zone external
 
-- name: Permit traffic in default zone for http service
+- name: Permit traffic in dmz zone for http service
   firewalld:
     zone: dmz
     service: http
@@ -23,7 +22,7 @@
     state: enabled
     immediate: yes
 
-- name: Permit traffic in default zone for https service
+- name: Permit traffic in dmz zone for https service
   firewalld:
     zone: dmz
     service: https
@@ -39,10 +38,13 @@
     state: enabled
     immediate: yes
 
-- name: Forward ports to nginx
-  shell: |
-    firewall-cmd --permanent --zone=external --add-forward-port=port=8080:proto=tcp:toport=80:toaddr={{ nginx_host_ip }}
-    firewall-cmd --permanent --zone=external --add-forward-port=port=8443:proto=tcp:toport=443:toaddr={{ nginx_host_ip }}
+- name: Enable remote connections to port 8443 by firewalld
+  firewalld:
+    zone: external
+    port: 8443/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
 
 - name: Enable masquerade to zone dmz
   firewalld:
@@ -52,5 +54,8 @@
     state: enabled
     immediate: yes
 
-    #    firewall-cmd --zone=dmz --add-masquerade --permanent
-    #firewall-cmd --reload
+- name: Forward ports to nginx
+  shell: |
+    firewall-cmd --permanent --zone=external --add-forward-port=port=8080:proto=tcp:toport=80:toaddr={{ nginx_host_ip }}
+    firewall-cmd --permanent --zone=external --add-forward-port=port=8443:proto=tcp:toport=443:toaddr={{ nginx_host_ip }}
+    firewall-cmd --reload

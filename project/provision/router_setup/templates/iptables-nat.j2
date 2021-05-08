@@ -1,8 +1,0 @@
-*nat
-:PREROUTING ACCEPT [0:0]
-:INPUT ACCEPT [0:0]
-:OUTPUT ACCEPT [0:0]
-:POSTROUTING ACCEPT [0:0]
--A PREROUTING -d {{ ext_ip }}/32 -p tcp -m tcp --dport {{ out_dport }} -j DNAT --to-destination {{ frontend_ip }}:{{ frontend_dport }}
--A POSTROUTING -s {{ ext_net }} -d {{ frontend_ip }}/32 -p tcp -m tcp --dport {{ frontend_dport }} -j SNAT --to-source {{ frontend_ip }}
-COMMIT

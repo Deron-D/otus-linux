@@ -21,7 +21,7 @@
     state: enabled
     immediate: yes
 
-- name: Config nginx
+- name: Copy nginx.conf
   template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
@@ -29,7 +29,23 @@
     group: root
     mode: 0644
 
-- name: Start 
+- name: Copy nginxhost.key
+  copy:
+    src: nginxhost.key
+    dest: /etc/ssl/certs
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Conpy nginxhost.crt
+  copy:
+    src: nginxhost.crt
+    dest: /etc/ssl/certs
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Restart nginx 
   systemd:
     name: nginx
     state: restarted
