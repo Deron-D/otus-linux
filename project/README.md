@@ -32,3 +32,19 @@
 - [Firewalld Rich and Direct Rules: Setting up RHEL 7 Server as a Router](https://www.lisenet.com/2016/firewalld-rich-and-direct-rules-setup-rhel-7-server-as-a-router/)
 - [Firewalld : IP Masquerade](https://www.server-world.info/en/note?os=CentOS_7&p=firewalld&f=2)
 - [Firewalld, установка и настройка, зоны, NAT, проброс портов](https://itproffi.ru/firewalld-ustanovka-i-nastrojka-zony-nat-probros-portov/)
+
+Проверка работы базы данных:
+'''
+curl -GET localhost:9200/_cat/health?v
+'''
+
+ELK cluster state
+'''
+curl -GET 'localhost:9200/_cluster/state?pretty'
+'''
+
+Просмотр индексов в базе:
+'''
+curl -GET localhost:9200/_cat/indices?v
+'''
+
