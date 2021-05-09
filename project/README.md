@@ -34,17 +34,17 @@
 - [Firewalld, установка и настройка, зоны, NAT, проброс портов](https://itproffi.ru/firewalld-ustanovka-i-nastrojka-zony-nat-probros-portov/)
 
 Проверка работы базы данных:
-'''
+```
 curl -GET localhost:9200/_cat/health?v
-'''
+```
 
 ELK cluster state
-'''
+```
 curl -GET 'localhost:9200/_cluster/state?pretty'
-'''
+```
 
 Просмотр индексов в базе:
-'''
+```
 curl -GET localhost:9200/_cat/indices?v
-'''
+```
 
