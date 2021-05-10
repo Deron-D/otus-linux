@@ -60,3 +60,4 @@ sysctl_params:
   - parameter: vm.swappiness
     value: '10'
 
+elkhost: elkhost.otus.lab

@@ -9,3 +9,5 @@ sysctl_params:
 
 filebeat_modules:
   - system
+
+elkhost: nginx.otus.lab
