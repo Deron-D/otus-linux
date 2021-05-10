@@ -3,3 +3,6 @@ gw:
   - dev: eth1
     nh: 192.168.255.254
 
+filebeat_modules:
+  - system
+  - nginx

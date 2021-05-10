@@ -7,3 +7,5 @@ sysctl_params:
   - parameter: net.ipv4.conf.all.rp_filter
     value: '2'
 
+filebeat_modules:
+  - system

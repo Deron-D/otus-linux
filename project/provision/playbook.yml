@@ -96,7 +96,7 @@
     - elk
 
 - name: Filebeat setup
-  hosts: elkhost
+  hosts: all
   become: yes
   roles:
     - filebeat_setup
