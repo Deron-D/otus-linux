@@ -95,6 +95,14 @@
   tags:
     - elk
 
+- name: Filebeat setup
+  hosts: elkhost
+  become: yes
+  roles:
+    - filebeat_setup
+  tags:
+    - filebeat
+
       #- name: Configure Prometheus + Node Exporter + Grafana
       #hosts: monlog
       #become: yes

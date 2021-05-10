@@ -1,0 +1,13 @@
+---
+# handlers file for provision/elk_setup
+- name: restart kibana
+  systemd:
+    name: kibana
+    state: restarted
+ 
+- name: restart elastic
+  systemd:
+    name: elasticsearch
+    enabled: yes
+    state: restarted
+

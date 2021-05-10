@@ -1,0 +1,84 @@
+---
+# tasks file for provision/elk_setup
+
+#- name: Install requied packages for elk_setup role
+#  yum:
+#    name: "{{ item }}"
+#    state: present
+#  loop:
+#    - "{{ packages }}"
+
+- name: Import the Elastic PGP key
+  shell: rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: Create repos
+  copy:
+    src: "{{ item }}"
+    dest: /etc/yum.repos.d/
+  with_fileglob:
+    - "files/*.repo" 
+
+- name: Install elasticsearch
+  yum:
+    name: elasticsearch 
+    state: present
+    enablerepo: elasticsearch
+    
+- name: Install kibana
+  yum:
+    name: kibana 
+    state: present
+    
+    #- name: Install logstash
+    #  yum:
+    #    name: logstash 
+    #    state: present
+    
+- name: Enable remote connections to elasticsearch.service by firewalld
+  firewalld:
+    port: 9200/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Enable remote connections to kibana.service by firewalld
+  firewalld:
+    port: 5601/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Change elastic config
+  lineinfile: 
+    dest: /etc/elasticsearch/elasticsearch.yml
+    regexp: "{{ item.regexp }}" 
+    line: "{{ item.line }}"
+    backrefs: yes
+  with_items:
+    - { regexp: '^#cluster.name', line: 'cluster.name: elk' }
+    - { regexp: '^#node.name', line: 'node.name: elk' }
+    - { regexp: '^#network.host', line: 'network.host: 0.0.0.0' }
+    - { regexp: '^#cluster.initial_master_nodes', line: 'cluster.initial_master_nodes: ["elk"]' }
+  notify:
+    - restart elastic
+
+- name: Change kibana config
+  lineinfile: 
+    dest: /etc/kibana/kibana.yml
+    regexp: "{{ item.regexp }}" 
+    line: "{{ item.line }}"
+    backrefs: yes
+  with_items:
+    - { regexp: '^#server.host', line: 'server.host: "0.0.0.0"' }
+  notify:
+    - restart kibana
+
+- name: Start services
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  loop:
+    - elasticsearch
+      #- logstash
+    - kibana

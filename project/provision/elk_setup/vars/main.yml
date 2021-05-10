@@ -1,0 +1,5 @@
+---
+# vars file for provision/elk_setup
+packages:
+  - java-1.8.0-openjdk
+ 

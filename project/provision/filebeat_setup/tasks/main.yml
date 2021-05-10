@@ -1,0 +1,45 @@
+---
+# tasks file for provision/filebeat_setup
+
+- name: Import the Elastic PGP key
+  shell: rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: Create repos
+  copy:
+    src: "{{ item }}"
+    dest: /etc/yum.repos.d/
+  with_fileglob:
+    - "files/*.repo"
+ 
+- name: Install filebeat
+  yum:
+    name: filebeat
+    state: present
+
+- name: Start services
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  loop:
+    - filebeat
+ 
+- name: Set number of replicas
+  lineinfile: 
+    path: /etc/filebeat/filebeat.yml
+    insertafter: "setup.template.settings:"
+    line: '  index.number_of_replicas: 0'
+
+- name: Set filebeat output
+  lineinfile: 
+    path: /etc/filebeat/filebeat.yml
+    regexp: '^\s+hosts:\s\["localhost:9200"\]'
+    line: '  hosts: ["elkhost.otus.lab:9200"]'
+    backrefs: yes
+
+- name: Turn on filebeat modules
+  shell: /usr/bin/filebeat modules enable '{{ item }}'
+  with_items:
+    - "{{ filebeat_modules }}"
+  notify:
+    - restart filebeat

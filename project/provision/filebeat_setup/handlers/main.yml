@@ -1,0 +1,8 @@
+---
+# handlers file for provision/filebeat_setup
+
+- name: restart filebeat
+  systemd:
+    name: filebeat
+    enabled: yes
+    state: restarted
