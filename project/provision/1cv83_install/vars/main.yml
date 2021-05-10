@@ -5,7 +5,20 @@ packages_for1c:
   - freetype
   - libgsf
   - unixODBC
+  - unzip
 
 app1c_packages_pattern: 1C-Enterprise83-*.x86_64.rpm
 
 app1c_directory: /opt/1C
+
+#webdin32.exe
+#verdan32.exe
+#trebuc32.exe
+#times32.exe
+#impact32.exe
+#georgi32.exe
+#courie32.exe
+#comic32.exe
+#arialb32.exe
+#arial32.exe
+#andale32.exe

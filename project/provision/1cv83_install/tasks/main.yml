@@ -34,3 +34,26 @@
   tags:
     - 1c_rpm
 
+- name: Create directory /usr/share/fonts/truetype
+  file:
+    path: /usr/share/fonts/truetype/    
+    state: directory
+    owner: root
+    group: root
+
+- name: Copy ttf fonts from remote server and unarchive
+  unarchive:
+    src: files/msttcorefonts.zip
+    dest: /usr/share/fonts/truetype/
+    owner: root
+    group: root
+    mode: '0644' 
+
+    #- debug:
+    #msg:
+    #- "{{ app1c_packages }}"
+    #tags:
+    #- 1c_vars
+
+- name: Install MS ttf fonts
+  command: fc-cache –fv

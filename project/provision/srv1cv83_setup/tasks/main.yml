@@ -52,3 +52,48 @@
   become_user: usr1cv8
   shell: /opt/1C/v8.3/x86_64/rac infobase --cluster={{ cluster_name.stdout }} create --create-database --name={{ database_1c }}  --dbms=PostgreSQL --db-server={{ db_server }} --db-name={{ database_1c }} --locale=ru --db-user={{ db_user }} --db-pwd={{ db_pwd }} --license-distribution=allow
   ignore_errors: yes
+
+- name: Copy hasp files
+  copy:
+    src: "{{ item.src }}" 
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: 'install_hasp_centos78.sh', dest: '/home/vagrant/', mode: '0700' } 
+    - { src: '50user.json', dest: '/etc/usbhaspkey/', mode: '0644' } 
+    - { src: 'usbhaspemul.service', dest: '/etc/systemd/system/', mode: '0644' } 
+
+- name: Check usbhaspemul status
+  command: systemctl status usbhaspemul.service
+  register: usbhaspemul_status
+  ignore_errors: yes
+
+  #- debug:
+  #    msg:
+  #      - "{{ usbhaspemul_status.rc }}"
+
+- name: Upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+  when: usbhaspemul_status.rc != 0
+
+- name: Reboot a slow machine that might have lots of updates to apply
+  reboot:
+    reboot_timeout: 60
+  when: usbhaspemul_status.rc != 0
+
+- name: Run usbhasp install script
+  shell: /home/vagrant/install_hasp_centos78.sh
+  ignore_errors: yes
+  when: usbhaspemul_status.rc != 0
+
+- name: Start usbhaspemul unit
+  systemd:
+    name: usbhaspemul
+    state: started
+    enabled: yes
+    daemon_reload: yes
+    

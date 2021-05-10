@@ -15,39 +15,39 @@ MACHINES = {
                  {ip: '192.168.255.254', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "router-net"},
                 ]
   },
-##  :master => {
-#        :hostname => "master.otus.lab",
-#        :box_name => "centos/7",
-#        # VM CPU count
-#        :cpus => 2,
-#        # VM RAM size (Mb)
-#        :memory => 1024, 
-#	:net => [
-#                 {ip: '192.168.11.150', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-#                ]
-#  },
-#  :slave => {
-#        :hostname => "slave.otus.lab",
-#        :box_name => "centos/7",
-#        # VM CPU count
-#        :cpus => 2,
-#        # VM RAM size (Mb)
-#        :memory => 1024, 
-#	:net => [
-#                 {ip: '192.168.11.151', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-#                ]
-#},
-#  :backup => {
-#        :hostname => "backup.otus.lab",
-#          :box_name => "centos/7",
-#        # VM CPU count
-#        :cpus => 2,
-#        # VM RAM size (Mb)
-#        :memory => 1024,
-#	:net => [
-#                 {ip: '192.168.11.152', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-#                ]
-# },
+  :master => {
+        :hostname => "master.otus.lab",
+        :box_name => "centos/7",
+        # VM CPU count
+        :cpus => 2,
+        # VM RAM size (Mb)
+        :memory => 1024, 
+	:net => [
+                 {ip: '192.168.11.150', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                ]
+  },
+  :slave => {
+        :hostname => "slave.otus.lab",
+        :box_name => "centos/7",
+        # VM CPU count
+        :cpus => 2,
+        # VM RAM size (Mb)
+        :memory => 1024, 
+	:net => [
+                 {ip: '192.168.11.151', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                ]
+},
+  :backup => {
+        :hostname => "backup.otus.lab",
+          :box_name => "centos/7",
+        # VM CPU count
+        :cpus => 2,
+        # VM RAM size (Mb)
+        :memory => 1024,
+	:net => [
+                 {ip: '192.168.11.152', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                ]
+ },
    :elkhost => {
         :hostname => "elkhost.otus.lab",
         :box_name => "centos/7",
@@ -59,17 +59,17 @@ MACHINES = {
                  {ip: '192.168.11.153', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
                 ]
  },
-#  :zabbixhost => {
-#       :hostname => "zabbixsrv.otus.lab",
-#       :box_name => "centos/7",
-#       # VM CPU count
-#       :cpus => 2,
-#       # VM RAM size (Mb)
-#       :memory => 2048,
-#	:net => [
-#                 {ip: '192.168.11.154', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-#                ]
-#},
+  :zabbixhost => {
+       :hostname => "zabbixsrv.otus.lab",
+       :box_name => "centos/7",
+       # VM CPU count
+       :cpus => 2,
+       # VM RAM size (Mb)
+       :memory => 2048,
+	:net => [
+                 {ip: '192.168.11.154', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                ]
+},
    :nginxhost => {
         :hostname => "nginx.otus.lab",
         :box_name => "centos/7",
@@ -82,28 +82,28 @@ MACHINES = {
                  {ip: '192.168.11.100', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
                 ]
  },
-##   :apachehost => {
-#        :hostname => "apache.otus.lab",
-#        :box_name => "centos/7",
-#        # VM CPU count
-#        :cpus => 2,
-#        # VM RAM size (Mb)
-#        :memory => 1024,
-#	:net => [
-#                 {ip: '192.168.11.101', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-#                ]
-# },
-#   :srv1c => {
-#        :hostname => "srv1c.otus.lab",
-#        :box_name => "centos/7",
-#        # VM CPU count
-#        :cpus => 2,
-#        # VM RAM size (Mb)
-#        :memory => 1024,
-#	:net => [
-#                 {ip: '192.168.11.102', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
-#                ]
-# },
+  :apachehost => {
+        :hostname => "apache.otus.lab",
+        :box_name => "centos/7",
+        # VM CPU count
+        :cpus => 2,
+        # VM RAM size (Mb)
+        :memory => 1024,
+	:net => [
+                 {ip: '192.168.11.101', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                ]
+ },
+   :srv1c => {
+        :hostname => "srv1c.otus.lab",
+        :box_name => "centos/7",
+        # VM CPU count
+        :cpus => 2,
+        # VM RAM size (Mb)
+        :memory => 1024,
+	:net => [
+                 {ip: '192.168.11.102', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dmz-net"},
+                ]
+ },
 
 }
 

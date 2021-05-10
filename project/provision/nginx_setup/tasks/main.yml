@@ -37,7 +37,7 @@
     group: root
     mode: 0600
 
-- name: Conpy nginxhost.crt
+- name: Copy nginxhost.crt
   copy:
     src: nginxhost.crt
     dest: /etc/ssl/certs

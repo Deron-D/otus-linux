@@ -1,3 +1,5 @@
 ---
 barman_stream_slot: master
 backup_base: 1CDocDemo
+filebeat_modules:
+  - system
