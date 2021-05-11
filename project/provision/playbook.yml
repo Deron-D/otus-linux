@@ -112,7 +112,7 @@
     - zabbix
 
 - name: Zabbix agent setup
-  hosts: nginxhost, apachehost
+  hosts: zabbix_agents
   become: yes
   roles:
     - zabbix-agent-role

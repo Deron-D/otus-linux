@@ -75,14 +75,28 @@
     - { src: 'nginx.conf.j2', dest: '/etc/opt/rh/rh-nginx116/nginx/nginx.conf', mode: '0644' }
     - { src: 'zabbix.conf.j2', dest: '/etc/opt/rh/rh-nginx116/nginx/conf.d/zabbix.conf', mode: '0644'  }
 
-- name: Create zabbix database
+- name: Copy zabbix config files
+  copy: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}" 
+    group: "{{ item.group }}"
+  with_items:
+    - { src: 'zabbix_server.conf', dest: '/etc/zabbix/', mode: '0600', owner: 'root', group: 'zabbix' } 
+    - { src: 'web/zabbix.conf.php', dest: '/etc/zabbix/web/', mode: '0600', owner: 'apache', group: 'apache' }
+    - { src: 'zabbix.sql', dest: '/tmp', mode: '0644', owner: 'root', group: 'root' } 
+
+- name: Create/restore zabbix database
   mysql_db:
     login_user: root
       #login_password: "{{ mysql_password }}"
     name: zabbix
-    state: present
-    encoding: utf8
-    collation: utf8_bin
+    state: import
+    target: /tmp/zabbix.sql
+    #state: present
+    #    encoding: utf8
+    #collation: utf8_bin
 
 - name: Create user zabbix
   mysql_user:
@@ -92,14 +106,14 @@
     state: present
   no_log: true
 
-- name: Zabbix server host import initial schema and data
-  shell: | 
-    zcat '{{ zabbix_schema }}' | mysql -uzabbix -p'{{ zabbix_password }}' zabbix
-  #'
-  no_log: true
-  ignore_errors: yes
-  tags:
-    - import_schema
+  #- name: Zabbix server host import initial schema and data
+  #  shell: | 
+  #    zcat '{{ zabbix_schema }}' | mysql -uzabbix -p'{{ zabbix_password }}' zabbix
+  #  #'
+  #  no_log: true
+  #  ignore_errors: yes
+  #  tags:
+  #    - import_schema
 
 - name: Configure the database for Zabbix server
   lineinfile:

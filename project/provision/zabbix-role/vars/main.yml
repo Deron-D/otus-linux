@@ -12,6 +12,7 @@ zabbix_packages:
   - MySQL-python
   - policycoreutils-python
   - setools-console
+  - unzip
 
 frontend_packages: 
   - zabbix-web-mysql-scl 

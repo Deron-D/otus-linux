@@ -50,3 +50,14 @@ curl -GET 'localhost:9200/_cluster/state?pretty'
 curl -GET localhost:9200/_cat/indices?v
 ```
 
+file "/etc/zabbix/web/zabbix.conf.php" created.
+
+-rw-------. 1 root   zabbix 21821 May 11 22:04 zabbix_server.conf
+drwxr-xr-x. 2 root   root       6 Apr 26 11:27 zabbix_agentd.d
+-rw-r--r--. 1 root   root   15101 Apr 26 11:27 zabbix_agentd.conf
+drwxr-xr-x. 2 apache apache    56 May 11 22:05 web
+
+[root@zabbixhost web]# ls -lr /etc/zabbix/web/
+total 8
+-rw-------. 1 apache apache 1490 May 11 22:05 zabbix.conf.php
+-rw-r--r--. 1 root   root   1036 Mar 29 12:02 maintenance.inc.php
