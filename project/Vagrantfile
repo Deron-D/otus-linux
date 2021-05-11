@@ -60,7 +60,7 @@ MACHINES = {
                 ]
  },
   :zabbixhost => {
-       :hostname => "zabbixsrv.otus.lab",
+       :hostname => "zabbixhost.otus.lab",
        :box_name => "centos/7",
        # VM CPU count
        :cpus => 2,
@@ -142,6 +142,7 @@ Vagrant.configure("2") do |config|
 	     box.vm.network "forwarded_port", guest: 5601, host: 5601, protocol: "tcp", auto_correct: true
              box.vm.network "forwarded_port", guest: 22, host: 2203, id: "ssh"
            when "zabbixhost"
+	     box.vm.network "forwarded_port", guest: 80, host: 2088, protocol: "tcp", auto_correct: true
              box.vm.network "forwarded_port", guest: 22, host: 2204, id: "ssh"
            when "nginxhost"
              box.vm.network "forwarded_port", guest: 22, host: 2205, id: "ssh"

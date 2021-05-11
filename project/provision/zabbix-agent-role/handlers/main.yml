@@ -1,0 +1,6 @@
+---
+# handlers file for provision/zabbix-agent-role
+- name: restart zabbix agent
+  systemd:
+    name: zabbix-agent.service
+    state: restarted

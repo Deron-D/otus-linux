@@ -1,0 +1,182 @@
+---
+# tasks file for provision/zabbix-role
+- name: Put SELinux in enforicing mode
+  selinux:
+    policy: targeted
+      #state: permissive
+    state: enforcing
+
+- name: Install Zabbix repository
+  yum:
+    name: '{{ zabbix_repo }}'
+    state: present
+
+- name: Install Percona repository
+  yum:
+    name: '{{ percona_repo }}'
+    state: present
+
+- name: Clear all entries for currently enabled repositories from the cache
+  command: yum clean all
+  args:
+    warn: false
+
+- name: Install Zabbix server and agent 
+  yum:
+    name: '{{ zabbix_packages }}'
+    state: present
+  loop: '{{ zabbix_packages }}'
+
+- name: Edit file /etc/yum.repos.d/zabbix.repo and enable zabbix-frontend repository 
+  blockinfile:
+    path: /etc/yum.repos.d/zabbix.repo
+    block: |
+      [zabbix-frontend]
+      enabled=1
+
+- name: Install Zabbix frontend packages 
+  yum:
+    name: '{{ frontend_packages }}'
+    state: present
+  loop: '{{ frontend_packages }}'
+
+- name: Start MySQL
+  systemd:
+    name: mysql
+    state: started
+        
+- name: Get automate generated mysql password
+  shell: grep 'A temporary password is generated' /var/log/mysqld.log | awk '{print $11}' 
+  register: current_password
+      
+- debug:
+    msg:
+    - '{{ current_password.stdout_lines }}'
+    - '{{ mysql_password }}'
+
+- name: Set mysql password
+  shell: >
+    mysql --connect-expired-password -uroot 
+    -p'{{ current_password.stdout }}'
+    -e 'ALTER USER USER() IDENTIFIED BY "{{ mysql_password }}"'
+  #' 
+  ignore_errors: yes
+  no_log: true
+
+- name: Copy my.cnf and nginx config files
+  template: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: 'my.cnf.j2', dest: '/root/.my.cnf', mode: '0640' } 
+    - { src: 'nginx.conf.j2', dest: '/etc/opt/rh/rh-nginx116/nginx/nginx.conf', mode: '0644' }
+    - { src: 'zabbix.conf.j2', dest: '/etc/opt/rh/rh-nginx116/nginx/conf.d/zabbix.conf', mode: '0644'  }
+
+- name: Create zabbix database
+  mysql_db:
+    login_user: root
+      #login_password: "{{ mysql_password }}"
+    name: zabbix
+    state: present
+    encoding: utf8
+    collation: utf8_bin
+
+- name: Create user zabbix
+  mysql_user:
+    name: zabbix
+    password: '{{ zabbix_password }}'
+    priv: 'zabbix.*:ALL'
+    state: present
+  no_log: true
+
+- name: Zabbix server host import initial schema and data
+  shell: | 
+    zcat '{{ zabbix_schema }}' | mysql -uzabbix -p'{{ zabbix_password }}' zabbix
+  #'
+  no_log: true
+  ignore_errors: yes
+  tags:
+    - import_schema
+
+- name: Configure the database for Zabbix server
+  lineinfile:
+    path: /etc/zabbix/zabbix_server.conf
+    regexp: '^DBPassword='
+    insertafter: '^# DBPassword='
+    line: DBPassword={{ zabbix_password }} 
+
+- name: Configure PHP for Zabbix frontend (php-fpm)
+  lineinfile:
+    path: /etc/opt/rh/rh-php72/php-fpm.d/zabbix.conf
+    regexp: 'listen.acl_users = apache'
+      #insertafter: '^#        listen          80;'
+    line: 'listen.acl_users = apache,nginx'
+
+- name: Configure PHP for Zabbix frontend (timezone)
+  lineinfile:
+    path: /etc/opt/rh/rh-php72/php-fpm.d/zabbix.conf
+    regexp: '; php_value[date.timezone] = Europe/Riga'
+    insertafter: '^; php_value[date.timezone] = Europe/Riga'
+    line: 'php_value[date.timezone] = Europe/Moscow'
+
+- name: Set seboolean flags on and keep it persistent across reboots
+  seboolean:
+    name: "{{ item }}"
+    state: yes
+    persistent: yes
+  loop:
+    - daemons_enable_cluster_mode
+    - httpd_can_network_connect
+    - httpd_can_connect_zabbix
+
+- name: Change the zabbix_t to permissive
+  selinux_permissive:
+    name: "{{ item }}"
+    permissive: true
+  loop:
+      - zabbix_agent_t
+      - zabbix_t
+
+- name: Start FirewallD
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Enable http service
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Enable zabbix-server service
+  firewalld:
+    service: zabbix-server
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Enable zabbix-agent service
+  firewalld:
+    service: zabbix-agent
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Start Zabbix server and agent processes
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  loop:
+    - zabbix-server
+    - zabbix-agent
+    - rh-nginx116-nginx
+    - rh-php72-php-fpm
+  tags:
+    - start_zabbix

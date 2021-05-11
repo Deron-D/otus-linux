@@ -1,0 +1,52 @@
+---
+# tasks file for provision/zabbix-agent-role
+
+- name: Install Zabbix repository
+  yum:
+    name: '{{ zabbix_repo }}'
+    state: present
+
+- name: Install Zabbix agent 
+  yum:
+    name: '{{ zabbix_packages }}'
+    state: present
+  loop: '{{ zabbix_packages }}'
+
+- name: Change the zabbix_t to permissive
+  selinux_permissive:
+    name: "{{ item }}"
+    permissive: true
+  loop:
+      - zabbix_agent_t
+      - zabbix_t
+
+- name: Enable zabbix-agent service
+  firewalld:
+    service: zabbix-agent
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Start Zabbix  agent processes
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  loop:
+    - zabbix-agent
+  tags:
+    - start_zabbix_agent
+
+- name: Change /etc/zabbix/zabbix_agentd.conf
+  lineinfile: 
+    dest: /etc/zabbix/zabbix_agentd.conf
+    regexp: "{{ item.regexp }}" 
+    line: "{{ item.line }}"
+    backrefs: yes
+  with_items:
+    - { regexp: '^Server=', line: 'Server={{ zabbix_server_ip }}' }
+    - { regexp: '^ServerActive=', line: 'ServerActive={{ zabbix_server_ip }}' }
+    - { regexp: '^Hostname=Zabbix server', line: '#Hostname=Zabbix server' }
+  notify:
+    - restart zabbix agent

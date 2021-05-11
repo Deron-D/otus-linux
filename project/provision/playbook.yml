@@ -103,6 +103,22 @@
   tags:
     - filebeat
 
+- name: Zabbix setup
+  hosts: zabbixhost
+  become: yes
+  roles:
+    - zabbix-role
+  tags:
+    - zabbix
+
+- name: Zabbix agent setup
+  hosts: nginxhost, apachehost
+  become: yes
+  roles:
+    - zabbix-agent-role
+  tags:
+    - zabbix_agent
+
       #- name: Configure Prometheus + Node Exporter + Grafana
       #hosts: monlog
       #become: yes
