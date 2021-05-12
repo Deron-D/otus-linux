@@ -1,0 +1,3 @@
+---
+# vars file for provision/roles/borgclient-role
+server_hostname: backup

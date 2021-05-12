@@ -13,3 +13,4 @@ packer_cache/
 *.gz
 *.zip
 *.log
+*/provision/tmp/*

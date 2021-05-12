@@ -1,0 +1,10 @@
+[Unit]
+Description=Run backup script every 5 minutes
+
+[Timer]
+# Run every 5 min
+OnUnitActiveSec=5m
+Unit=backup.service
+
+[Install]
+WantedBy=multi-user.target

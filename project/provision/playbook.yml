@@ -119,29 +119,26 @@
   tags:
     - zabbix_agent
 
-      #- name: Configure Prometheus + Node Exporter + Grafana
-      #hosts: monlog
-      #become: yes
-      #roles:
-    #    - base_config
-    #    - cloudalchemy.prometheus
-    #- cloudalchemy.node-exporter
-    #- cloudalchemy.grafana
-      #vars:
-      #prometheus_targets:
-      #node:
-      #- targets: 
-      #    "{{ targets }}"
-      #  labels:
-      #    env: otusproject
-      #tags:
-      #- prometheus_install
+- name: Backup clients pre-setup
+  hosts: backup_clients
+  become: yes
+  roles:
+    - client-role
+  tags:
+    - clients
 
-      #- name: Установка cloudalchemy.node-exporter
-      #hosts: master, slave, backup, monlog
-      #become: yes
-      #roles:
-      #- cloudalchemy.node-exporter
-      #tags:
-      #- nodeexporter
+- name: Backup server setup
+  hosts: backup
+  become: yes
+  roles:
+    - backup-server-role
+  tags:
+    - backup-server
 
+- name: Backup clients setup
+  hosts: backup_clients
+  become: yes
+  roles:
+    - borgclient-role
+  tags:
+    - borgclient

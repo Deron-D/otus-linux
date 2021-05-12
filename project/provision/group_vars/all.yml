@@ -71,3 +71,24 @@ sysctl_params:
     value: '10'
 
 elkhost: elkhost.otus.lab
+
+#server_address: "192.168.11.101"
+#client_address: "192.168.11.102"
+#client_hostname: client
+#server_hostname: backupserver  
+backup_user: backup
+backup_group: backup
+backup_home: /home/backup
+backup_repo_path: /var/backup
+backup_passphrase: 123456
+backup_unit_files_dst_path: /etc/systemd/system/
+backup_source: /etc
+backup_client_hosts:
+  - zabbixhost
+  - master
+  - slave
+  - elkhost
+  - nginxhost
+  - apachehost
+  - srv1c
+

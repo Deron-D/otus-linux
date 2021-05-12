@@ -1,0 +1,7 @@
+[Unit]
+Description=My backup service
+
+[Service]
+Type=oneshot
+#EnvironmentFile=/etc/sysconfig/watchlog.conf
+ExecStart=/opt/backup.sh

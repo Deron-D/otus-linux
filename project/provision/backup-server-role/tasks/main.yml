@@ -1,0 +1,54 @@
+---
+# tasks file for provision/roles/backup-server-role
+
+- name: Install borg
+  yum:
+    name: borgbackup
+    state: present
+    update_cache: no
+
+- name: Check directory exists
+  ansible.builtin.stat:
+    path: "{{ backup_repo_path }}"
+  register: backup_repo_path_exists
+
+- name: Create partition, filesystem and mount point
+  shell: |
+    echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/sdb
+    mkfs.xfs /dev/sdb1
+    mkdir "{{ backup_repo_path }}"
+    mount /dev/sdb1 "{{ backup_repo_path }}"
+  args:
+    warn: no
+  when: backup_repo_path_exists.stat.exists == False
+
+- name: Add backup user group 
+  group: 
+    name: "{{ backup_group }}" 
+    state: present    
+
+- name: Add user backup
+  user:
+    name: "{{ backup_user }}"
+    group: "{{ backup_group }}"  
+    home: "{{ backup_home }}"
+    createhome: yes  
+    shell: /bin/bash  
+    state: present
+
+- name: Recursively change ownership of a directory
+  file:
+    path: "{{ backup_repo_path }}"
+    state: directory
+    recurse: yes
+    owner: "{{ backup_user }}"
+    group: "{{ backup_group }}"
+    mode: '0755'
+
+- name: Add client public key to server
+  authorized_key:
+    user: "{{ backup_user }}"
+    key:  "{{ lookup('file', 'tmp/id_rsa.tmp/{{ item }}/root/.ssh/id_rsa.pub') }}"
+  with_items: 
+    - "{{ backup_client_hosts }}"
+
