@@ -13,11 +13,12 @@
 
 - name: Copy app from remote server and unarchive
   unarchive:
-    src: files/rpm64_8_3_16_1814.tar.gz
+    src: "{{ archive_url }}/rpm64_8_3_16_1814.tar.gz"
     dest: /tmp/
     owner: vagrant
     group: vagrant
     mode: '0644' 
+    remote_src: "{{ remote_src_state }}"
 
     #- debug:
     #msg:
@@ -43,11 +44,12 @@
 
 - name: Copy ttf fonts from remote server and unarchive
   unarchive:
-    src: files/msttcorefonts.zip
+    src: "{{ archive_url }}/msttcorefonts.zip"
     dest: /usr/share/fonts/truetype/
     owner: root
     group: root
     mode: '0644' 
+    remote_src: "{{ remote_src_state }}"
 
     #- debug:
     #msg:

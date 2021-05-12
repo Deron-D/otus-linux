@@ -14,11 +14,9 @@
 
 - name: Get demo database
   unarchive:
-    #src: https://edu.postgrespro.ru/demo_small.zip
-    src: 1CDocDemo.zip
+    src: "{{ archive_url }}/1CDocDemo.zip"
     dest: /var/tmp/
-    #remote_src: yes
-    remote_src: no
+    remote_src: "{{ remote_src_state }}"
 
 - name: Load demo database
   become: yes 

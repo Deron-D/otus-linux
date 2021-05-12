@@ -85,7 +85,13 @@
   with_items:
     - { src: 'zabbix_server.conf', dest: '/etc/zabbix/', mode: '0600', owner: 'root', group: 'zabbix' } 
     - { src: 'web/zabbix.conf.php', dest: '/etc/zabbix/web/', mode: '0600', owner: 'apache', group: 'apache' }
-    - { src: 'zabbix.sql', dest: '/tmp', mode: '0644', owner: 'root', group: 'root' } 
+      #- { src: 'zabbix.sql', dest: '/tmp', mode: '0644', owner: 'root', group: 'root' } 
+
+- name: Get zabbix database
+  unarchive:
+    src: "{{ archive_url }}/zabbix.zip"
+    dest: /var/tmp/
+    remote_src: "{{ remote_src_state }}"
 
 - name: Create/restore zabbix database
   mysql_db:
@@ -93,7 +99,7 @@
       #login_password: "{{ mysql_password }}"
     name: zabbix
     state: import
-    target: /tmp/zabbix.sql
+    target: /var/tmp/zabbix.sql
     #state: present
     #    encoding: utf8
     #collation: utf8_bin
