@@ -26,7 +26,7 @@
 - Сервер резервного копирования (Barman + Borg) (backup.otus.lab )
 - Сервер системы мониторинга (zabbixhos.otus.lab): [http://host:2088/](http://192.168.0.103:2088/)
   Введите имя пользователя Admin с паролем zabbix для входа под Супер-Администратором Zabbix
-- Сервер централизованного сбора логов: [http://host:5601/app/home#/](http://192.168.0.103:5601/app/home#/)
+- Сервер централизованного сбора логов: [http://host:5601/app/home#/](http://192.168.0.103:5601/app/home#/).
   Kibana index pattern пока нужно создавать вручную: [http://host:5601/app/management/kibana/indexPatterns/create](http://192.168.0.103:5601/app/management/kibana/indexPatterns/create)
 
 ## **Полезное:**
