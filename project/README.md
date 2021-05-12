@@ -27,14 +27,9 @@
 - Сервер системы мониторинга (zabbixhos.otus.lab): [http://host:2088/](http://192.168.0.103:2088/)
   Введите имя пользователя Admin с паролем zabbix для входа под Супер-Администратором Zabbix
 - Сервер централизованного сбора логов: [http://host:5601/app/home#/](http://192.168.0.103:5601/app/home#/)
+  Kibana index pattern пока нужно создавать вручную: [http://host:5601/app/management/kibana/indexPatterns/create](http://192.168.0.103:5601/app/management/kibana/indexPatterns/create)
 
 ## **Полезное:**
-
-- [Перенос базы PostgreSQL с сервера на сервер](https://shra.ru/2017/01/perenos-bazy-postgresql-s-servera-na-server/)
-- [Простая установка 1С на Linux (Ubuntu)](https://wiseadvice-it.ru/o-kompanii/blog/articles/prostaya-ustanovka-1s-na-linux-ubuntu/)
-- [Firewalld Rich and Direct Rules: Setting up RHEL 7 Server as a Router](https://www.lisenet.com/2016/firewalld-rich-and-direct-rules-setup-rhel-7-server-as-a-router/)
-- [Firewalld : IP Masquerade](https://www.server-world.info/en/note?os=CentOS_7&p=firewalld&f=2)
-- [Firewalld, установка и настройка, зоны, NAT, проброс портов](https://itproffi.ru/firewalld-ustanovka-i-nastrojka-zony-nat-probros-portov/)
 
 **ELK**
 
@@ -52,3 +47,9 @@ curl -GET 'localhost:9200/_cluster/state?pretty'
 ```
 curl -GET localhost:9200/_cat/indices?v
 ```
+- [Перенос базы PostgreSQL с сервера на сервер](https://shra.ru/2017/01/perenos-bazy-postgresql-s-servera-na-server/)
+- [Простая установка 1С на Linux (Ubuntu)](https://wiseadvice-it.ru/o-kompanii/blog/articles/prostaya-ustanovka-1s-na-linux-ubuntu/)
+- [Firewalld Rich and Direct Rules: Setting up RHEL 7 Server as a Router](https://www.lisenet.com/2016/firewalld-rich-and-direct-rules-setup-rhel-7-server-as-a-router/)
+- [Firewalld : IP Masquerade](https://www.server-world.info/en/note?os=CentOS_7&p=firewalld&f=2)
+- [Firewalld, установка и настройка, зоны, NAT, проброс портов](https://itproffi.ru/firewalld-ustanovka-i-nastrojka-zony-nat-probros-portov/)
+
