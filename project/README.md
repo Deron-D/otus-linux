@@ -29,6 +29,8 @@
 - Сервер централизованного сбора логов: [http://host:5601/app/home#/](http://192.168.0.103:5601/app/home#/).
   Kibana index pattern пока нужно создавать вручную: [http://host:5601/app/management/kibana/indexPatterns/create](http://192.168.0.103:5601/app/management/kibana/indexPatterns/create)
 
+![Схема стенда](project.png)
+
 ## **Полезное:**
 
 **ELK**
