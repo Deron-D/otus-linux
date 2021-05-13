@@ -70,9 +70,9 @@ sysctl_params:
   - parameter: vm.swappiness
     value: '10'
   - parameter: net.core.somaxconn
-    value: '15000'
+    value: '500'
   - parameter: net.core.netdev_max_backlog
-    value: '1000'
+    value: '500'
 
 elkhost: elkhost.otus.lab
 
