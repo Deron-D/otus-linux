@@ -32,6 +32,56 @@
 
 ![Схема стенда](net.png)
 
+## **Инструкции:**
+
+1. Убиваем и восстанавливаем stateless srv1c.otus.lab:
+```
+vagrant destroy srv1c -f
+vagrant up srv1c
+ansible-playbook provision/playbook.yml --ask-vault-pass --tags "pre_init,1c_install,1c_setup"
+```
+
+2. Ложим master.otus.lab и переключаем на slave.otus.lab:
+```
+vagrant suspend master
+
+vagrant ssh srv1c
+Last login: Thu May 13 17:05:27 2021 from 10.0.2.2
+[vagrant@srv1c ~]$ sudo -s
+[root@srv1c vagrant]# su usr1cv8
+[usr1cv8@srv1c vagrant]$ cd
+[usr1cv8@srv1c ~]$ ./switch_replica.sh
+9d2baada-7244-43c2-833c-deea45e12355
+4d8f216d-3048-4a6a-8e31-6eb00c2da1bb
+2d63dc01-efd1-479b-b150-12311bababce
+Insufficient user rights for infobase 1CDocDemo
+infobase                                   : 4d8f216d-3048-4a6a-8e31-6eb00c2da1bb
+name                                       : 1CDocDemo
+dbms                                       : PostgreSQL
+db-server                                  : slave.otus.lab
+db-name                                    : 1CDocDemo
+db-user                                    : barman
+security-level                             : 0
+license-distribution                       : allow
+scheduled-jobs-deny                        : off
+sessions-deny                              : off
+denied-from                                :
+denied-message                             :
+denied-parameter                           :
+denied-to                                  :
+permission-code                            :
+external-session-manager-connection-string :
+external-session-manager-required          : no
+security-profile-name                      :
+safe-mode-security-profile-name            :
+reserve-working-processes                  : no
+descr                                      :
+
+```
+
+
+
+
 ## **Полезное:**
 
 **ELK**
