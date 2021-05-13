@@ -17,6 +17,10 @@
   loop:
     - "{{ barman_packages }}"
 
+- name: Install psycopg2-binary python package
+  pip:
+    name: psycopg2-binary
+
 - name: Install PostgreSQL repo
   yum:
     name: "{{ postgresql_repo }}"
@@ -42,6 +46,7 @@
   with_items:
     - { src: 'barman.conf.j2', dest: '/etc/barman.conf' }
     - { src: 'master.conf.j2', dest: '/etc/barman.d/master.conf' }
+    #- { src: 'slave.conf.j2', dest: '/etc/barman.d/slave.conf' }
 
 - name: Create replication slot for backup
   become_user: "{{ barman_username }}"
