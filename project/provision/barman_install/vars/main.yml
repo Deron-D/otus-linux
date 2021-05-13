@@ -1,9 +1,15 @@
 ---
-postgresql_repo: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+#postgresql_repo: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+postgresql_repo: https://repo.postgrespro.ru/pgpro-11/keys/centos.rpm
 
 barman_packages:
-  - barman
+  - barman-2.12
+  - python2-pip
 
 postgres_packages:
-  - postgresql11
+        #- postgresql11
+  - postgrespro-std-11
+    #- postgrespro-std-11-plpython
+    #- python-psycopg2
+  - unzip
 
