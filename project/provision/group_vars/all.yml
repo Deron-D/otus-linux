@@ -29,6 +29,7 @@ barman_username: barman
 barman_password: Pass@Word@Bar
 streaming_barman: streaming_barman
 streaming_barman_password: Pass@Word@Str
+barman_stream_slot: master
 
 lab_domain_name: otus.lab
 

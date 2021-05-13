@@ -1,6 +1,9 @@
 ---
 # tasks file for provision/pre_init
 
+- name: RU localedef
+  shell: localedef -i ru_RU -f UTF-8 ru_RU.UTF-8
+
 - name: Install epel-release # переведём синтаксис yum из deprecated
   yum:
     name: "{{ packages }}"

@@ -9,5 +9,7 @@ host    all             all             {{ srv1c_ip }}/32  trust
 host    all             all             ::1/128                 ident
 # Allow replication connections from localhost, by a user with the
 # replication privilege.
+host    replication  {{ replica_username}}  {{ slave_ip }}/32   trust
+host    replication  {{ streaming_barman }}    {{ backup_ip }}/32  trust
 host    replication     all             127.0.0.1/32            ident
 host    replication     all             ::1/128                 ident
