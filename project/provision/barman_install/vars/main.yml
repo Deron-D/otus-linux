@@ -3,7 +3,7 @@
 postgresql_repo: https://repo.postgrespro.ru/pgpro-11/keys/centos.rpm
 
 barman_packages:
-  - barman-2.12
+  - barman
   - python2-pip
 
 postgres_packages:
