@@ -77,6 +77,10 @@ safe-mode-security-profile-name            :
 reserve-working-processes                  : no
 descr                                      :
 
+
+vagrant ssh slave
+rm -rf /var/lib/pgpro/std-11/data/recovery.conf
+[root@slave vagrant]# systemctl restart postgrespro-std-11.service
 ```
 
 

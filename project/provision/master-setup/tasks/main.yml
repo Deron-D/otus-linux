@@ -44,13 +44,6 @@
     permanent: yes
     state: enabled
     immediate: yes
-
-- name: Enable remote connections to nodeexporter service by firewalld
-  firewalld:
-    port: 9100/tcp
-    permanent: yes
-    state: enabled
-    immediate: yes
               
 - name: Run PostgreSQL
   systemd:
@@ -69,7 +62,7 @@
     psql postgres -c "SELECT pg_create_physical_replication_slot('{{ physical_replication_slot }}')"
     psql postgres -c "SELECT slot_name, slot_type, active FROM pg_replication_slots;"
 
-- name: Create slot for replication
+- name: Create database users
   become_user: postgres
   shell: |
     psql postgres -c "CREATE USER {{ replica_username }} WITH REPLICATION PASSWORD '{{ replica_password }}'"
