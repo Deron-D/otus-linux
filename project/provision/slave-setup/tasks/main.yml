@@ -1,5 +1,21 @@
 ---
 # tasks file for provision/slave-setup
+
+- name: Start firewalld
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Enable remote connections to postgresql service by firewalld
+  firewalld:
+    service: postgresql
+    permanent: yes
+    state: enabled
+    immediate: yes
+  tags:
+    - slave-firewalld
+
 - name: Remove current database
   become: yes
   become_user: postgres
