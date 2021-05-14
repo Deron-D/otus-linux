@@ -11,3 +11,4 @@ app1c_packages:
 
 filebeat_modules:
   - system
+  - apache
