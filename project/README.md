@@ -126,7 +126,48 @@ MAILTO=root
 # *  *  *  *  * user-name  command to be executed
 
 ```
+4. Проверка работы barman:
+```
+bash-4.2$ barman check master
+Server master:
+ПРЕДУПРЕЖДЕНИЕ:  несовпадение версии для правила сортировки "default"
+DETAIL:  Правило сортировки в базе данных было создано с версией 58.0.6.50, но операционная версия предоставляет версию 58.0.0.50.
+HINT:  Проверьте все объекты, зависящие от этого правила сортировки, и выполните ALTER COLLATION pg_catalog."default" REFRESH VERSION
+        PostgreSQL: OK
+        superuser or standard user with backup privileges: OK
+        PostgreSQL streaming: OK
+        wal_level: OK
+        replication slot: OK
+        directories: OK
+        retention policy settings: OK
+        backup maximum age: OK (no last_backup_maximum_age provided)
+        compression settings: OK
+        failed backups: OK (there are 0 failed backups)
+        minimum redundancy requirements: OK (have 0 backups, expected at least 0)
+        pg_basebackup: OK
+        pg_basebackup compatible: OK
+        pg_basebackup supports tablespaces mapping: OK
+        systemid coherence: OK (no system Id stored on disk)
+        pg_receivexlog: OK
+        pg_receivexlog compatible: OK
+        receive-wal running: OK
+        archive_mode: OK
+        archive_command: OK
+        archiver errors: OK
 
+bash-4.2$ barman backup master --wait
+ПРЕДУПРЕЖДЕНИЕ:  несовпадение версии для правила сортировки "default"
+DETAIL:  Правило сортировки в базе данных было создано с версией 58.0.6.50, но операционная версия предоставляет версию 58.0.0.50.
+HINT:  Проверьте все объекты, зависящие от этого правила сортировки, и выполните ALTER COLLATION pg_catalog."default" REFRESH VERSION
+Starting backup using postgres method for server master in /var/lib/barman/master/base/20210514T154247
+Backup start at LSN: 0/70536F8 (000000010000000000000007, 000536F8)
+Starting backup copy via pg_basebackup for 20210514T154247
+
+[root@backup vagrant]# tail -f /var/log/barman/barman.log
+2021-05-14 15:46:01,316 [10520] barman.wal_archiver INFO: No xlog segments found from streaming for master.
+2021-05-14 15:46:01,316 [10520] barman.wal_archiver INFO: No xlog segments found from file archival for master.
+
+```
 
 ## **Полезное:**
 
