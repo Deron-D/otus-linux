@@ -79,7 +79,7 @@ descr                                      :
 
 
 vagrant ssh slave
-[root@slave vagrant]# echo 1 > /tmp/trigger.file 
+[root@slave vagrant]# echo 1 > /tmp/trigger.file
 ```
 
 
