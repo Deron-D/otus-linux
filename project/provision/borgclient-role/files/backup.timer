@@ -1,9 +1,9 @@
 [Unit]
-Description=Run backup script every 5 minutes
+Description=Run backup script every 24 hours
 
 [Timer]
-# Run every 5 min
-OnUnitActiveSec=5m
+# Run every 24 hours
+OnUnitActiveSec=24h
 Unit=backup.service
 
 [Install]

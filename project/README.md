@@ -82,7 +82,50 @@ vagrant ssh slave
 [root@slave vagrant]# echo 1 > /tmp/trigger.file
 ```
 
+3. Проверка работы borgbackup:
+```
+vagrant ssh srv1c
+sudo -s
+[root@srv1c /]# borg list backup@backup:/var/backup/srv1c-etc
+Enter passphrase for key ssh://backup@backup/var/backup/srv1c-etc:
+etc_backup-2021-05-14_14-45-04       Fri, 2021-05-14 14:45:04 [1539b7dbd8327eea17fda89bbf7a2bbb8fa520c25d2c2c2934ba6c932da918c0]
+[root@srv1c /]# cat /etc/crontab
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
 
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+
+[root@srv1c /]# rm /etc/crontab
+rm: remove regular file ‘/etc/crontab’? y
+[root@srv1c /]# borg extract backup@backup:/var/backup/srv1c-etc::etc_backup-2021-05-14_14-45-04  etc/crontab
+Enter passphrase for key ssh://backup@backup/var/backup/srv1c-etc:
+[root@srv1c /]# cat /etc/crontab
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+
+```
 
 
 ## **Полезное:**
