@@ -79,8 +79,7 @@ descr                                      :
 
 
 vagrant ssh slave
-rm -rf /var/lib/pgpro/std-11/data/recovery.conf
-[root@slave vagrant]# systemctl restart postgrespro-std-11.service
+[root@slave vagrant]# echo 1 > /tmp/trigger.file 
 ```
 
 

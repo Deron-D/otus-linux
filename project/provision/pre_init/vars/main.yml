@@ -6,3 +6,4 @@ packages:
   - strace
   - ltrace
   - policycoreutils-python
+  - unzip

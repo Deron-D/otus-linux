@@ -29,6 +29,12 @@
   shell: "/opt/pgpro/std-11/bin/pg_basebackup -D {{ postgresql_data_dir }} --write-recovery-conf --wal-method=stream --checkpoint=fast --host={{ master_ip }} --user={{ replica_username }} --slot='{{ physical_replication_slot }}'"
   notify: Restart_PostgreSQL
 
+- name: Enable trigger for recovery
+  lineinfile:
+    path: /var/lib/pgpro/std-11/data/recovery.conf
+    line: "trigger_file = '/tmp/trigger.file'"
+  notify: Reload_PostgreSQL
+
 - name: Copy config files on slave
   template:
     src: "{{ item.src }}"
