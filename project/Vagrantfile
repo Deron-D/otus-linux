@@ -173,6 +173,9 @@ Vagrant.configure("2") do |config|
              box.vm.network "forwarded_port", guest: 22, host: 2206, id: "ssh"
            when "srv1c"
              box.vm.network "forwarded_port", guest: 22, host: 2207, id: "ssh"
+	     box.vm.network "forwarded_port", guest: 1540, host: 1540, protocol: "tcp", auto_correct: true
+	     box.vm.network "forwarded_port", guest: 1541, host: 1541, protocol: "tcp", auto_correct: true
+	     box.vm.network "forwarded_port", guest: 1560, host: 1560, protocol: "tcp", auto_correct: true
         end
            
         box.vm.provider "virtualbox" do |v|
