@@ -36,6 +36,12 @@
   loop:
     - "{{ postgres_packages }}"
 
+- name: Run PostgreSQL
+  systemd:
+    name: "{{ postgresql_service }}"
+    state: stopped
+    enabled: no
+
 - name: Copy config files on backup
   template:
     src: "{{ item.src }}"

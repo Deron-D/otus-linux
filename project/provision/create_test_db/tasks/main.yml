@@ -7,7 +7,7 @@
   
 #- name: Remove demo database if exists
 #  postgresql_db:
-#    name: demo
+#    name: 1CDocDemo
 #    state: absent
 #  become: yes
 #  become_user: postgres

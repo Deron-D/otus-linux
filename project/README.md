@@ -130,9 +130,6 @@ MAILTO=root
 ```
 bash-4.2$ barman check master
 Server master:
-ПРЕДУПРЕЖДЕНИЕ:  несовпадение версии для правила сортировки "default"
-DETAIL:  Правило сортировки в базе данных было создано с версией 58.0.6.50, но операционная версия предоставляет версию 58.0.0.50.
-HINT:  Проверьте все объекты, зависящие от этого правила сортировки, и выполните ALTER COLLATION pg_catalog."default" REFRESH VERSION
         PostgreSQL: OK
         superuser or standard user with backup privileges: OK
         PostgreSQL streaming: OK
@@ -153,20 +150,27 @@ HINT:  Проверьте все объекты, зависящие от это�
         receive-wal running: OK
         archive_mode: OK
         archive_command: OK
+        continuous archiving: OK
         archiver errors: OK
-
 bash-4.2$ barman backup master --wait
-ПРЕДУПРЕЖДЕНИЕ:  несовпадение версии для правила сортировки "default"
-DETAIL:  Правило сортировки в базе данных было создано с версией 58.0.6.50, но операционная версия предоставляет версию 58.0.0.50.
-HINT:  Проверьте все объекты, зависящие от этого правила сортировки, и выполните ALTER COLLATION pg_catalog."default" REFRESH VERSION
-Starting backup using postgres method for server master in /var/lib/barman/master/base/20210514T154247
-Backup start at LSN: 0/70536F8 (000000010000000000000007, 000536F8)
-Starting backup copy via pg_basebackup for 20210514T154247
+Starting backup using postgres method for server master in /var/lib/barman/master/base/20210518T065350
+Backup start at LSN: 0/710CE88 (000000010000000000000007, 0010CE88)
+Starting backup copy via pg_basebackup for 20210518T065350
+Copy done (time: 11 seconds)
+Finalising the backup.
+This is the first backup for server master
+WAL segments preceding the current backup have been found:
+        000000010000000000000006 from server master has been removed
+        000000010000000000000007 from server master has been removed
+Backup size: 73.7 MiB
+Backup end at LSN: 0/9000000 (000000010000000000000008, 00000000)
+Backup completed (start time: 2021-05-18 06:53:50.355635, elapsed time: 11 seconds)
+Waiting for the WAL file 000000010000000000000008 from server 'master'
+Processing xlog segments from streaming for master
+        000000010000000000000008
 
-[root@backup vagrant]# tail -f /var/log/barman/barman.log
-2021-05-14 15:46:01,316 [10520] barman.wal_archiver INFO: No xlog segments found from streaming for master.
-2021-05-14 15:46:01,316 [10520] barman.wal_archiver INFO: No xlog segments found from file archival for master.
-
+bash-4.2$ barman list-backup master
+master 20210518T065350 - Tue May 18 06:54:01 2021 - Size: 89.7 MiB - WAL Size: 0 B
 ```
 
 ## **Полезное:**
