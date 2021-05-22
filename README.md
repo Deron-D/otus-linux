@@ -27,3 +27,5 @@
 * [Домашняя работа №25: LDAP](https://github.com/Deron-D/otus-linux/tree/master/lab25)
 * [Домашняя работа №26: Динамический веб](https://github.com/Deron-D/otus-linux/tree/master/lab26)
 * [Домашняя работа №27: PostgreSQL](https://github.com/Deron-D/otus-linux/tree/master/lab27)
+* [Домашняя работа №28: Репликация MySQL](https://github.com/Deron-D/otus-linux/tree/master/lab28)	
+* [Выпускной проект: Infrastructure as code на примере развертывания защищенного окружения для публикации решений 1С с реализацией централизованного сбора логов, мониторинга и резервного копирования](https://github.com/Deron-D/otus-linux/tree/master/project)
